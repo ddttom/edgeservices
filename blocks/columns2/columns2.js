@@ -1,6 +1,6 @@
 export default function decorate(block) {
-  const tricols = [...block.firstElementChild.children];
-  block.classList.add(`columns-${tricols.length}-cols`);
+  const cols2 = [...block.firstElementChild.children];
+  block.classList.add(`columns2-${cols2.length}-cols`);
 
   // setup image columns
   [...block.children].forEach((row) => {
@@ -10,7 +10,7 @@ export default function decorate(block) {
         const picWrapper = pic.closest('div');
         if (picWrapper && picWrapper.children.length === 1) {
           // picture is only content in column
-          picWrapper.classList.add('tricolumns-img-col');
+          picWrapper.classList.add('columns2-img-col');
         }
       }
     });
