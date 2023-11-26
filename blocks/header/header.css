@@ -282,19 +282,32 @@ header nav .nav-tools {
     display: flex;
     margin-top: 30px;
     justify-content: space-between;
-}
-
-.decoration div:first-child {
-    max-width: 166px;
-}
-
-.decoration-wrapper {
+    align-items: start;
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.decoration-wrapper picture {
-    margin-top: 30px;
+.decoration > div:first-child {
     max-width: 166px;
+}
+
+.decoration > div:first-child picture {
+    margin-top: 30px;
+    width: 166px;
+}
+
+.decoration >  div:last-child {
+    background-color: #5AEFEE;
+    padding: 30px;
+}
+
+.decoration > div:last-child picture {
+    width: 28px;
+    display: inline-block;
+}
+
+.decoration >  div:last-child  div:last-child {
+    display: none;
 }
