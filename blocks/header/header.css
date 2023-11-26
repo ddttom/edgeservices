@@ -273,3 +273,8 @@ header nav .nav-sections ul > li > ul > li {
 header nav .nav-tools {
   grid-area: tools;
 }
+
+.decoration-wrapper {
+  position: absolute;
+  top: 0;
+}
