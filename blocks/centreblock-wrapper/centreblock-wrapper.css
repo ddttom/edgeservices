@@ -1,7 +1,8 @@
-.centreblock-wrapper .centreblock > div{
-
+.centreblock-wrapper {
+    background-color: red;
 }
 
 .centreblock-wrapper .centreblock > div{
     text-align: center;
+
 }
