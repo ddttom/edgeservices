@@ -1,3 +1,36 @@
 .panel-wrapper {
     background-color: #5AEFEE;
+    padding: 50px 0;
+}
+
+.panel-wrapper .panel>div {
+    display: flex;
+    align-items: start;
+    max-width: 1080px;
+    margin-inline: auto;
+    gap: 50px;
+}
+
+
+.panel-wrapper .panel > div p {
+    margin: 0;
+}
+
+.panel-wrapper .panel > div p {
+    margin: 0 0 20px;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 32px;
+}
+
+.panel-wrapper .panel > div p:last-child {
+    font-size: 19px;
+}
+
+.panel-wrapper .panel > div h2 {
+    padding: 4px 14px 8px 14px;
+    font-size: 30px;
+    line-height: 39px;
+    font-weight: 900;
+    background: #ffffff;
 }
