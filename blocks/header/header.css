@@ -274,8 +274,17 @@ header nav .nav-tools {
   grid-area: tools;
 }
 
+.header-wrapper {
+  display: none;
+}
+
 .decoration-wrapper {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.decoration-wrapper picture{
+  margin-top: 30px;
+  max-width: 166px;
 }
