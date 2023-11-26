@@ -1,6 +1,9 @@
 {
     "project": "MyTrial",
     "plugins": [
+
+      
+
         {
             "id": "library",
             "title": "Library",
