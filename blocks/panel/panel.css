@@ -48,3 +48,25 @@
     font-weight: 700;
     padding: 0.5rem;
 }
+
+.panel2-wrapper {
+}
+
+.panel2-wrapper .panel2 {
+margin-top: 300px;
+position: relative;
+}
+
+.panel2-wrapper .panel2::before,
+.panel2-wrapper .panel2::after {
+    background-color: #5AEFEE;
+    z-index: -1;
+    content: "";
+    position: absolute;
+    top: -200px;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 800px;
+    transform: rotate(-10deg);
+}
