@@ -62,6 +62,10 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
+  // eslint-disable-next-line no-use-before-define
+  decorateExternalImages(main, '//External Image//');
+  // eslint-disable-next-line no-use-before-define
+  decorateExternalImages(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
