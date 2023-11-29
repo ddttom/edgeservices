@@ -272,7 +272,7 @@ header nav .nav-tools {
 }
 
 .header-wrapper {
-    display: none;
+    display: block;
 }
 
 
