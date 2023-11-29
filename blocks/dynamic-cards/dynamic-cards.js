@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture } from '../../scripts/aem.js';
 import {
   button, div, li, p, strong, ul,
 } from '../../scripts/dom-helpers.js';
