@@ -49,3 +49,13 @@
   .table.bordered table th, .table.bordered table td {
     border: 1px solid;
   }
+
+  /* highlighted variant */
+  .table-wrapper .table.bordered.highlight thead th {
+    background-color: grey; /* Adjust the color as needed */
+    color: white; /* Optional: change the text color for better contrast */
+}
+.table-wrapper .table.bordered.highlight tbody tr td:nth-child(2) {
+  background-color: lightblue; /* Adjust the color as needed */
+}
+
