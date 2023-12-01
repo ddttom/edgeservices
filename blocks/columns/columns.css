@@ -1,3 +1,9 @@
+/* Adds padding to the 'columns highlighted' div */
+.columns.highlighted {
+  padding: 10px; /* Adds 10px padding around the entire set of columns */
+}
+
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,16 +35,34 @@
   .columns > div > div {
     flex: 1;
     order: unset;
-    
+
   }
 }
 /* Outline for each cell within the highlighted class */
 .columns.highlighted > div > div {
   border: 1px solid black; /* Adds a black border around each cell */
+  min-height: 200px; /* Sets minimum height for all cells */
+  padding: 10px;
 }
 
-/* Background color for the first row across all columns within the highlighted class */
+/* Background color, different minimum height, and centering content for the first row across all columns within the highlighted class */
 .columns.highlighted > div:nth-child(1) > div {
   background-color: #f0f0f0; /* Change the color as desired */
+  min-height: 100px; /* Set a different minimum height for the first row */
+  display: flex; /* Enables flexbox for centering */
+  align-items: center; /* Vertically centers content */
+  justify-content: center; /* Horizontally centers content */
+  text-align: center; /* Ensures text is centered if it's not flex items */
+  padding: 0px;
 }
+
+/* Targets the second column within the 'columns highlighted' class */
+.columns.highlighted > div:nth-of-type(2) {
+  background-color: lightblue; /* Sets the background color to light blue for the entire second column */
+}
+
+
+
+
+
 
