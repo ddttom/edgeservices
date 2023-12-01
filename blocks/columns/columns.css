@@ -31,3 +31,13 @@
     order: unset;
   }
 }
+/* Outline for each cell within the highlighted class */
+.columns.highlighted > div > div {
+  border: 1px solid black; /* Adds a black border around each cell */
+}
+
+/* Background color for the first row in each column within the highlighted class */
+.columns.highlighted > div > div:first-child {
+  background-color: #f0f0f0; /* Change the color as desired */
+}
+
