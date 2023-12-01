@@ -71,6 +71,8 @@ body {
   background-color: var(--background-color);
   display: none;
   overflow-x: hidden;
+  padding: 10px;
+  margin:20px
 }
 
 body.appear {

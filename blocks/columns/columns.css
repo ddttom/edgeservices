@@ -38,12 +38,22 @@
 
   }
 }
+
+
+/* Center text in every div within the 'columns highlighted' class */
+.columns.highlighted div {
+  text-align: center; /* Centers the text */
+}
+
+
 /* Outline for each cell within the highlighted class */
 .columns.highlighted > div > div {
   border: 1px solid black; /* Adds a black border around each cell */
   min-height: 200px; /* Sets minimum height for all cells */
   padding: 10px;
 }
+
+
 
 /* Background color, different minimum height, and centering content for the first row across all columns within the highlighted class */
 .columns.highlighted > div:nth-child(1) > div {
@@ -56,10 +66,7 @@
   padding: 0px;
 }
 
-/* Targets the second column within the 'columns highlighted' class */
-.columns.highlighted > div:nth-of-type(2) {
-  background-color: lightblue; /* Sets the background color to light blue for the entire second column */
-}
+
 
 
 
