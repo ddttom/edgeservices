@@ -29,6 +29,7 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+    
   }
 }
 /* Outline for each cell within the highlighted class */
