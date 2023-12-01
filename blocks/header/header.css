@@ -274,7 +274,11 @@ header nav .nav-tools {
 .header-wrapper {
     display: block;
 }
-decoration {
+
+
+/* decoration */
+
+.decoration {
     display: flex;
     margin-top: 30px;
     justify-content: space-between;
@@ -305,5 +309,5 @@ decoration {
 }
 
 .decoration >  div:last-child  div:last-child {
-    display: no
+    display: none;
 }
