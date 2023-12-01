@@ -58,17 +58,19 @@ main .hero img {
 .hero-wrapper .hero.manual  {
     display: flex;
     justify-content: center;
+    align-items: normal;
+    
 
 }
 
 .hero-wrapper .hero.manual  > div:last-child {
-    background-color: #ffffff;
+
 }
 
 .hero-wrapper .hero.manual > div:last-child h2 {
     line-height: 69px;
     margin: 0;
-    padding-inline: 0.5rem;
+    padding-inline: 0;
 }
 
 
@@ -79,7 +81,7 @@ main .hero img {
 }
 
 .hero-wrapper .hero  > div:last-child {
-    background-color: #FFFFFF;
+  
 }
 
 .hero-wrapper .hero > div:last-child h2 {
