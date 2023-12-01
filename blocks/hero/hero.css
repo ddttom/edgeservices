@@ -38,17 +38,51 @@ main .hero img {
     height: 100%;
 }
 
-.hero-wrapper .hero {
+.hero-wrapper .hero.centred  {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.hero-wrapper .hero .centred > div:last-child {
+.hero-wrapper .hero.centred  > div:last-child {
     background-color: #5AEFEE;
 }
 
-.hero-wrapper .hero .centred > div:last-child h2 {
+.hero-wrapper .hero.centred > div:last-child h2 {
+    line-height: 69px;
+    margin: 0;
+    padding-inline: 0.5rem;
+}
+
+
+.hero-wrapper .hero.manual  {
+    display: flex;
+    justify-content: center;
+
+}
+
+.hero-wrapper .hero.manual  > div:last-child {
+    background-color: #ffffff;
+}
+
+.hero-wrapper .hero.manual > div:last-child h2 {
+    line-height: 69px;
+    margin: 0;
+    padding-inline: 0.5rem;
+}
+
+
+.hero-wrapper .hero  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-wrapper .hero  > div:last-child {
+    background-color: #FFFFFF;
+}
+
+.hero-wrapper .hero > div:last-child h2 {
     line-height: 69px;
     margin: 0;
     padding-inline: 0.5rem;
