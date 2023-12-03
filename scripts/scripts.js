@@ -72,6 +72,13 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+
+  const path = window.location.pathname;
+
+  if (path.includes('webasto')) {
+    // Add a specific class to the body or any other element
+    document.body.classList.add('webasto');
+  }
 }
 
 /**
