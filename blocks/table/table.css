@@ -46,16 +46,24 @@
   }
   
   /* bordered variant */
-  .table.bordered table th, .table.bordered table td {
+  /* Apply borders only to cells in tables with 'bordered' class */
+.table.bordered table th,
+.table.bordered table td {
     border: 1px solid;
-  }
+}
+/* Specific cell bordering with 'bordered' class */
+.table.bordered table th.bordered,
+.table.bordered table td.bordered {
+    border: 1px solid;
+}
 
   
-  .table-wrapper.highlighted .table thead th {
-    background-color: grey; /* Adjust the color as needed */
-    color: white; /* Optional: change the text color for better contrast */
+ /* Highlighted variant */
+.table-wrapper .table.highlighted thead th {
+  background-color: grey; /* Grey background only for highlighted tables */
+  color: white;
 }
-.table-wrapper .table tbody tr td:nth-child(2) {
+.table-wrapper .table.blue2 tbody tr td:nth-child(2) {
   background-color: lightblue; /* Adjust the color as needed */
 }
 
