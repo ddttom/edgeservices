@@ -5,3 +5,11 @@ LICENSE
 package.json
 package-lock.json
 test/*
+.hlx/*
+coverage/*
+logs/*
+node_modules/*
+
+helix-importer-ui
+.DS_Store
+*.bak

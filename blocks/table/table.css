@@ -51,7 +51,7 @@
   }
 
   
-  .table-wrapper .table thead th {
+  .table-wrapper.highlighted .table thead th {
     background-color: grey; /* Adjust the color as needed */
     color: white; /* Optional: change the text color for better contrast */
 }
