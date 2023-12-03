@@ -18,6 +18,7 @@
   --overlay-background-color: #eee;
   --highlight-background-color: #ccc;
   --text-color: #000;
+  --brand-highlight-color: lightblue;
   
 
   /* fonts */
@@ -74,8 +75,8 @@ body {
   padding: 10px;
   margin:20px
 }
-body.Webasto h2 {
-  background-color: lightblue;  /* Sets the background color to light blue */
+body.webasto h1 h2 h3 h4 h5 h6{
+  background-color: var(--brand-highlight-color);  /* Sets the background color  */
   width: 100%;                  /* Sets the width of the h2 block to full width of its container */
   outline: 2px solid black;     /* Sets a 2px solid black outline */
   outline-offset: 2px;          /* Optional: Adds space between the outline and the element */
