@@ -78,8 +78,6 @@ export function decorateMain(main) {
   if (path.includes('webasto')) {
     // Add a specific class to the body or any other element
     document.body.classList.add('webasto');
-    const webastoelements = document.querySelectorAll('.webasto');
-    if (webastoelements.length > 0) document.body.classList.add('.webasto');
   }
 }
 
