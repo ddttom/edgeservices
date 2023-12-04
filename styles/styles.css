@@ -75,7 +75,7 @@ body {
   padding: 10px;
   margin:20px
 }
-body.webasto h1, h2, h3, h4, h5, h6{
+body.webasto h1, body.webasto h2, body.webasto h3, body.webasto h4, body.webasto h5, body.webasto h6{
   background-color: var(--brand-highlight-color);  /* Sets the background color  */
   outline: 2px solid black;     /* Sets a 2px solid black outline */
   outline-offset: 2px;          /* Optional: Adds space between the outline and the element */
