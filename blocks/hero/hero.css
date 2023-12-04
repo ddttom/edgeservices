@@ -1,5 +1,6 @@
-/* block specific CSS goes here */
+/* Block specific CSS */
 
+/* Hero container styles */
 main .hero-container > div {
     max-width: unset;
 }
@@ -8,19 +9,18 @@ main .hero-container {
     padding: 0;
 }
 
+/* General hero styles */
 main .hero {
     position: relative;
     padding: 32px;
     min-height: 1000px;
+    display: flex;
+    justify-content: flex-start; /* Align items to the start horizontally */
+    align-items: center; /* Center items vertically */
+    text-align: left; /* Align text to the left */
 }
 
-main .hero h1 {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    color: white;
-}
-
+/* Hero picture styles */
 main .hero picture {
     position: absolute;
     z-index: -1;
@@ -32,40 +32,21 @@ main .hero picture {
     box-sizing: border-box;
 }
 
+/* Hero image styles */
 main .hero img {
     object-fit: cover;
     width: 100%;
     height: 100%;
 }
 
-.hero-wrapper .hero.centred  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+/* Styles for .hero.manual */
+.hero-wrapper .hero.manual {
+    color: white; /* Text color */
+    padding-top: 100px; /* Top padding */
+    /* Additional styles for .hero.Manual */
 }
 
-.hero-wrapper .hero.centred  > div:last-child {
-    background-color: #5AEFEE;
-}
-
-.hero-wrapper .hero.centred > div:last-child h2 {
-    line-height: 69px;
-    margin: 0;
-    padding-inline: 0.5rem;
-}
-
-
-.hero-wrapper .hero.manual  {
-    display: flex;
-    justify-content: center;
-    align-items: normal;
-    
-
-}
-
-.hero-wrapper .hero.manual  > div:last-child {
-
-}
 
 .hero-wrapper .hero.manual > div:last-child h2 {
     line-height: 69px;
@@ -73,16 +54,13 @@ main .hero img {
     padding-inline: 0;
 }
 
-
-.hero-wrapper .hero  {
+/* Additional general hero styles */
+.hero-wrapper .hero {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.hero-wrapper .hero  > div:last-child {
-  
-}
 
 .hero-wrapper .hero > div:last-child h2 {
     line-height: 69px;
