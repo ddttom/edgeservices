@@ -35,20 +35,6 @@
     background: #ffffff;
 }
 
-
-.centreblock-wrapper .centreblock > div{
-    text-align: center;
-    margin: 100px 0;
-}
-
-.centreblock-wrapper .centreblock > div h3 {
-    background-color: #5AEFEE;
-    display: inline-block;
-    font-size: 28px;
-    font-weight: 700;
-    padding: 0.5rem;
-}
-
 .panel2-wrapper {
 }
 
