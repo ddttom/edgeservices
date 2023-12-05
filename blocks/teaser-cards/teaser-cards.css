@@ -231,3 +231,98 @@
     }
   }
   
+/***************************************************************
+* tab like columns
+***************************************************************/
+.columns.tabs>div {
+  flex-direction: unset;
+  border-bottom: 1px solid var(--highlight-background-color);
+  gap: 32px;
+  margin: 40px 0;
+  align-items: flex-end;
+  overflow: auto;
+}
+
+.columns.tabs .button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
+  position: relative;
+}
+
+.columns.tabs a,
+.columns.tabs a>code {
+  margin: auto 0;
+  padding: 0 0 15px;
+  border: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: var(--text-color);
+  font-family: var(--ff-myradpro-semibold);
+  letter-spacing: var(--letter-spacing-8);
+  min-width: 100px;
+}
+
+.columns.tabs a {
+  border-bottom: 4px solid var(--clr-white);
+}
+
+.columns.tabs a>code {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-bottom: 4px solid var(--clr-blue);
+}
+
+.columns.tabs a:hover {
+  padding-bottom: 15px;
+  border-bottom: 4px solid var(--clr-blue);
+  text-decoration: none;
+  color: var(--text-color);
+  background: none;
+}
+
+body.orange main .columns.tabs a>code,
+body.orange main .columns.tabs a:hover{
+  border-bottom-color: var(--clr-orange);
+}
+
+body.green main .columns.tabs a>code,
+body.green main .columns.tabs a:hover{
+  border-bottom-color:  var(--clr-green);
+}
+
+body.purple main .columns.tabs a>code,
+body.purple main .columns.tabs a:hover{
+  border-bottom-color: var(--clr-purple);
+}
+
+@media screen and (min-width: 768px) {
+  .columns>div>div {
+    flex: 1;
+    order: unset;
+  }
+  
+  .columns.application-zemax > div{
+    flex-direction: inherit;
+    gap: 32px;
+  }
+
+
+  .columns.application-zemax h4{
+    margin: inherit;
+    }
+}
+
+@media screen and (min-width: 1030px) {
+  .columns>div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 32px;
+  }
+
+
+}
