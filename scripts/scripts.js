@@ -26,7 +26,9 @@ function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    section.append(buildBlock('hero', {
+      elems: [picture, h1]
+    }));
     main.prepend(section);
   }
 }
@@ -73,14 +75,91 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
 
+  // START *THC*
   const path = window.location.pathname;
 
   if (path.includes('webasto')) {
-    // Add a specific class to the body or any other element
     document.body.classList.add('webasto');
   }
 }
+const tabElementMap = {};
 
+function calculateTabSectionCoordinate(main, lastTabBeginningIndex, targetTabSourceSection) {
+  if (!tabElementMap[lastTabBeginningIndex]) {
+    tabElementMap[lastTabBeginningIndex] = [];
+  }
+  tabElementMap[lastTabBeginningIndex].push(targetTabSourceSection);
+}
+
+function calculateTabSectionCoordinates(main) {
+  let lastTabIndex = -1;
+  let foldedTabsCounter = 0;
+  const mainSections = [...main.childNodes];
+  main
+    .querySelectorAll('div.section[data-tab-title]')
+    .forEach((section) => {
+      const currentSectionIndex = mainSections.indexOf(section);
+
+      if (lastTabIndex < 0 || (currentSectionIndex - foldedTabsCounter) !== lastTabIndex) {
+        // we construct a new tabs component, at the currentSectionIndex
+        lastTabIndex = currentSectionIndex;
+        foldedTabsCounter = 0;
+      }
+
+      foldedTabsCounter += 2;
+      calculateTabSectionCoordinate(main, lastTabIndex, section);
+    });
+}
+
+async function autoBlockTabComponent(main, targetIndex, tabSections) {
+  // the display none will prevent a major CLS penalty.
+  // franklin will remove this once the blocks are loaded.
+  const section = document.createElement('div');
+  section.setAttribute('class', 'section');
+  section.setAttribute('style', 'display:none');
+  section.dataset.sectionStatus = 'loading';
+  const tabsBlock = document.createElement('div');
+  tabsBlock.setAttribute('class', 'tabs');
+
+  const tabContentsWrapper = document.createElement('div');
+  tabContentsWrapper.setAttribute('class', 'contents-wrapper');
+
+  tabsBlock.appendChild(tabContentsWrapper);
+
+  tabSections.forEach((tabSection) => {
+    tabSection.classList.remove('section');
+    tabSection.classList.add('contents');
+    // remove display: none
+    tabContentsWrapper.appendChild(tabSection);
+    tabSection.style.display = null;
+  });
+  main.insertBefore(section, main.childNodes[targetIndex]);
+  section.append(tabsBlock);
+  decorateBlock(tabsBlock);
+  await loadBlock(tabsBlock);
+
+  // eslint-disable-next-line max-len
+  // unset display none manually. somehow in some race conditions it won't be picked up by lib-franklin.
+  // CLS is not affected
+  section.style.display = null;
+}
+
+function aggregateTabSectionsIntoComponents(main) {
+  calculateTabSectionCoordinates(main);
+
+  // when we aggregate tab sections into a tab autoblock, the index get's lower.
+  // say we have 3 tabs starting at index 10, 12 and 14. and then 3 tabs at 18, 20 and 22.
+  // when we fold the first 3 into 1, those will start at index 10. But the other 3 should now
+  // start at 6 instead of 18 because 'removed' 2 sections.
+  let sectionIndexDelta = 0;
+  Object.keys(tabElementMap).map(async (tabComponentIndex) => {
+    const tabSections = tabElementMap[tabComponentIndex];
+    await autoBlockTabComponent(main, tabComponentIndex - sectionIndexDelta, tabSections);
+    sectionIndexDelta = tabSections.length - 1;
+  });
+}
+
+// END *THC*
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
@@ -113,7 +192,9 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadBlocks(main);
 
-  const { hash } = window.location;
+  const {
+    hash
+  } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
@@ -191,17 +272,19 @@ function isExternalImage(element, externalImageMarker) {
 }
 
 /*
-  * Appends query params to a URL
-  * @param {string} url The URL to append query params to
-  * @param {object} params The query params to append
-  * @returns {string} The URL with query params appended
-  * @private
-  * @example
-  * appendQueryParams('https://example.com', { foo: 'bar' });
-  * // returns 'https://example.com?foo=bar'
-*/
+ * Appends query params to a URL
+ * @param {string} url The URL to append query params to
+ * @param {object} params The query params to append
+ * @returns {string} The URL with query params appended
+ * @private
+ * @example
+ * appendQueryParams('https://example.com', { foo: 'bar' });
+ * // returns 'https://example.com?foo=bar'
+ */
 function appendQueryParams(url, params) {
-  const { searchParams } = url;
+  const {
+    searchParams
+  } = url;
   params.forEach((value, key) => {
     searchParams.set(key, value);
   });
@@ -219,7 +302,12 @@ function appendQueryParams(url, params) {
  * @returns {Element} The picture element
  *
  */
-export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{
+  media: '(min-width: 600px)',
+  width: '2000'
+}, {
+  width: '750'
+}]) {
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
   // Fallback to createOptimizedPicture if src is not an absolute URL
@@ -227,7 +315,9 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 
   const url = new URL(src);
   const picture = document.createElement('picture');
-  const { pathname } = url;
+  const {
+    pathname
+  } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
   // webp
@@ -235,14 +325,20 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     const source = document.createElement('source');
     if (br.media) source.setAttribute('media', br.media);
     source.setAttribute('type', 'image/webp');
-    const searchParams = new URLSearchParams({ width: br.width, format: 'webply' });
+    const searchParams = new URLSearchParams({
+      width: br.width,
+      format: 'webply'
+    });
     source.setAttribute('srcset', appendQueryParams(url, searchParams));
     picture.appendChild(source);
   });
 
   // fallback
   breakpoints.forEach((br, i) => {
-    const searchParams = new URLSearchParams({ width: br.width, format: ext });
+    const searchParams = new URLSearchParams({
+      width: br.width,
+      format: ext
+    });
 
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
@@ -262,13 +358,13 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 }
 
 /*
-  * Decorates external images with a picture element
-  * @param {Element} ele The element
-  * @param {string} deliveryMarker The marker for external images
-  * @private
-  * @example
-  * decorateExternalImages(main, '//External Image//');
-  */
+ * Decorates external images with a picture element
+ * @param {Element} ele The element
+ * @param {string} deliveryMarker The marker for external images
+ * @private
+ * @example
+ * decorateExternalImages(main, '//External Image//');
+ */
 function decorateExternalImages(ele, deliveryMarker) {
   const extImages = ele.querySelectorAll('a');
   extImages.forEach((extImage) => {
@@ -278,7 +374,9 @@ function decorateExternalImages(ele, deliveryMarker) {
 
       /* copy query params from link to img */
       const extImageUrl = new URL(extImageSrc);
-      const { searchParams } = extImageUrl;
+      const {
+        searchParams
+      } = extImageUrl;
       extPicture.querySelectorAll('source, img').forEach((child) => {
         if (child.tagName === 'SOURCE') {
           const srcset = child.getAttribute('srcset');
