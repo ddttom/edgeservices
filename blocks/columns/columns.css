@@ -1,116 +1,67 @@
-/* Adds padding to the 'columns highlighted' div */
+/* Styles for .columns.highlighted remain unchanged */
 .columns.highlighted {
   padding: 10px; /* Adds 10px padding around the entire set of columns */
 }
 
-
-.columns > div {
-  display: flex;
-  flex-direction: column;
-}
-
-.columns img {
-  width: 100%;
-}
-
-.columns > div > div {
-  order: 1;
-}
-
-.columns > div > .columns-img-col {
-  order: 0;
-}
-
-.columns > div > .columns-img-col img {
-  display: block;
-}
-
-@media (min-width: 900px) {
-  .columns > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 32px;
-  }
-
-  .columns > div > div {
-    flex: 1;
-    order: unset;
-
-  }
-}
-
-
-/* Center text in every div within the 'columns highlighted' class */
 .columns.highlighted div {
   text-align: center; /* Centers the text */
 }
 
-
-/* Outline for each cell within the highlighted class */
 .columns.highlighted > div > div {
   border: 1px solid black; /* Adds a black border around each cell */
   min-height: 200px; /* Sets minimum height for all cells */
   padding: 10px;
 }
 
-
-
-/* Background color, different minimum height, and centering content for the first row across all columns within the highlighted class */
 .columns.highlighted > div:nth-child(1) > div {
-  background-color: #f0f0f0; /* Change the color as desired */
-  min-height: 100px; /* Set a different minimum height for the first row */
-  display: flex; /* Enables flexbox for centering */
-  align-items: center; /* Vertically centers content */
-  justify-content: center; /* Horizontally centers content */
-  text-align: center; /* Ensures text is centered if it's not flex items */
+  background-color: #f0f0f0; /* Background color for first row */
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   padding: 0px;
 }
 
+/* Adjusted styles for .columns.centred */
 .columns.centred {
+  font-size: 22px;
   margin: 50px 0;
 }
 
 .columns.centred > div {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 32px;
 }
 
 .columns.centred img {
   width: 100%;
-}
-
-.columns.centred {
-  font-size: 22px;
-  margin: 0 0 20px;
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 120px;
 }
 
 .columns.centred > div > div {
   order: 1;
   font-size: 16px;
   font-weight: 600;
+  flex: 1;
 }
 
-.columns.centred > div > .columns.centred-img-col {
+.columns.centred > div > .columns-img-col {
   order: 0;
-}
-
-.columns.centred > div > .columns.centred-img-col img {
-  display: block;
-  margin: 0 auto 20px;
-  max-width: 120px;
-
 }
 
 @media (min-width: 900px) {
   .columns.centred > div {
-    align-items: center;
-    flex-direction: unset;
+    flex-direction: row;
     text-align: center;
-    gap: 32px;
   }
 
   .columns.centred > div > div {
-    flex: 1;
     order: unset;
   }
 }
+
