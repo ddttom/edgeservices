@@ -12,6 +12,8 @@ import {
   loadBlocks,
   createOptimizedPicture as libCreateOptimizedPicture,
   loadCSS,
+  decorateBlock,
+  loadBlock, updateSectionsStatus,
 } from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -64,6 +66,8 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
+  // eslint-disable-next-line no-use-before-define
+  aggregateTabSectionsIntoComponents(main);
   // eslint-disable-next-line no-use-before-define
   decorateExternalImages(main, '//External Image//');
   // eslint-disable-next-line no-use-before-define
