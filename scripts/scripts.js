@@ -29,7 +29,7 @@ function buildHeroBlock(main) {
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', {
-      elems: [picture, h1]
+      elems: [picture, h1],
     }));
     main.prepend(section);
   }
@@ -198,7 +198,7 @@ async function loadLazy(doc) {
   await loadBlocks(main);
 
   const {
-    hash
+    hash,
   } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
@@ -288,7 +288,7 @@ function isExternalImage(element, externalImageMarker) {
  */
 function appendQueryParams(url, params) {
   const {
-    searchParams
+    searchParams,
   } = url;
   params.forEach((value, key) => {
     searchParams.set(key, value);
@@ -309,9 +309,9 @@ function appendQueryParams(url, params) {
  */
 export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{
   media: '(min-width: 600px)',
-  width: '2000'
+  width: '2000',
 }, {
-  width: '750'
+  width: '750',
 }]) {
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
@@ -321,7 +321,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   const url = new URL(src);
   const picture = document.createElement('picture');
   const {
-    pathname
+    pathname,
   } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
@@ -332,7 +332,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     source.setAttribute('type', 'image/webp');
     const searchParams = new URLSearchParams({
       width: br.width,
-      format: 'webply'
+      format: 'webply',
     });
     source.setAttribute('srcset', appendQueryParams(url, searchParams));
     picture.appendChild(source);
@@ -342,7 +342,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   breakpoints.forEach((br, i) => {
     const searchParams = new URLSearchParams({
       width: br.width,
-      format: ext
+      format: ext,
     });
 
     if (i < breakpoints.length - 1) {
@@ -380,7 +380,7 @@ function decorateExternalImages(ele, deliveryMarker) {
       /* copy query params from link to img */
       const extImageUrl = new URL(extImageSrc);
       const {
-        searchParams
+        searchParams,
       } = extImageUrl;
       extPicture.querySelectorAll('source, img').forEach((child) => {
         if (child.tagName === 'SOURCE') {
