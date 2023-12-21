@@ -1,67 +1,33 @@
-/* Styles for .columns.highlighted remain unchanged */
-.columns.highlighted {
-  padding: 10px; /* Adds 10px padding around the entire set of columns */
-}
-
-.columns.highlighted div {
-  text-align: center; /* Centers the text */
-}
-
-.columns.highlighted > div > div {
-  border: 1px solid black; /* Adds a black border around each cell */
-  min-height: 200px; /* Sets minimum height for all cells */
-  padding: 10px;
-}
-
-.columns.highlighted > div:nth-child(1) > div {
-  background-color: #f0f0f0; /* Background color for first row */
-  min-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0px;
-}
-
-/* Adjusted styles for .columns.centred */
-.columns.centred {
-  font-size: 22px;
-  margin: 50px 0;
-}
-
-.columns.centred > div {
+.columns > div {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 32px;
 }
 
-.columns.centred img {
+.columns img {
   width: 100%;
-  display: block;
-  margin: 0 auto 20px;
-  max-width: 120px;
 }
 
-.columns.centred > div > div {
+.columns > div > div {
   order: 1;
-  font-size: 16px;
-  font-weight: 600;
-  flex: 1;
 }
 
-.columns.centred > div > .columns-img-col {
+.columns > div > .columns-img-col {
   order: 0;
 }
 
-@media (min-width: 900px) {
-  .columns.centred > div {
-    flex-direction: row;
-    text-align: center;
+.columns > div > .columns-img-col img {
+  display: block;
+}
+
+@media (width >= 900px) {
+  .columns > div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 32px;
   }
 
-  .columns.centred > div > div {
+  .columns > div > div {
+    flex: 1;
     order: unset;
   }
 }
-
