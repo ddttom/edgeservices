@@ -229,12 +229,7 @@ function appendQueryParams(url, params) {
  * @returns {Element} The picture element
  *
  */
-export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{
-  media: '(min-width: 600px)',
-  width: '2000',
-}, {
-  width: '750',
-}]) {
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
   // Fallback to createOptimizedPicture if src is not an absolute URL
@@ -242,9 +237,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 
   const url = new URL(src);
   const picture = document.createElement('picture');
-  const {
-    pathname,
-  } = url;
+  const { pathname } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
   // webp
@@ -252,20 +245,14 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     const source = document.createElement('source');
     if (br.media) source.setAttribute('media', br.media);
     source.setAttribute('type', 'image/webp');
-    const searchParams = new URLSearchParams({
-      width: br.width,
-      format: 'webply',
-    });
+    const searchParams = new URLSearchParams({ width: br.width, format: 'webply' });
     source.setAttribute('srcset', appendQueryParams(url, searchParams));
     picture.appendChild(source);
   });
 
   // fallback
   breakpoints.forEach((br, i) => {
-    const searchParams = new URLSearchParams({
-      width: br.width,
-      format: ext,
-    });
+    const searchParams = new URLSearchParams({ width: br.width, format: ext });
 
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
