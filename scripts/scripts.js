@@ -84,6 +84,9 @@ export function decorateMain(main) {
   if (path.includes('webasto')) {
     document.body.classList.add('webasto');
   }
+  if (path.includes('techem')) {
+    document.body.classList.add('techem');
+  }
 }
 
 // END *THC*
