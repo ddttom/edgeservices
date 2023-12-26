@@ -7,10 +7,17 @@
         {
             "id": "library",
             "title": "Library",
-            "environments": ["x-edit"],
+            "environments": ["edit"],
             "url": "/tools/sidekick/library.html",
             "includePaths": ["**.docx**"]
     },
+    {
+      "id": "library2",
+      "title": "Library2",
+      "environments": ["edit"],
+      "url": "/tools/sidekick/library2.html",
+      "includePaths": ["**.docx**"]
+},
         {
             "id": "asset-library",
             "title": "My Assets",
