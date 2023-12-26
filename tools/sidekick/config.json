@@ -7,13 +7,13 @@
         {
             "id": "library",
             "title": "Library",
-            "environments": ["edit"],
+            "environments": ["x-edit"],
             "url": "/tools/sidekick/library.html",
             "includePaths": ["**.docx**"]
     },
     {
-      "id": "library2",
-      "title": "Library2",
+      "id": "library",
+      "title": "Library",
       "environments": ["edit"],
       "url": "/tools/sidekick/library2.html",
       "includePaths": ["**.docx**"]
