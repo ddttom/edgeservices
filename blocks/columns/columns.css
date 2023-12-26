@@ -31,3 +31,12 @@
     order: unset;
   }
 }
+
+columns.techeche.img {
+  position: relative;
+  max-width: 102%;
+  margin-bottom: -16%;
+  margin-left: -2%;
+  border-radius: 40px 0 40px 0;
+  z-index: 9;
+}
