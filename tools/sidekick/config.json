@@ -8,14 +8,14 @@
             "id": "library",
             "title": "Library",
             "environments": ["x-edit"],
-            "url": "/tools/sidekick/library.html",
+            "url": "/tools/sidekick/library2.html",
             "includePaths": ["**.docx**"]
     },
     {
       "id": "library2",
       "title": "Library",
       "environments": ["edit"],
-      "url": "/tools/sidekick/library.html",
+      "url": "/tools/sidekick/library2.html",
       "includePaths": ["**.docx**"]
 },
         {
