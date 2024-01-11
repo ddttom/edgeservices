@@ -66,7 +66,6 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
- 
   // eslint-disable-next-line no-use-before-define
   decorateExternalImages(main, '//External Image//');
   // eslint-disable-next-line no-use-before-define
@@ -128,7 +127,7 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  if(!window.hlx.suppressFrame) {
+  if (!window.hlx.suppressFrame) {
     loadHeader(doc.querySelector('header'));
     loadFooter(doc.querySelector('footer'));
   }
@@ -153,7 +152,7 @@ function loadDelayed() {
 
 async function loadPage() {
   const urlParams = new URLSearchParams(window.location.search);
-  if(urlParams.get('suppressFrame')) {
+  if (urlParams.get('suppressFrame')) {
     window.hlx.suppressFrame = true;
     document.body.querySelector('header').remove();
     document.body.querySelector('footer').remove();
