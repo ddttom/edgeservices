@@ -5,3 +5,7 @@
 .sorana.highlight{
     color: blue;
 }
+
+.sorana.embolden{
+    font-weight: 500;
+}
