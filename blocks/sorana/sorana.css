@@ -1,3 +1,7 @@
 .sorana{
     color: pink;
 }
+
+.sorana.blue{
+    color: blue;
+}
