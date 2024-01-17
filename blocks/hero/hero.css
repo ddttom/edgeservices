@@ -62,10 +62,17 @@ body.techem hero-wrapper a {
 }
 
 /* Additional general hero styles */
+.section .hero-wrapper {
+    max-width: 120rem;
+    margin-top: 5rem;
+    margin-inline: auto;
+}
 .hero-wrapper .hero {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 32.5rem;
+    min-height: auto;
 }
 
 
