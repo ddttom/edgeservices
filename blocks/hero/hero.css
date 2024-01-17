@@ -78,3 +78,18 @@ body.techem hero-wrapper a {
 .hero.embolden{
     font-weight: bolder;
 }
+
+.hero.techem {
+    text-align: center;
+}
+
+.hero.techem > div > div {
+    max-width: 77pc;
+    margin-inline: auto;
+}
+
+.hero.techem h3 {
+    font-size: 3rem;
+    line-height: 4rem;
+    margin-bottom: 0;
+}
