@@ -23,6 +23,7 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
+
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
@@ -53,6 +54,14 @@ async function loadFonts() {
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
+  try {
+    // eslint-disable-next-line no-use-before-define
+    removeCommentBlocks(main);
+  } catch (error) {
+  // eslint-disable-next-line no-console
+    console.error('remove comments failed', error);
+  }
+
   try {
     buildHeroBlock(main);
   } catch (error) {
@@ -86,6 +95,16 @@ export function decorateMain(main) {
   }
   if (path.includes('techem')) {
     document.body.classList.add('techem');
+  }
+}
+
+function removeCommentBlocks(main) {
+  const sections = main.querySelectorAll('section');
+  for (let i = 0; i < sections.length; i += 1) {
+    const section = sections[i];
+    if (section.classList.contains('comment')) {
+      section.remove();
+    }
   }
 }
 
