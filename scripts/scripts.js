@@ -99,7 +99,8 @@ export function decorateMain(main) {
 }
 
 function removeCommentBlocks(main) {
-  const sections = main.querySelectorAll('section');
+  // <div class="section-metadata comment">
+  const sections = main.querySelectorAll('section-metadata');
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
     if (section.classList.contains('comment')) {
