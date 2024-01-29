@@ -99,13 +99,10 @@ export function decorateMain(main) {
 }
 
 function removeCommentBlocks(main) {
-  const sections = main.querySelectorAll('div.section-metadata');
-for (let i = 0; i < sections.length; i++) {
-    const section = sections[i];
-    if (section.classList.contains('comment')) {
-        section.remove();
-    }
-}
+  const sections = document.querySelectorAll('div.section-metadata.comment');
+  sections.forEach(section => {
+      section.remove();
+  });
 
 
 // END *THC*
