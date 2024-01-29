@@ -100,10 +100,10 @@ export function decorateMain(main) {
 
 function removeCommentBlocks(main) {
   const sections = document.querySelectorAll('div.section-metadata.comment');
-  sections.forEach(section => {
-      section.remove();
+  sections.forEach((section) => {
+    section.remove();
   });
-
+}
 
 // END *THC*
 /**
