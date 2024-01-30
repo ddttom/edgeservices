@@ -61,7 +61,14 @@ function buildAutoBlocks(main) {
   // eslint-disable-next-line no-console
     console.error('remove comments failed', error);
   }
-
+  // eslint-disable-next-line no-use-before-define
+  try {
+    // eslint-disable-next-line no-use-before-define
+    findMetadataBlock(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('find metadata block failed', error);
+  }
   try {
     buildHeroBlock(main);
   } catch (error) {
@@ -95,6 +102,18 @@ export function decorateMain(main) {
   }
   if (path.includes('techem')) {
     document.body.classList.add('techem');
+  }
+}
+function findMetadataBlock(main) {
+  // Find the meta element with the name attribute "json-ld"
+  const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
+  // To check if the element was found and print its content attribute
+  if (jsonLdMetaElement) {
+    // eslint-disable-next-line no-console
+    console.log(jsonLdMetaElement.getAttribute('content'));
+  } else {
+    // eslint-disable-next-line no-console
+    console.log('Meta element with name="json-ld" not found.');
   }
 }
 
