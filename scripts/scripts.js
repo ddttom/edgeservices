@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   sampleRUM,
   buildBlock,
@@ -104,16 +105,26 @@ export function decorateMain(main) {
     document.body.classList.add('techem');
   }
 }
-function findMetadataBlock(main) {
+async function findMetadataBlock(main) {
   // Find the meta element with the name attribute "json-ld"
   const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
   // To check if the element was found and print its content attribute
   if (jsonLdMetaElement) {
+    const content = jsonLdMetaElement.getAttribute('content');
     // eslint-disable-next-line no-console
-    console.log(jsonLdMetaElement.getAttribute('content'));
-  } else {
+    console.log(content);
+    jsonLdMetaElement.remove();
+
+    const { pathname } = new URL(content);
+    const resp = await fetch(pathname);
+    const json = await resp.json();
+    const js = document.createElement('script');
+
+    // eslint-disable-next-line prefer-destructuring
+    js.dataset.action = pathname.split('.json')[0];
     // eslint-disable-next-line no-console
-    console.log('Meta element with name="json-ld" not found.');
+    console.log(js.dataset.action);
+    js.append(JSON.stringify(json));
   }
 }
 
