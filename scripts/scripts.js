@@ -17,7 +17,7 @@ import {
   loadBlock, updateSectionsStatus,
 } from './aem.js';
 
-const setDelayed = true; // do or not do final build.
+const setDelayed = false; // do or not do final load.
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 /**
