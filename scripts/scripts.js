@@ -105,27 +105,49 @@ export function decorateMain(main) {
     document.body.classList.add('techem');
   }
 }
+
+function extractJsonLd(jsonInput) {
+  const parsedJson = JSON.parse(jsonInput);
+
+  const jsonLd = {
+    // eslint-disable-next-line quotes
+    "@context": "https://schema.org",
+    // eslint-disable-next-line quotes
+    "@type": "Organization",
+  };
+
+  parsedJson.data.forEach((item) => {
+    const key = Object.keys(item)[1]; // Assuming the second key is the property key
+    let value = item[key];
+
+    // Remove the leading and trailing quotes
+    if (typeof value === 'string') {
+      // eslint-disable-next-line no-useless-escape
+      value = value.replace(/^\"|\"$/g, '');
+    }
+
+    // eslint-disable-next-line quotes
+    jsonLd[item["@context"]] = value;
+  });
+
+  return jsonLd;
+}
 async function findMetadataBlock(main) {
   // Find the meta element with the name attribute "json-ld"
   const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
   // To check if the element was found and print its content attribute
+  let content = 'web-owner';
   if (jsonLdMetaElement) {
-    const content = jsonLdMetaElement.getAttribute('content');
-    // eslint-disable-next-line no-console
-    console.log(content);
+    content = jsonLdMetaElement.getAttribute('content');
     jsonLdMetaElement.remove();
-
-    const { pathname } = new URL(content);
-    const resp = await fetch(pathname);
-    const json = await resp.json();
-    const js = document.createElement('script');
-
-    // eslint-disable-next-line prefer-destructuring
-    js.dataset.action = pathname.split('.json')[0];
-    // eslint-disable-next-line no-console
-    console.log(js.dataset.action);
-    js.append(JSON.stringify(json));
   }
+
+  const { pathname } = new URL(content);
+  const resp = await fetch(pathname);
+  let json = await resp.json();
+  json = extractJsonLd(json);
+  const js = document.createElement('script');
+  js.append(JSON.stringify(json));
 }
 
 function removeCommentBlocks(main) {
