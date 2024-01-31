@@ -65,7 +65,7 @@ function buildAutoBlocks(main) {
   // eslint-disable-next-line no-use-before-define
   try {
     // eslint-disable-next-line no-use-before-define
-    findMetadataBlock(main);
+    findMetadataJsonLdBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('find metadata block failed', error);
@@ -130,7 +130,7 @@ function extractJsonLd(parsedJson) {
 
   return jsonLd;
 }
-async function findMetadataBlock(main) {
+async function findMetadataJsonLdBlock(main) {
   // Find the meta element with the name attribute "json-ld"
   const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
   let content = 'web-owner';
@@ -143,8 +143,10 @@ async function findMetadataBlock(main) {
   const resp = await fetch(pathname);
   let json = await resp.json();
   json = extractJsonLd(json);
-  const js = document.createElement('script');
-  js.append(JSON.stringify(json));
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(json);
+  document.head.appendChild(script);
 }
 
 function removeCommentBlocks(main) {
