@@ -106,9 +106,7 @@ export function decorateMain(main) {
   }
 }
 
-function extractJsonLd(jsonInput) {
-  const parsedJson = JSON.parse(jsonInput);
-
+function extractJsonLd(parsedJson) {
   const jsonLd = {
     // eslint-disable-next-line quotes
     "@context": "https://schema.org",
@@ -135,7 +133,6 @@ function extractJsonLd(jsonInput) {
 async function findMetadataBlock(main) {
   // Find the meta element with the name attribute "json-ld"
   const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
-  // To check if the element was found and print its content attribute
   let content = 'web-owner';
   if (jsonLdMetaElement) {
     content = jsonLdMetaElement.getAttribute('content');
