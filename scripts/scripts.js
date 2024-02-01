@@ -65,7 +65,7 @@ function buildAutoBlocks(main) {
   // eslint-disable-next-line no-use-before-define
   try {
     // eslint-disable-next-line no-use-before-define
-    findMetadataJsonLdBlock(main);
+    // findMetadataJsonLdBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('find metadata block failed', error);
