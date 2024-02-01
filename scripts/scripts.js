@@ -133,7 +133,7 @@ function extractJsonLd(parsedJson) {
 async function findMetadataJsonLdBlock(main) {
   // does the doc contain metadata about json-ld
 
-  const metaFound = document.querySelector('');
+  const metaFound = document.querySelector('meta[name="json-ld"]');
   // Find the meta element with the name attribute "json-ld"
   const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
 
