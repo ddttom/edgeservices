@@ -131,14 +131,19 @@ function extractJsonLd(parsedJson) {
   return jsonLd;
 }
 async function findMetadataJsonLdBlock(main) {
+  // does the doc contain metadata about json-ld
+
+  const metaFound = document.querySelector('');
   // Find the meta element with the name attribute "json-ld"
   const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
-  let content = 'web-owner';
+
+  let content = 'owner';
   if (jsonLdMetaElement) {
     content = jsonLdMetaElement.getAttribute('content');
     jsonLdMetaElement.remove();
   }
-
+  // https://main--edgeservices--ddttom.hlx.live/json-ld/web-owner.json
+  const role = content.split('json-ld/')[1].split('.json')[0];
   const { pathname } = new URL(content);
   const resp = await fetch(pathname);
   let json = await resp.json();
@@ -146,6 +151,7 @@ async function findMetadataJsonLdBlock(main) {
   const script = document.createElement('script');
   script.type = 'application/ld+json';
   script.textContent = JSON.stringify(json);
+  script.setAttribute('data-role', role);
   document.head.appendChild(script);
 }
 
