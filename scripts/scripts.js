@@ -150,8 +150,10 @@ async function findMetadataJsonLdBlock(main) {
   json = extractJsonLd(json);
   const script = document.createElement('script');
   script.type = 'application/ld+json';
-  script.textContent = JSON.stringify(json);
   script.setAttribute('data-role', role);
+  script.textContent = JSON.stringify(json).replaceAll('ld@', '@');
+  // eslint-disable-next-line no-console
+  console.log(script);
   document.head.appendChild(script);
 }
 
