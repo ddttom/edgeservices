@@ -144,7 +144,7 @@ async function findMetadataJsonLdBlock(main) {
   }
   // https://main--edgeservices--ddttom.hlx.live/json-ld/web-owner.json
   const roleArray = content.split('/');
-  const role = (roleArray[roleArray.length - 1]).split('."')[0];
+  const role = (roleArray[roleArray.length - 1]).split('.')[0];
   const { pathname } = new URL(content);
   const resp = await fetch(pathname);
   let json = await resp.json();
