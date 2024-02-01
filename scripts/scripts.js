@@ -109,7 +109,7 @@ export function decorateMain(main) {
 function extractJsonLd(parsedJson) {
   const jsonLd = {
     // eslint-disable-next-line quotes
-    "@context": "https://schema.org",
+    "@context": "fred",
     // eslint-disable-next-line quotes
     "@type": "Organization",
   };
