@@ -130,34 +130,75 @@ function extractJsonLd(parsedJson) {
 
   return jsonLd;
 }
-async function findMetadataJsonLdBlock(main) {
-  // does the doc contain metadata about json-ld
 
-  const metaFound = document.querySelector('meta[name="json-ld"]');
-  // Find the meta element with the name attribute "json-ld"
-  const jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
-
-  let content = 'owner';
-  if (jsonLdMetaElement) {
-    content = jsonLdMetaElement.getAttribute('content');
-    jsonLdMetaElement.remove();
+function replacePlaceHolders(contentString) {
+  // Initialize ret with the contentString value
+  let ret = contentString;
+  const twitterImagePlaceholder = '$twitter:image';
+  // Placeholder for the current date
+  const datePlaceholder = '$date';
+  // Replace $twitter:image if it exists
+  if (ret.includes(twitterImagePlaceholder)) {
+    const metaElement = document.querySelector('meta[name="twitter:image"]');
+    const twitterImageContent = metaElement ? metaElement.getAttribute('content') : '';
+    ret = ret.replace(twitterImagePlaceholder, twitterImageContent);
   }
-  // https://main--edgeservices--ddttom.hlx.live/json-ld/web-owner.json
-  const roleArray = content.split('/');
-  const role = (roleArray[roleArray.length - 1]).split('.')[0];
-  const { pathname } = new URL(content);
-  const resp = await fetch(pathname);
-  let json = await resp.json();
-  json = extractJsonLd(json);
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
-  script.setAttribute('data-role', role);
-  script.textContent = JSON.stringify(json).replaceAll('ld@', '@');
-  // eslint-disable-next-line no-console
-  console.log(script);
-  document.head.appendChild(script);
+
+  // Replace $date with today's date if it exists
+  if (ret.includes(datePlaceholder)) {
+    const today = new Date();
+    // Format today's date as YYYY-MM-DD or any other preferred format
+    const dateString = today.toISOString().split('T')[0];
+    ret = ret.replace(datePlaceholder, dateString);
+  }
+  return ret;
 }
 
+async function findMetadataJsonLdBlock() {
+  // Check if a script of type application/ld+json is already present in the document
+  const existingJsonLdScript = document.querySelector('script[type="application/ld+json"]');
+  if (!existingJsonLdScript) {
+    let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
+    if (!jsonLdMetaElement) {
+      jsonLdMetaElement = document.createElement('meta');
+      jsonLdMetaElement.setAttribute('name', 'json-ld');
+      jsonLdMetaElement.setAttribute('content', 'owner'); // Default role
+      document.head.appendChild(jsonLdMetaElement);
+    }
+    const content = jsonLdMetaElement.getAttribute('content');
+    jsonLdMetaElement.remove();
+    // assume we have an url, if not we have a role -  construct url on the fly
+    let jsonDataUrl = content;
+    try {
+      // Attempt to parse the content as a URL
+      // eslint-disable-next-line no-new
+      new URL(content);
+    } catch (error) {
+      // Content is not a URL, construct the JSON-LD URL based on content and current domain
+      jsonDataUrl = `${window.location.origin}/json-ld/${content}.json`;
+    }
+    try {
+      const resp = await fetch(jsonDataUrl);
+      if (!resp.ok) {
+        throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
+      }
+      let json = await resp.json();
+      json = extractJsonLd(json);
+      let jsonString = JSON.stringify(json).replaceAll('ld@', '@');
+      jsonString = replacePlaceHolders(jsonString);
+      // Create and append a new script element with the processed JSON-LD data
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
+      script.textContent = jsonString;
+      document.head.appendChild(script);
+    } catch (error) {
+      // no schema.org for your content, just use the content as is
+      // eslint-disable-next-line no-console
+      console.error('Error processing JSON-LD metadata:', error);
+    }
+  }
+}
 function removeCommentBlocks(main) {
   const sections = document.querySelectorAll('div.section-metadata.comment');
   sections.forEach((section) => {
