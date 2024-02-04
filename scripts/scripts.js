@@ -114,12 +114,16 @@ export function decorateMain(main) {
         throw new Error(`Failed to fetch config: ${resp.status}`);
       }
       json = await resp.json();
+      json.data.forEach((item) => {
+        const key = (item.Item);
+        window.config[key] = item.Value;
+      });
     } catch (error) {
       alert(`Failed  ${error.message}`, '');
     }
-    return json;
   }
-  window.siteconfig = configure();
+  window.siteconfig = {};
+  configure();
 
   if (path.includes('webasto')) {
     document.body.classList.add('webasto');
