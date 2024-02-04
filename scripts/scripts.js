@@ -96,7 +96,30 @@ export function decorateMain(main) {
   decorateBlocks(main);
 
   // START *THC*
+  //
+  //
+  //
   const path = window.location.pathname;
+
+  function alert(message, error) {
+    // eslint-disable-next-line no-console
+    console.error(message, error);
+  }
+  async function configure() {
+    const jsonDataUrl = `${window.location.origin}/config/config.json`;
+    let json = null;
+    try {
+      const resp = await fetch(jsonDataUrl);
+      if (!resp.ok) {
+        throw new Error(`Failed to fetch config: ${resp.status}`);
+      }
+      json = await resp.json();
+    } catch (error) {
+      alert(`Failed  ${error.message}`, '');
+    }
+    return json;
+  }
+  window.siteconfig = configure();
 
   if (path.includes('webasto')) {
     document.body.classList.add('webasto');
@@ -109,7 +132,7 @@ export function decorateMain(main) {
 function extractJsonLd(parsedJson) {
   const jsonLd = {
     // eslint-disable-next-line quotes
-    "@context": "fred",
+    "@context": "https://schema.org",
     // eslint-disable-next-line quotes
     "@type": "Organization",
   };
@@ -134,22 +157,35 @@ function extractJsonLd(parsedJson) {
 function replacePlaceHolders(contentString) {
   // Initialize ret with the contentString value
   let ret = contentString;
+  //
   const twitterImagePlaceholder = '$twitter:image';
-  // Placeholder for the current date
-  const datePlaceholder = '$date';
-  // Replace $twitter:image if it exists
   if (ret.includes(twitterImagePlaceholder)) {
     const metaElement = document.querySelector('meta[name="twitter:image"]');
     const twitterImageContent = metaElement ? metaElement.getAttribute('content') : '';
     ret = ret.replace(twitterImagePlaceholder, twitterImageContent);
   }
-
+  const datePlaceholder = '$system:date';
   // Replace $date with today's date if it exists
   if (ret.includes(datePlaceholder)) {
     const today = new Date();
     // Format today's date as YYYY-MM-DD or any other preferred format
     const dateString = today.toISOString().split('T')[0];
     ret = ret.replace(datePlaceholder, dateString);
+  }
+  if (ret.includes('$company:name')) {
+    ret = ret.replace('$company:name', window.siteconfig.company.name);
+  }
+  if (ret.includes('$company:logo')) {
+    ret = ret.replace('$company:logo', window.siteconfig.company.logo);
+  }
+  if (ret.includes('$company:url')) {
+    ret = ret.replace('$company:url', window.siteconfig.company.url);
+  }
+  if (ret.includes('$company:email')) {
+    ret = ret.replace('$company:email', window.siteconfig.company.email);
+  }
+  if (ret.includes('$company:phone')) {
+    ret = ret.replace('$company:phone', window.siteconfig.company.phone);
   }
   return ret;
 }
@@ -175,7 +211,7 @@ async function findMetadataJsonLdBlock() {
       new URL(content);
     } catch (error) {
       // Content is not a URL, construct the JSON-LD URL based on content and current domain
-      jsonDataUrl = `${window.location.origin}/json-ld/${content}.json`;
+      jsonDataUrl = `${window.location.origin}/config/json-ld/${content}.json`;
     }
     try {
       const resp = await fetch(jsonDataUrl);
