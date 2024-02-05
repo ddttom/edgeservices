@@ -117,9 +117,9 @@ export function decorateMain(main) {
     } catch (error) {
       alert(`Failed  ${error.message}`, '');
     }
-    json.data.forEach((item) => {
-      const key = (item.Item);
-      window.config[key] = item.Value;
+    json.data.forEach((config) => {
+      const key = (config.Item);
+      window.config[key] = config.Value;
     });
   }
   window.siteconfig = {};
@@ -177,19 +177,19 @@ function replacePlaceHolders(contentString) {
     ret = ret.replace(datePlaceholder, dateString);
   }
   if (ret.includes('$company:name')) {
-    ret = ret.replace('$company:name', window.siteconfig.company.name);
+    ret = ret.replace('$company:name', window.siteconfig['company:name']);
   }
   if (ret.includes('$company:logo')) {
-    ret = ret.replace('$company:logo', window.siteconfig.company.logo);
+    ret = ret.replace('$company:logo', window.siteconfig['company:logo']);
   }
   if (ret.includes('$company:url')) {
-    ret = ret.replace('$company:url', window.siteconfig.company.url);
+    ret = ret.replace('$company:url', window.siteconfig['company:url']);
   }
   if (ret.includes('$company:email')) {
-    ret = ret.replace('$company:email', window.siteconfig.company.email);
+    ret = ret.replace('$company:email', window.siteconfig['company:email']);
   }
   if (ret.includes('$company:phone')) {
-    ret = ret.replace('$company:phone', window.siteconfig.company.phone);
+    ret = ret.replace('$company:phone', window.siteconfig['company:phone']);
   }
   return ret;
 }
