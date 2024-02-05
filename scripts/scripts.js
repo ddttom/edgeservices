@@ -105,6 +105,11 @@ export function decorateMain(main) {
     // eslint-disable-next-line no-console
     console.error(message, error);
   }
+
+  // Function to convert string from "company:name" to "companyName"
+  function toCamelCase(str) {
+    return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
+  }
   async function configure() {
     const jsonDataUrl = `${window.location.origin}/config/config.json`;
     let json = null;
