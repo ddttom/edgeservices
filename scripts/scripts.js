@@ -114,13 +114,13 @@ export function decorateMain(main) {
         throw new Error(`Failed to fetch config: ${resp.status}`);
       }
       json = await resp.json();
-      json.data.forEach((item) => {
-        const key = (item.Item);
-        window.config[key] = item.Value;
-      });
     } catch (error) {
       alert(`Failed  ${error.message}`, '');
     }
+    json.data.forEach((item) => {
+      const key = (item.Item);
+      window.config[key] = item.Value;
+    });
   }
   window.siteconfig = {};
   configure();
