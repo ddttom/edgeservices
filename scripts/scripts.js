@@ -137,6 +137,9 @@ export function decorateMain(main) {
     document.body.classList.add('techem');
   }
 }
+function toCamelCase(str) {
+  return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
+}
 
 function extractJsonLd(parsedJson) {
   const jsonLd = {
@@ -147,13 +150,14 @@ function extractJsonLd(parsedJson) {
   };
 
   parsedJson.data.forEach((item) => {
-    const key = Object.keys(item)[1]; // Assuming the second key is the property key
+    const key = toCamelCase(Object.keys(item)[1]);
     let value = item[key];
 
-    // Remove the leading and trailing quotes
+    // Remove the leading and trailing quotes, spaces
     if (typeof value === 'string') {
       // eslint-disable-next-line no-useless-escape
       value = value.replace(/^\"|\"$/g, '');
+      value = value.trim();
     }
 
     // eslint-disable-next-line quotes
