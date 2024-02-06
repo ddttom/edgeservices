@@ -182,19 +182,19 @@ function replacePlaceHolders(contentString) {
     ret = ret.replace(datePlaceholder, dateString);
   }
   if (ret.includes('$company:name')) {
-    ret = ret.replace('$company:name', window.siteconfig['company:name']);
+    ret = ret.replace('$company:name', window.siteconfig.companyName);
   }
   if (ret.includes('$company:logo')) {
-    ret = ret.replace('$company:logo', window.siteconfig['company:logo']);
+    ret = ret.replace('$company:logo', window.siteconfig.companyLogo);
   }
   if (ret.includes('$company:url')) {
-    ret = ret.replace('$company:url', window.siteconfig['company:url']);
+    ret = ret.replace('$company:url', window.siteconfig.companyUrl);
   }
   if (ret.includes('$company:email')) {
-    ret = ret.replace('$company:email', window.siteconfig['company:email']);
+    ret = ret.replace('$company:email', window.siteconfig.companyEmail);
   }
   if (ret.includes('$company:phone')) {
-    ret = ret.replace('$company:phone', window.siteconfig['company:phone']);
+    ret = ret.replace('$company:phone', window.siteconfig.companyPhone);
   }
   return ret;
 }
