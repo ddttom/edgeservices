@@ -100,12 +100,11 @@ export function decorateMain(main) {
   //
   //
   const path = window.location.pathname;
-
+  window.siteconfig = {};
   function alert(message, error) {
     // eslint-disable-next-line no-console
     console.error(message, error);
   }
-
   // Function to convert string from "company:name" to "companyName"
   function toCamelCase(str) {
     return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
@@ -124,11 +123,11 @@ export function decorateMain(main) {
       alert(`Failed  ${error.message}`, '');
     }
     json.data.forEach((config) => {
-      const key = toCamelCase(config.Item);
-      window.config[key] = config.Value;
+      const key = window.toCamelCase(config.Item);
+      window.siteconfig[key] = config.Value;
     });
   }
-  window.siteconfig = {};
+
   configure();
 
   if (path.includes('webasto')) {
