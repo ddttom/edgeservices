@@ -17,14 +17,6 @@ import {
   loadBlock, updateSectionsStatus,
 } from './aem.js';
 
-import {
-  initialize,
-  removeCommentBlocks,
-  findMetadataJsonLdBlock,
-
-} from './siteConfig.js';
-
-initialize();
 const setDelayed = true; // do (true) or not do (false) final load.
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -102,7 +94,168 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+
+  // START *THC*
+  //
+  //
+  //
+  const path = window.location.pathname;
+
+  function alert(message, error) {
+    // eslint-disable-next-line no-console
+    console.error(message, error);
+  }
+
+  // Function to convert string from "company:name" to "companyName"
+  function toCamelCase(str) {
+    return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
+  }
+  async function configure() {
+    const jsonDataUrl = `${window.location.origin}/config/config.json`;
+    let json = null;
+    try {
+      const resp = await fetch(jsonDataUrl);
+      if (!resp.ok) {
+        throw new Error(`Failed to fetch config: ${resp.status}`);
+      }
+      json = await resp.json();
+    } catch (error) {
+      alert(`Failed  ${error.message}`, '');
+    }
+    json.data.forEach((config) => {
+      const key = (config.Item);
+      window.config[key] = config.Value;
+    });
+  }
+  window.siteconfig = {};
+  configure();
+
+  if (path.includes('webasto')) {
+    document.body.classList.add('webasto');
+  }
+  if (path.includes('techem')) {
+    document.body.classList.add('techem');
+  }
 }
+function toCamelCase(str) {
+  return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+function extractJsonLd(parsedJson) {
+  const jsonLd = {
+    // eslint-disable-next-line quotes
+    "@context": "https://schema.org",
+    // eslint-disable-next-line quotes
+    "@type": "Organization",
+  };
+
+  parsedJson.data.forEach((item) => {
+    const key = toCamelCase(Object.keys(item)[1]);
+    let value = item[key];
+
+    // Remove the leading and trailing quotes, spaces
+    if (typeof value === 'string') {
+      // eslint-disable-next-line no-useless-escape
+      value = value.replace(/^\"|\"$/g, '');
+      value = value.trim();
+    }
+
+    // eslint-disable-next-line quotes
+    jsonLd[item["@context"]] = value;
+  });
+
+  return jsonLd;
+}
+
+function replacePlaceHolders(contentString) {
+  // Initialize ret with the contentString value
+  let ret = contentString;
+  //
+  const twitterImagePlaceholder = '$twitter:image';
+  if (ret.includes(twitterImagePlaceholder)) {
+    const metaElement = document.querySelector('meta[name="twitter:image"]');
+    const twitterImageContent = metaElement ? metaElement.getAttribute('content') : '';
+    ret = ret.replace(twitterImagePlaceholder, twitterImageContent);
+  }
+  const datePlaceholder = '$system:date';
+  // Replace $date with today's date if it exists
+  if (ret.includes(datePlaceholder)) {
+    const today = new Date();
+    // Format today's date as YYYY-MM-DD or any other preferred format
+    const dateString = today.toISOString().split('T')[0];
+    ret = ret.replace(datePlaceholder, dateString);
+  }
+  if (ret.includes('$company:name')) {
+    ret = ret.replace('$company:name', window.siteconfig.companyName);
+  }
+  if (ret.includes('$company:logo')) {
+    ret = ret.replace('$company:logo', window.siteconfig.companyLogo);
+  }
+  if (ret.includes('$company:url')) {
+    ret = ret.replace('$company:url', window.siteconfig.companyUrl);
+  }
+  if (ret.includes('$company:email')) {
+    ret = ret.replace('$company:email', window.siteconfig.companyEmail);
+  }
+  if (ret.includes('$company:phone')) {
+    ret = ret.replace('$company:phone', window.siteconfig.companyPhone);
+  }
+  return ret;
+}
+
+async function findMetadataJsonLdBlock() {
+  // Check if a script of type application/ld+json is already present in the document
+  const existingJsonLdScript = document.querySelector('script[type="application/ld+json"]');
+  if (!existingJsonLdScript) {
+    let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
+    if (!jsonLdMetaElement) {
+      jsonLdMetaElement = document.createElement('meta');
+      jsonLdMetaElement.setAttribute('name', 'json-ld');
+      jsonLdMetaElement.setAttribute('content', 'owner'); // Default role
+      document.head.appendChild(jsonLdMetaElement);
+    }
+    const content = jsonLdMetaElement.getAttribute('content');
+    jsonLdMetaElement.remove();
+    // assume we have an url, if not we have a role -  construct url on the fly
+    let jsonDataUrl = content;
+    try {
+      // Attempt to parse the content as a URL
+      // eslint-disable-next-line no-new
+      new URL(content);
+    } catch (error) {
+      // Content is not a URL, construct the JSON-LD URL based on content and current domain
+      jsonDataUrl = `${window.location.origin}/config/json-ld/${content}.json`;
+    }
+    try {
+      const resp = await fetch(jsonDataUrl);
+      if (!resp.ok) {
+        throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
+      }
+      let json = await resp.json();
+      json = extractJsonLd(json);
+      let jsonString = JSON.stringify(json).replaceAll('ld@', '@');
+      jsonString = replacePlaceHolders(jsonString);
+      // Create and append a new script element with the processed JSON-LD data
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
+      script.textContent = jsonString;
+      document.head.appendChild(script);
+    } catch (error) {
+      // no schema.org for your content, just use the content as is
+      // eslint-disable-next-line no-console
+      console.error('Error processing JSON-LD metadata:', error);
+    }
+  }
+}
+function removeCommentBlocks(main) {
+  const sections = document.querySelectorAll('div.section-metadata.comment');
+  sections.forEach((section) => {
+    section.remove();
+  });
+}
+
+// END *THC*
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
