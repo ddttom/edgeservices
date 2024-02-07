@@ -123,7 +123,7 @@ export function decorateMain(main) {
       alert(`Failed  ${error.message}`, '');
     }
     json.data.forEach((config) => {
-      const key = (config.Item);
+      const key = toCamelCase(config.Item);
       window.config[key] = config.Value;
     });
   }
@@ -137,10 +137,6 @@ export function decorateMain(main) {
     document.body.classList.add('techem');
   }
 }
-function toCamelCase(str) {
-  return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
-}
-
 function extractJsonLd(parsedJson) {
   const jsonLd = {
     // eslint-disable-next-line quotes
