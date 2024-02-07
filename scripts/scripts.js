@@ -129,7 +129,7 @@ export function decorateMain(main) {
     });
   }
   window.siteconfig = {};
-  configure();
+  // configure();
 
   if (path.includes('webasto')) {
     document.body.classList.add('webasto');
