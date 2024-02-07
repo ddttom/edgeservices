@@ -1,11 +1,11 @@
 
 
-.centreblock-wrapper .centreblock > div{
+.centreblock > div{
     text-align: center;
     margin: 100px 0;
 }
 
-.centreblock-wrapper .centreblock > div h3 {
+.centreblock > div h3 {
     background-color: #5AEFEE;
     display: inline-block;
     font-size: 28px;
