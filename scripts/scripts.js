@@ -65,7 +65,7 @@ function buildAutoBlocks(main) {
   // eslint-disable-next-line no-use-before-define
   try {
     // eslint-disable-next-line no-use-before-define
-    findMetadataJsonLdBlock(main);
+    // findMetadataJsonLdBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('find metadata block failed', error);
@@ -110,6 +110,7 @@ export function decorateMain(main) {
   function toCamelCase(str) {
     return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
   }
+  window.toCamelCase = toCamelCase;
   async function configure() {
     const jsonDataUrl = `${window.location.origin}/config/config.json`;
     let json = null;
@@ -137,9 +138,6 @@ export function decorateMain(main) {
     document.body.classList.add('techem');
   }
 }
-function toCamelCase(str) {
-  return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
-}
 
 function extractJsonLd(parsedJson) {
   const jsonLd = {
@@ -150,7 +148,7 @@ function extractJsonLd(parsedJson) {
   };
 
   parsedJson.data.forEach((item) => {
-    const key = toCamelCase(Object.keys(item)[1]);
+    const key = window.toCamelCase(Object.keys(item)[1]);
     let value = item[key];
 
     // Remove the leading and trailing quotes, spaces
