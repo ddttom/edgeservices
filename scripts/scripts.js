@@ -110,6 +110,7 @@ export function decorateMain(main) {
   function toCamelCase(str) {
     return str.replace(/:([a-z])/g, (g) => g[1].toUpperCase());
   }
+  window.toCamelCase = toCamelCase;
   async function configure() {
     const jsonDataUrl = `${window.location.origin}/config/config.json`;
     let json = null;
@@ -146,7 +147,7 @@ function extractJsonLd(parsedJson) {
   };
 
   parsedJson.data.forEach((item) => {
-    const key = toCamelCase(Object.keys(item)[1]);
+    const key = window.toCamelCase(Object.keys(item)[1]);
     let value = item[key];
 
     // Remove the leading and trailing quotes, spaces
