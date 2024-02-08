@@ -40,12 +40,14 @@ export function replacePlaceHolders(content) {
   const today = new Date().toISOString().split('T')[0];
   return content
     .replace('$twitter:image', document.querySelector('meta[name="twitter:image"]')?.getAttribute('content') || '')
+    .replace('$longdescription', document.querySelector('meta[name="longdescription"]')?.getAttribute('content') || '')
     .replace('$system:date', today)
     .replace('$company:name', siteConfig.companyName)
     .replace('$company:logo', siteConfig.companyLogo)
     .replace('$company:url', siteConfig.companyUrl)
     .replace('$company:email', siteConfig.companyEmail)
-    .replace('$company:phone', siteConfig.companyPhone);
+    .replace('$company:phone', siteConfig.companyPhone)
+    .replace('$company:telephone', siteConfig.companyPhone);
 }
 
 function applyPageSpecificClasses() {
