@@ -37,21 +37,15 @@ export function extractJsonLd(parsedJson) {
   return jsonLd;
 }
 export function replacePlaceHolders(content) {
-  let replacedContent = content;
-  const placeholders = {
-    '$twitter:image': 'meta[name="twitter:image"]',
-    '$system:date': new Date().toISOString().split('T')[0],
-    '$company:name': siteConfig.companyName,
-    '$company:logo': siteConfig.companyLogo,
-    '$company:url': siteConfig.companyUrl,
-    '$company:email': siteConfig.companyEmail,
-    '$company:phone': siteConfig.companyPhone,
-  };
-  Object.entries(placeholders).forEach(([placeholder, valueOrSelector]) => {
-    const value = typeof valueOrSelector === 'string' ? document.querySelector(valueOrSelector)?.getAttribute('content') || '' : valueOrSelector;
-    replacedContent = replacedContent.replace(placeholder, value);
-  });
-  return replacedContent;
+  const today = new Date().toISOString().split('T')[0];
+  return content
+    .replace('$twitter:image', document.querySelector('meta[name="twitter:image"]')?.getAttribute('content') || '')
+    .replace('$system:date', today)
+    .replace('$company:name', siteConfig.companyName)
+    .replace('$company:logo', siteConfig.companyLogo)
+    .replace('$company:url', siteConfig.companyUrl)
+    .replace('$company:email', siteConfig.companyEmail)
+    .replace('$company:phone', siteConfig.companyPhone);
 }
 
 function applyPageSpecificClasses() {
