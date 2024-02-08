@@ -29,12 +29,11 @@ export function extractJsonLd(parsedJson) {
 
   // Iterate over each data item in your JSON
   parsedJson.data.forEach((item) => {
-    // Convert the 'Item' value to CamelCase as it will be used as a property name in JSON-LD
-    const key = toCamelCase(item.Item);
+    const { key, value } = item;
     // Directly access the 'Value' for each item and prepare it if necessary
-    const value = item.Value.replace(/\$(.*?):/g, '').trim(); // Adjusted to remove placeholders like "$company:"
+    // const value = item.Value.trim();
     // Assign the value to the corresponding key in the jsonLd object
-    jsonLd[key] = value;
+    jsonLd[key.trim()] = value.trim();
   });
 }
 export function replacePlaceHolders(content) {
