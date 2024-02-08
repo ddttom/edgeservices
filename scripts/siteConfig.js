@@ -23,16 +23,19 @@ export async function loadConfiguration() {
     alert(`Configuration load error: ${error.message}`);
   }
 }
-
 export function extractJsonLd(parsedJson) {
+  // Define the base structure for JSON-LD
   const jsonLd = { '@context': 'https://schema.org', '@type': 'Organization' };
+
+  // Iterate over each data item in your JSON
   parsedJson.data.forEach((item) => {
-    const key = toCamelCase(Object.keys(item)[1]);
-    const value = item[key].replace(/^"|"$/g, '').trim();
-    jsonLd[item['@context']] = value;
+    // Convert the 'Item' value to CamelCase as it will be used as a property name in JSON-LD
+    const key = toCamelCase(item.Item);
+    // Directly access the 'Value' for each item and prepare it if necessary
+    const value = item.Value.replace(/\$(.*?):/g, '').trim(); // Adjusted to remove placeholders like "$company:"
+    // Assign the value to the corresponding key in the jsonLd object
+    jsonLd[key] = value;
   });
-  return jsonLd;
-}
 
 export function replacePlaceHolders(content) {
   let replacedContent = content;
