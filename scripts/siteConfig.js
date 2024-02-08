@@ -1,3 +1,7 @@
+import {
+  initialize as initClientConfig,
+} from './clientConfig.js';
+
 export const siteConfig = {};
 
 export function toCamelCase(str) {
@@ -24,14 +28,14 @@ export async function loadConfiguration() {
   }
 }
 export function extractJsonLd(parsedJson) {
-  // Define the base structure for JSON-LD
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'Organization' };
+  const jsonLd = { };
 
-  // Iterate over each data item in your JSON
   parsedJson.data.forEach((item) => {
-    const key = item.Item.trim();
+    let key = item.Item.trim().toLowerCase();
+    if (key === 'type' || key === 'context') {
+      key = `@${key}`;
+    }
     const value = item.Value.trim();
-    // Assign the value to the corresponding key in the jsonLd object
     jsonLd[key] = value;
   });
   return jsonLd;
@@ -39,21 +43,15 @@ export function extractJsonLd(parsedJson) {
 export function replacePlaceHolders(content) {
   const today = new Date().toISOString().split('T')[0];
   return content
-    .replace('$twitter:image', document.querySelector('meta[name="twitter:image"]')?.getAttribute('content') || '')
-    .replace('$meta:longdescription', document.querySelector('meta[name="longdescription"]')?.getAttribute('content') || '')
-    .replace('$system:date', today)
-    .replace('$company:name', siteConfig.companyName)
-    .replace('$company:logo', siteConfig.companyLogo)
-    .replace('$company:url', siteConfig.companyUrl)
-    .replace('$company:email', siteConfig.companyEmail)
-    .replace('$company:phone', siteConfig.companyTelephone)
-    .replace('$company:telephone', siteConfig.companyTelephone);
-}
-
-function applyPageSpecificClasses() {
-  const path = window.location.pathname;
-  if (path.includes('webasto')) document.body.classList.add('webasto');
-  if (path.includes('techem')) document.body.classList.add('techem');
+    .replaceAll('$twitter:image', document.querySelector('meta[name="twitter:image"]')?.getAttribute('content') || '')
+    .replaceAll('$meta:longdescription', document.querySelector('meta[name="longdescription"]')?.getAttribute('content') || '')
+    .replaceAll('$system:date', today)
+    .replaceAll('$company:name', siteConfig.companyName)
+    .replaceAll('$company:logo', siteConfig.companyLogo)
+    .replaceAll('$company:url', siteConfig.companyUrl)
+    .replaceAll('$company:email', siteConfig.companyEmail)
+    .replaceAll('$company:phone', siteConfig.companyTelephone)
+    .replaceAll('$company:telephone', siteConfig.companyTelephone);
 }
 
 export async function handleMetadataJsonLd() {
@@ -106,7 +104,7 @@ export function removeCommentBlocks() {
 // `initialize` function to kick things off
 export async function initialize() {
   await loadConfiguration();
-  applyPageSpecificClasses();
+  initClientConfig();
   const main = document.querySelector('main');
   if (main) {
     removeCommentBlocks(main);
