@@ -4,9 +4,9 @@ export function toCamelCase(str) {
   return str.replace(/:([a-z])/g, (_, char) => char.toUpperCase());
 }
 
-export function alert(message, error) {
+export function alert(message) {
   // eslint-disable-next-line no-console
-  console.error(message, error);
+  console.error(message);
 }
 
 export async function loadConfiguration() {
