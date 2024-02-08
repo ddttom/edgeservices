@@ -37,7 +37,7 @@
  * @param {string} tag HTML tag of the desired element
  * @param  {[Object?, ...Element]} items: First item can optionally be an object of attributes,
  *  everything else is a child element
- * @returns {Element} The constructred DOM Element
+ * @returns {Element} The constructed DOM Element
  */
 export function domEl(tag, ...items) {
   const element = document.createElement(tag);

@@ -108,7 +108,6 @@ export function removeCommentBlocks() {
 export async function initialize() {
   await loadConfiguration();
   applyPageSpecificClasses();
-  extractJsonLd();
   const main = document.querySelector('main');
   if (main) {
     removeCommentBlocks(main);
