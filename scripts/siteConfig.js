@@ -89,7 +89,7 @@ export async function handleMetadataJsonLd() {
       }
       let json = await resp.json();
       json = extractJsonLd(json);
-      let jsonString = JSON.stringify(json).replaceAll('ld@', '@');
+      let jsonString = JSON.stringify(json);
       jsonString = replacePlaceHolders(jsonString);
       // Create and append a new script element with the processed JSON-LD data
       const script = document.createElement('script');
