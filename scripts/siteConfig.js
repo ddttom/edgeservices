@@ -92,6 +92,7 @@ export async function handleMetadataJsonLd() {
       script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
       script.textContent = jsonString;
       document.head.appendChild(script);
+      document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
     } catch (error) {
     // no schema.org for your content, just use the content as is
       alert('Error processing JSON-LD metadata:', error);
