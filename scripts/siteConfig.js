@@ -29,11 +29,10 @@ export function extractJsonLd(parsedJson) {
 
   // Iterate over each data item in your JSON
   parsedJson.data.forEach((item) => {
-    const { key, value } = item;
-    // Directly access the 'Value' for each item and prepare it if necessary
-    // const value = item.Value.trim();
+    const key = item.Item.trim();
+    const value = item.Value.trim();
     // Assign the value to the corresponding key in the jsonLd object
-    jsonLd[key.trim()] = value.trim();
+    jsonLd[key] = value;
   });
 }
 export function replacePlaceHolders(content) {
