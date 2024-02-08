@@ -34,6 +34,7 @@ export function extractJsonLd(parsedJson) {
     // Assign the value to the corresponding key in the jsonLd object
     jsonLd[key] = value;
   });
+  return jsonLd;
 }
 export function replacePlaceHolders(content) {
   let replacedContent = content;
