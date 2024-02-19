@@ -1,181 +1,117 @@
-function startTimer(block) {
-  return setInterval(() => {
-    const rightSwip = block.querySelector('.swip-right');
-    rightSwip.click();
-  }, 5000);
-}
+/* eslint-disable no-param-reassign */
+import { isInternal } from '../../scripts/scripts.js';
 
-let timer;
-
-function commonOnClick(block, newIndex) {
-  const activeEles = block.querySelectorAll('.active');
-  const newEles = block.querySelectorAll(`[index='${newIndex}']`);
-  const swiperWrapper = document.querySelector('.swiper-wrapper');
-  let activeEleWidth = null;
-
-  newEles.forEach((newEle) => {
-    newEle.classList.add('active');
-    if (!newEle.classList.contains('swiper-pagination-bullet')) {
-      newEle.classList.add('unhide');
+function setAutoScroll(moveSlides, block, interval) {
+  setTimeout(() => {
+    if (interval === undefined) {
+      interval = setInterval(() => {
+        moveSlides('next');
+      }, 6000);
     }
+  }, 3000);
+
+  // Stop auto-scroll on user interaction
+  block.addEventListener('mouseenter', () => {
+    clearInterval(interval);
+    interval = undefined;
   });
 
-  activeEles.forEach((activeEle) => {
-    activeEle.classList.remove('active');
-    if (!activeEle.classList.contains('swiper-pagination-bullet')) {
-      activeEle.classList.remove('unhide');
-      if (Array.from(activeEle.classList).indexOf('image-item') !== -1) {
-        activeEleWidth = activeEle.clientWidth;
-      }
+  block.addEventListener('mouseleave', () => {
+    if (interval === undefined) {
+      interval = setInterval(() => {
+        moveSlides('next');
+      }, 6000);
     }
   });
-
-  if (window.screen.width >= 992 && activeEleWidth) {
-    // Have to add screen width check because for large screen and
-    // for small screen carousel behaves differently
-    swiperWrapper.style.transform = `translate3d(-${(newIndex) * activeEleWidth}px, 0, 0)`;
-  } else {
-    swiperWrapper.style.transform = `translate3d(-${(newIndex) * window.screen.width}px, 0, 0)`;
-  }
 }
 
-function getPrevOrNextSwip(swipType, block, totalLength) {
-  const swip = document.createElement('div');
-  swip.classList.add(`swip-${swipType}`);
-
-  const prevSwipSpan = document.createElement('span');
-  prevSwipSpan.classList.add('icon', `icon-${swipType}`);
-
-  swip.appendChild(prevSwipSpan);
-
-  swip.onclick = () => {
-    const activeEles = block.querySelectorAll('.active');
-    const activeEle = activeEles[0];
-    if (activeEle) {
-      const index = Number(activeEle.getAttribute('index'));
-      let newIndex = ((index + 1) >= totalLength ? 0 : (index + 1));
-      if (swipType === 'left') {
-        newIndex = ((index - 1) < 0 ? (totalLength - 1) : (index - 1));
-      }
-      commonOnClick(block, newIndex);
-      clearInterval(timer);
-      timer = startTimer(block);
+function createButtons(moveSlides) {
+  return ['prev', 'next'].map((direction) => {
+    const button = document.createElement('button');
+    button.ariaLabel = `show ${direction} slide`;
+    button.classList.add(direction);
+    if (direction === 'prev') {
+      button.classList.add('disabled');
     }
-  };
-
-  return swip;
+    const iconDiv = document.createElement('div');
+    iconDiv.classList.add(`arrow-${direction}`);
+    iconDiv.classList.add('carousel-arrow');
+    const iconSpan = document.createElement('span');
+    iconSpan.classList.add(`${direction}-icon`);
+    iconSpan.innerHTML = '';
+    iconDiv.append(iconSpan);
+    button.appendChild(iconDiv);
+    button.addEventListener('click', () => moveSlides(direction));
+    return button;
+  });
 }
 
-function getCarouselControl(block, totalLength) {
-  const controlContainer = document.createElement('div');
-  controlContainer.classList.add('control-container');
-
-  const pagination = document.createElement('div');
-  pagination.classList.add('swip-pagination', 'swiper-pagination-clickable', 'swiper-pagination-bullets');
-
-  for (let index = 0; index < totalLength; index += 1) {
-    const innerSpan = document.createElement('span');
-    innerSpan.classList.add('swiper-pagination-bullet');
-    innerSpan.setAttribute('index', index);
-
-    // eslint-disable-next-line no-loop-func
-    innerSpan.onclick = () => {
-      const isActive = innerSpan.classList.contains('active');
-      if (!isActive) {
-        // Click on active element handled here
-        commonOnClick(block, Number(innerSpan.getAttribute('index')));
-        clearInterval(timer);
-        timer = startTimer(block);
-      }
-    };
-
-    if (index === 0) {
-      innerSpan.classList.add('active');
-    }
-
-    pagination.appendChild(innerSpan);
-  }
-
-  controlContainer.appendChild(getPrevOrNextSwip('left', block, totalLength));
-  controlContainer.appendChild(pagination);
-  controlContainer.appendChild(getPrevOrNextSwip('right', block, totalLength));
-
-  const heroContainer = document.createElement('div');
-  heroContainer.classList.add('hero-slider-controller');
-  heroContainer.appendChild(controlContainer);
-
-  block.appendChild(heroContainer);
-}
-
-function addSwipeCapability(block) {
-  let touchStartX = 0;
-  let touchStartY = 0;
-
-  block.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  }, { passive: true });
-
-  block.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].screenX;
-    const touchEndY = e.changedTouches[0].screenY;
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-
-    if (Math.abs(deltaY) > Math.abs(deltaX)) {
-      return;
-    }
-
-    if (deltaX > 0) {
-      const leftSwip = block.querySelector('.swip-left');
-      leftSwip.click();
-    } else if (deltaX < 0) {
-      const rightSwip = block.querySelector('.swip-right');
-      rightSwip.click();
-    }
-  }, { passive: true });
-}
-
+/**
+ * Generic carousel block, which can be used for any content or blocks.
+ * Each row is a slide.
+ * left column is image and right column is the link.
+ * @param block
+ */
 export default async function decorate(block) {
-  const textBlocks = document.createElement('div');
-  textBlocks.classList.add('text');
-  const pictureBlocks = document.createElement('div');
-  pictureBlocks.classList.add('image');
-
-  const blockChildren = [...block.children];
-  const totalLength = blockChildren.length;
-
-  const pictureBlockWrapper = document.createElement('div');
-  pictureBlockWrapper.classList.add('swiper-wrapper');
-
-  blockChildren.forEach((element, index) => {
-    const innerChilds = [...element.children];
-    if (index === 0) {
-      innerChilds[0].classList.add('unhide', 'active');
-      innerChilds[1].classList.add('unhide', 'active');
-    }
-
-    innerChilds[0].classList.add('text-item');
-    innerChilds[1].classList.add('image-item');
-    innerChilds[0].setAttribute('index', index);
-    innerChilds[1].setAttribute('index', index);
-
-    textBlocks.appendChild(innerChilds[0]);
-    pictureBlockWrapper.appendChild(innerChilds[1]);
+  let interval;
+  const mobile = (window.screen.width < 600);
+  const offset = mobile ? 100 : 50;
+  const itemsToShow = mobile ? 1 : 2;
+  const slidesWrapper = document.createElement('div');
+  slidesWrapper.classList.add('slides-wrappper');
+  [...block.children].forEach((row) => {
+    const slide = document.createElement('div');
+    slide.classList.add('slide');
+    let pic;
+    let anchor;
+    [...row.children].forEach((col) => {
+      if (col.querySelector('picture')) {
+        pic = col.querySelector('picture');
+      }
+      if (col.querySelector('a')) {
+        anchor = col.querySelector('a');
+      }
+    });
+    const img = pic.querySelector('img');
+    const link = anchor.getAttribute('href');
+    anchor.setAttribute('target', !isInternal(link) ? '_blank' : '_self');
+    anchor.setAttribute('title', img.alt);
+    anchor.replaceChildren(pic);
+    slide.append(anchor);
+    slidesWrapper.append(slide);
   });
 
-  pictureBlocks.appendChild(pictureBlockWrapper);
+  block.replaceChildren(slidesWrapper);
 
-  const container = document.createElement('div');
-  container.classList.add('carousel-items-container');
+  let currentIndex = 0;
+  const items = slidesWrapper.querySelectorAll('.slide');
+  function moveSlides(prevOrNext) {
+    if (prevOrNext === 'next') {
+      if (currentIndex < (items.length - itemsToShow)) {
+        currentIndex += 1;
+        slidesWrapper.style.transform = `translate3d(-${currentIndex * offset}%, 0, 0)`;
+        block.querySelector('button.prev').classList.remove('disabled');
+        if (currentIndex === (items.length - itemsToShow)) {
+          block.querySelector('button.next').classList.add('disabled');
+        }
+      } else {
+        // End the rotation
+        clearInterval(interval);
+        currentIndex = 0;
+        slidesWrapper.style.transform = 'translate3d(0, 0, 0)';
+        block.querySelector('button.prev').classList.add('disabled');
+        block.querySelector('button.next').classList.remove('disabled');
+      }
+    } else if (currentIndex >= 1) {
+      currentIndex -= 1;
+      slidesWrapper.style.transform = `translate3d(-${currentIndex * offset}%, 0, 0)`;
+      block.querySelector('button.next').classList.remove('disabled');
+      if (currentIndex < 1) {
+        block.querySelector('button.prev').classList.add('disabled');
+      }
+    }
+  }
 
-  block.innerHTML = '';
-
-  container.appendChild(textBlocks);
-  container.appendChild(pictureBlocks);
-
-  block.appendChild(container);
-  getCarouselControl(block, totalLength);
-  timer = startTimer(block);
-  addSwipeCapability(block);
+  block.append(...createButtons(moveSlides));
+  setAutoScroll(moveSlides, block, interval);
 }
