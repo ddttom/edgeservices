@@ -1,116 +1,64 @@
-/* eslint-disable no-param-reassign */
+import { createElement } from '../../scripts/scripts.js';
 
-function setAutoScroll(moveSlides, block, interval) {
-  setTimeout(() => {
-    if (interval === undefined) {
-      interval = setInterval(() => {
-        moveSlides('next');
-      }, 6000);
-    }
-  }, 3000);
-
-  // Stop auto-scroll on user interaction
-  block.addEventListener('mouseenter', () => {
-    clearInterval(interval);
-    interval = undefined;
-  });
-
-  block.addEventListener('mouseleave', () => {
-    if (interval === undefined) {
-      interval = setInterval(() => {
-        moveSlides('next');
-      }, 6000);
-    }
-  });
+let tId;
+function debounce(method, delay) {
+  clearTimeout(tId);
+  tId = setTimeout(() => {
+    method();
+  }, delay);
 }
 
-function createButtons(moveSlides) {
-  return ['prev', 'next'].map((direction) => {
-    const button = document.createElement('button');
-    button.ariaLabel = `show ${direction} slide`;
-    button.classList.add(direction);
-    if (direction === 'prev') {
-      button.classList.add('disabled');
-    }
-    const iconDiv = document.createElement('div');
-    iconDiv.classList.add(`arrow-${direction}`);
-    iconDiv.classList.add('carousel-arrow');
-    const iconSpan = document.createElement('span');
-    iconSpan.classList.add(`${direction}-icon`);
-    iconSpan.innerHTML = '';
-    iconDiv.append(iconSpan);
-    button.appendChild(iconDiv);
-    button.addEventListener('click', () => moveSlides(direction));
-    return button;
-  });
+function incrementSlide(slideWrapper, increment) {
+  const slideCount = Number(slideWrapper.dataset.slideCount);
+  const curSlideIndex = Number(slideWrapper.dataset.slideIndex);
+  let newSideIndex = curSlideIndex + increment;
+  if (newSideIndex < 0) newSideIndex = slideCount - 1;
+  if (newSideIndex >= slideCount) newSideIndex = 0;
+
+  const toSlide = slideWrapper.querySelector(`.carousel-slide:nth-child(${newSideIndex + 1})`);
+  slideWrapper.scrollTo({ top: 0, left: toSlide.offsetLeft - toSlide.parentNode.offsetLeft, behavior: 'smooth' });
+  slideWrapper.dataset.slideIndex = newSideIndex;
 }
 
-/**
- * Generic carousel block, which can be used for any content or blocks.
- * Each row is a slide.
- * left column is image and right column is the link.
- * @param block
- */
-export default async function decorate(block) {
-  let interval;
-  const mobile = (window.screen.width < 600);
-  const offset = mobile ? 100 : 50;
-  const itemsToShow = mobile ? 1 : 2;
-  const slidesWrapper = document.createElement('div');
-  slidesWrapper.classList.add('slides-wrappper');
-  [...block.children].forEach((row) => {
-    const slide = document.createElement('div');
-    slide.classList.add('slide');
-    let pic;
-    let anchor;
-    [...row.children].forEach((col) => {
-      if (col.querySelector('picture')) {
-        pic = col.querySelector('picture');
-      }
-      if (col.querySelector('a')) {
-        anchor = col.querySelector('a');
-      }
+export default function decorate(block) {
+  const images = block.querySelectorAll('picture');
+  const wrapper = createElement('div', {
+    class: 'carousel-slides-wrapper',
+    'data-slide-index': 0,
+    'data-slide-count': images.length,
+  });
+
+  images.forEach((pic) => {
+    const slide = createElement('div', {
+      class: 'carousel-slide',
+    }, pic);
+    wrapper.append(slide);
+  });
+  block.replaceChildren(wrapper);
+
+  block.append(createElement('div', { class: 'carousel-slide-controls' }, [
+    createElement('button', { class: ['carousel-slide-control', 'carousel-slide-prev', 'fa'], 'aria-label': 'Previous' }),
+    createElement('button', { class: ['carousel-slide-control', 'carousel-slide-next', 'fa'], 'aria-label': 'Next' }),
+  ]));
+
+  block.querySelectorAll('.carousel-slide-control').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const isNext = btn.classList.contains('carousel-slide-next');
+      incrementSlide(wrapper, isNext ? 1 : -1);
     });
-    const img = pic.querySelector('img');
-    // const link = anchor.getAttribute('href');
-    // anchor.setAttribute('target', !isInternal(link) ? '_blank' : '_self');
-    anchor.setAttribute('title', img.alt);
-    anchor.replaceChildren(pic);
-    slide.append(anchor);
-    slidesWrapper.append(slide);
   });
 
-  block.replaceChildren(slidesWrapper);
-
-  let currentIndex = 0;
-  const items = slidesWrapper.querySelectorAll('.slide');
-  function moveSlides(prevOrNext) {
-    if (prevOrNext === 'next') {
-      if (currentIndex < (items.length - itemsToShow)) {
-        currentIndex += 1;
-        slidesWrapper.style.transform = `translate3d(-${currentIndex * offset}%, 0, 0)`;
-        block.querySelector('button.prev').classList.remove('disabled');
-        if (currentIndex === (items.length - itemsToShow)) {
-          block.querySelector('button.next').classList.add('disabled');
-        }
-      } else {
-        // End the rotation
-        clearInterval(interval);
-        currentIndex = 0;
-        slidesWrapper.style.transform = 'translate3d(0, 0, 0)';
-        block.querySelector('button.prev').classList.add('disabled');
-        block.querySelector('button.next').classList.remove('disabled');
+  wrapper.addEventListener('scroll', () => {
+    debounce(() => {
+      const position = wrapper.scrollLeft;
+      const slideWidth = block.querySelector('.carousel-slide').scrollWidth;
+      let slide = 0;
+      let sum = slideWidth / 2;
+      while (sum < position) {
+        sum += slideWidth;
+        slide += 1;
       }
-    } else if (currentIndex >= 1) {
-      currentIndex -= 1;
-      slidesWrapper.style.transform = `translate3d(-${currentIndex * offset}%, 0, 0)`;
-      block.querySelector('button.next').classList.remove('disabled');
-      if (currentIndex < 1) {
-        block.querySelector('button.prev').classList.add('disabled');
-      }
-    }
-  }
-
-  block.append(...createButtons(moveSlides));
-  setAutoScroll(moveSlides, block, interval);
+      wrapper.dataset.slideIndex = slide;
+    }, 200);
+  });
 }
