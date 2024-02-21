@@ -128,12 +128,13 @@ function replaceTokens(data, text) {
 
 async function handleMetadataTracking() {
   if (siteConfig['$meta:tracking$'] != null) {
-    const tracker = siteConfig['$meta:tracking$'];
-    const trackers = tracker.split(',');
+    const trackerlist = siteConfig['$meta:tracking$'];
+    const trackers = trackerlist.split(',');
     for (let i = 0; i < trackers.length; i += 1) {
-      let trackerUrl = trackers[i].trim();
+      const tracker = trackers[i].trim();
+      let trackerUrl = tracker;
       if (trackerUrl) {
-        trackerUrl= `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`; 
+        trackerUrl = `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`;
         try {
           const resp = await fetch(trackerUrl);
           if (!resp.ok) {
@@ -144,8 +145,9 @@ async function handleMetadataTracking() {
           jsonString = replaceTokens(siteConfig, jsonString);
           // Create and append a new script element with the processed JSON
           const script = document.createElement('script');
-          script.type = 'application/tracker+json';
-          script.innerHTML = jsonString;
+          script.type = 'text/javascript';
+          const buildscript = `datalayer${tracker} = ${jsonString}`;
+          script.innerHTML = buildscript;
           document.head.appendChild(script);
         } catch (error) {
           // eslint-disable-next-line no-console
