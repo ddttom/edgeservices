@@ -91,6 +91,9 @@ export async function loadConfiguration() {
       if (siteConfig['$meta:author$'] == null) {
         siteConfig['$meta:author$'] = siteConfig['$company:name$'];
       }
+      if (siteConfig['$meta:contentauthor$'] == null) {
+        siteConfig['$meta:contentauthor$'] = siteConfig['$meta:author$'];
+      }
     });
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -143,8 +146,7 @@ async function handleMetadataTracking() {
           if (!resp.ok) {
             throw new Error(`Failed to fetch ${trackerUrl} content: ${resp.status}`);
           }
-          let json = await resp.json();
-          json = extractJsonTracker(json);
+          const json = await resp.json();
           let jsonString = JSON.stringify(json);
           jsonString = replaceTokens(siteConfig, jsonString);
           // Create and append a new script element with the processed JSON
