@@ -148,7 +148,7 @@ async function handleMetadataTracking() {
           script.type = 'text/javascript';
           let buildscript = `datalayer${tracker} = ${jsonString}`;
           if (tracker === 'page') {
-            buildscript += 'datalayerpage.page.pageQueryString = window.location.search;';
+            buildscript += ';datalayerpage.page.pageQueryString = window.location.search;';
             buildscript += 'datalayerpage.page.previousPageURL = document.referrer;';
             buildscript += 'const url = new URL(datalayerpage.page.previousPageURL); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
             buildscript += 'datalayerpage.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
