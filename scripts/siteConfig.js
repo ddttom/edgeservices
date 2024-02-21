@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable prefer-destructuring */
 import {
   initialize as initClientConfig,
@@ -5,7 +6,7 @@ import {
 
 export const siteConfig = {};
 
-export function alert(message) {
+export function logError(message) {
   // eslint-disable-next-line no-console
   console.error(message);
 }
@@ -39,10 +40,10 @@ export async function loadConfiguration() {
     const thismonth = new Date().getMonth();
     siteConfig['$page.location$'] = window.location;
     siteConfig['$page:url$'] = href;
-    siteConfig['$page:path$'] = window.Location.split('?')[0];
+    siteConfig['$page:path$'] = window.location.split('?')[0];
     siteConfig['$page:previouspagename$'] = previouspagename;
     siteConfig['$page:previouspageurl$'] = prevurl;
-    siteConfig['$page:querystring$'] = window.Location.split('?')[1];
+    siteConfig['$page:querystring$'] = window.location.split('?')[1];
     siteConfig['$page:wordcount$'] = wordCount;
     siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
     siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 120) + 1).toString();
@@ -111,7 +112,9 @@ export function extractJsonLd(parsedJson) {
   }
   return parsedJson;
 }
-
+export function extractJsonTracker(parsedJson) {
+  return parsedJson;
+}
 function replaceTokens(data, text) {
   let ret = text;
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
@@ -127,10 +130,9 @@ async function handleMetadataTracking() {
     const tracker = siteConfig['$meta:tracking$'];
     const trackers = tracker.split(',');
     for (let i = 0; i < trackers.length; i += 1) {
-      const trackerUrl = trackers[i].trim();
+      let trackerUrl = trackers[i].trim();
       if (trackerUrl) {
-        trackerUrl= window.location.origin+'/config/tracking/datalayer'+trackerUrl+"view.json";
-      
+        trackerUrl= `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`; 
         try {
           const resp = await fetch(trackerUrl);
           if (!resp.ok) {
@@ -150,6 +152,7 @@ async function handleMetadataTracking() {
           console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
         }
       }
+    }
   }
 }
 async function handleMetadataJsonLd() {
@@ -192,7 +195,7 @@ async function handleMetadataJsonLd() {
       document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
     } catch (error) {
     // no schema.org for your content, just use the content as is
-      alert('Error processing JSON-LD metadata:', error);
+      logError('Error processing JSON-LD metadata:', error);
     }
   }
 }
