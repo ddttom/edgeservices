@@ -40,10 +40,10 @@ export async function loadConfiguration() {
     const thismonth = new Date().getMonth();
     siteConfig['$page.location$'] = window.location;
     siteConfig['$page:url$'] = href;
-    siteConfig['$page:path$'] = (window.location).split('?')[0];
+    siteConfig['$page:path$'] = window.location.href.split('?')[0];
     siteConfig['$page:previouspagename$'] = previouspagename;
     siteConfig['$page:previouspageurl$'] = prevurl;
-    siteConfig['$page:querystring$'] = (window.location).split('?')[1];
+    siteConfig['$page:querystring$'] = window.location.href.split('?')[1];
     siteConfig['$page:wordcount$'] = wordCount;
     siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
     siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 120) + 1).toString();
