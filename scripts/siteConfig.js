@@ -233,6 +233,7 @@ export async function initialize() {
       'contentindustry',
       'tracking',
       'category',
+      'contenttitle',
       'contenttype',
       'contenttopic',
       'contenttechnology',

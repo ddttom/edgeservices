@@ -5,8 +5,8 @@
         "pageCategory": "$meta:category$", 
         "pageURL": "$page:canonical$", 
         "pagePath": "$page:path$", 
-        "pageQueryString": "$page:querystring$", 
-        "previousPageName": "$page:previouspagename$", 
+        "pageQueryString": "++runtime++", 
+        "previousPageName": "++runtime++", 
         "previousPageURL": "$page:previouspageurl$", 
         "platformVersion": "$system:version$", 
         "platformPublishDate": "$system:date$"
