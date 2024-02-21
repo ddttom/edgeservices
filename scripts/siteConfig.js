@@ -38,9 +38,9 @@ export async function loadConfiguration() {
     const wordCount = text.split(/\s+/).filter(Boolean).length; // Split by whitespace and count
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
-    const winloc = window.location;
+    const winloc = window.location.href;
     let querystring = '';
-    if (winloc.indexof('?') > 0) {
+    if (winloc.indexOf('?') > 0) {
       querystring = winloc.split('?')[1];
     }
     siteConfig['$page.location$'] = winloc;
