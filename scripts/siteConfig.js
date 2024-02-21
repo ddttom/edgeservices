@@ -38,12 +38,17 @@ export async function loadConfiguration() {
     const wordCount = text.split(/\s+/).filter(Boolean).length; // Split by whitespace and count
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
-    siteConfig['$page.location$'] = window.location;
+    const winloc = window.location;
+    let querystring = '';
+    if (winloc.indexof('?') > 0) {{
+      querystring = winloc.split('?')[1];
+    }
+    siteConfig['$page.location$'] = winloc;
     siteConfig['$page:url$'] = href;
-    siteConfig['$page:path$'] = window.location.href.split('?')[0];
+    siteConfig['$page:path$'] = (winloc +'?').split('?')[0];
     siteConfig['$page:previouspagename$'] = previouspagename;
     siteConfig['$page:previouspageurl$'] = prevurl;
-    siteConfig['$page:querystring$'] = window.location.href.split('?')[1];
+    siteConfig['$page:querystring$'] = querystring;
     siteConfig['$page:wordcount$'] = wordCount;
     siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
     siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 120) + 1).toString();
