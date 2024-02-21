@@ -153,7 +153,7 @@ async function handleMetadataTracking() {
             buildscript += 'const url = new URL(datalayerpage.page.previousPageURL); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
             buildscript += 'datalayerpage.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
           }
-          script.innerHTML = `${buildscript};console.log(JSON.stringify(datalayer\${tracker}));`;
+          script.innerHTML = `${buildscript}console.log(JSON.stringify(datalayerpage));`;
           document.head.appendChild(script);
         } catch (error) {
           // eslint-disable-next-line no-console
