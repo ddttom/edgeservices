@@ -40,12 +40,12 @@ export async function loadConfiguration() {
     const thismonth = new Date().getMonth();
     const winloc = window.location;
     let querystring = '';
-    if (winloc.indexof('?') > 0) {{
+    if (winloc.indexof('?') > 0) {
       querystring = winloc.split('?')[1];
     }
     siteConfig['$page.location$'] = winloc;
     siteConfig['$page:url$'] = href;
-    siteConfig['$page:path$'] = (winloc +'?').split('?')[0];
+    siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
     siteConfig['$page:previouspagename$'] = previouspagename;
     siteConfig['$page:previouspageurl$'] = prevurl;
     siteConfig['$page:querystring$'] = querystring;
