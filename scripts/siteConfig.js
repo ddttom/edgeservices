@@ -31,24 +31,17 @@ export async function loadConfiguration() {
     if (canonicalLink) { // Make sure the element was found
       href = canonicalLink.href;
     }
-    const prevurl = document.referrer;
-    const url = new URL(prevurl);
-    const previouspagename = url.pathname;
+    const pname = new URL(window.location.href).pathname;
+
     const text = document.body.innerText; // Get the visible text content of the body
     const wordCount = text.split(/\s+/).filter(Boolean).length; // Split by whitespace and count
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
     const winloc = window.location.href;
-    let querystring = '';
-    if (winloc.indexOf('?') > 0) {
-      querystring = winloc.split('?')[1];
-    }
     siteConfig['$page.location$'] = winloc;
     siteConfig['$page:url$'] = href;
+    siteConfig['$page:name$'] = pname;
     siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
-    siteConfig['$page:previouspagename$'] = previouspagename;
-    siteConfig['$page:previouspageurl$'] = prevurl;
-    siteConfig['$page:querystring$'] = querystring;
     siteConfig['$page:wordcount$'] = wordCount;
     siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
     siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 120) + 1).toString();

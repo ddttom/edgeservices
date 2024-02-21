@@ -7,7 +7,7 @@
         "pagePath": "$page:path$", 
         "pageQueryString": "++runtime++", 
         "previousPageName": "++runtime++", 
-        "previousPageURL": "$page:previouspageurl$", 
+        "previousPageURL": "++runtime++", 
         "platformVersion": "$system:version$", 
         "platformPublishDate": "$system:date$"
     }
