@@ -1,7 +1,7 @@
 {
     "event": "contentView", 
     "content": { 
-        "contentType": "$page:contenttype$", 
+        "contentType": "$meta:contenttype$", 
         "contentTitle": "page:title$", 
         "contentTopic": "$meta:contenttopic$",
         "contentTechnology": "$meta:contenttechnology$", 

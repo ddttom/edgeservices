@@ -122,6 +122,36 @@ function replaceTokens(data, text) {
   return ret;
 }
 
+async function handleMetadataTracking() {
+  if (siteConfig['$meta:tracking$'] != null) {
+    const tracker = siteConfig['$meta:tracking$'];
+    const trackers = tracker.split(',');
+    for (let i = 0; i < trackers.length; i += 1) {
+      const trackerUrl = trackers[i].trim();
+      if (trackerUrl) {
+        trackerUrl= window.location.origin+'/config/tracking/datalayer'+trackerUrl+"view.json";
+      
+        try {
+          const resp = await fetch(trackerUrl);
+          if (!resp.ok) {
+            throw new Error(`Failed to fetch ${trackerUrl} content: ${resp.status}`);
+          }
+          let json = await resp.json();
+          json = extractJsonTracker(json);
+          let jsonString = JSON.stringify(json);
+          jsonString = replaceTokens(siteConfig, jsonString);
+          // Create and append a new script element with the processed JSON
+          const script = document.createElement('script');
+          script.type = 'application/tracker+json';
+          script.innerHTML = jsonString;
+          document.head.appendChild(script);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
+        }
+      }
+  }
+}
 async function handleMetadataJsonLd() {
   if (!document.querySelector('script[type="application/ld+json"]')) {
     let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
@@ -178,6 +208,7 @@ export async function initialize() {
   if (main) {
     removeCommentBlocks(main);
     handleMetadataJsonLd(main);
+    handleMetadataTracking(main);
     const metadataNames = [
       'pagereviewdate',
       'pageembargodate',
@@ -190,7 +221,14 @@ export async function initialize() {
       'contenttechnology',
       'contentcompany',
       'contentindustry',
-
+      'tracking',
+      'category',
+      'contenttype',
+      'contenttopic',
+      'contenttechnology',
+      'contentcompany',
+      'contentindustry',
+      'contentauthor',
     ];
     if (siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
