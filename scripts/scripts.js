@@ -27,6 +27,7 @@ initExternalImage();
 
 const setDelayed = true; // do (true) or not do (false) final load.
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element

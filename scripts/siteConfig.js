@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import {
   initialize as initClientConfig,
 } from './clientConfig.js';
@@ -22,23 +23,34 @@ export async function loadConfiguration() {
     for (const entry of jsonData.data) {
       siteConfig[entry.Item] = entry.Value;
     }
-    const today = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString();
+    const today = now.split('T')[0];
     let href = '';
     const canonicalLink = document.querySelector('link[rel="canonical"]');
     if (canonicalLink) { // Make sure the element was found
       href = canonicalLink.href;
     }
-
+    const prevurl = document.referrer;
+    const url = new URL(prevurl);
+    const previouspagename = url.pathname;
     const text = document.body.innerText; // Get the visible text content of the body
     const wordCount = text.split(/\s+/).filter(Boolean).length; // Split by whitespace and count
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
+    siteConfig['$page.location$'] = window.location;
+    siteConfig['$page:url$'] = href;
+    siteConfig['$page:path$'] = window.Location.split('?')[0];
+    siteConfig['$page:previouspagename$'] = previouspagename;
+    siteConfig['$page:previouspageurl$'] = prevurl;
+    siteConfig['$page:querystring$'] = window.Location.split('?')[1];
     siteConfig['$page:wordcount$'] = wordCount;
     siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
     siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 120) + 1).toString();
     siteConfig['$page:title$'] = document.title;
     siteConfig['$page:canonical$'] = href;
+    siteConfig['$system:platformVersion$'] = 'Franklin++ 1.0.0';
     siteConfig['$system:date$'] = today;
+    siteConfig['$system:isodate$'] = now;
     siteConfig['$system:time$'] = new Date().toLocaleTimeString();
     siteConfig['$system:timezone$'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
     siteConfig['$system:locale$'] = Intl.DateTimeFormat().resolvedOptions().locale;
@@ -173,6 +185,11 @@ export async function initialize() {
       'pagecopyright',
       'pagecopyright-cc',
       'videourl',
+      'contenttype',
+      'contenttopic',
+      'contenttechnology',
+      'contentcompany',
+      'contentindustry',
 
     ];
     if (siteConfig['$system:addbyline$'] === 'true') {

@@ -1,0 +1,13 @@
+{
+    "event": "contentView", 
+    "content": { 
+        "contentType": "$page:contenttype$", 
+        "contentTitle": "page:title$", 
+        "contentTopic": "$meta:contenttopic$",
+        "contentTechnology": "$meta:contenttechnology$", 
+        "contentCompany": "$meta:contentcompany$", 
+        "contentIndustry": "meta:contentindustry$", 
+        "contentAuthor": "$meta:author$",  
+        "contentPublishDate": "$system:isodate$"
+    }
+}

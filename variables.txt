@@ -1,0 +1,39 @@
+$company:email$: "info@reply.com"
+$company:logo$: "https://www.comwrap.com/etc.clientlibs/comwrap/clientlibs/clientlib-site/resources/images/logos/cw-reply-logo.svg"
+$company:name$: "Comwrap Reply UK"
+$company:telephone$: "01904 704552"
+$company:url$:"https://www.comwrap.uk"
+$meta:author$: "Comwrap Reply UK"
+$meta:description$: "Demo Project"
+$meta:json-ld$: "owner"
+$meta:longdescription$: "This is a long description; it shows that the json-ld can read it About the page not the component"
+$meta:referrer$: "no-referrer-when-downgrade"
+$meta:viewport$: "width=device-width, initial-scale=1"
+$og:description$: "Demo Project"
+$og:image$: "https://main--edgeservices--ddttom.hlx.page/media_1569cec12b94846296e92cdf0b08654d8088a1221.png?width=1200&format=pjpg&optimize=medium"
+$og:image_secure_url$: "https://main--edgeservices--ddttom.hlx.page/media_1569cec12b94846296e92cdf0b08654d8088a1221.png?width=1200&format=pjpg&optimize=medium"
+$og:title$: "Home | AEM demo"
+$og:url$: "https://main--edgeservices--ddttom.hlx.page/"
+$page:canonical$: "https://main--edgeservices--ddttom.hlx.page/"
+$page:linkcount$: 5
+$page:readspeed$: "1"
+$page:title$: "Home | AEM demo"
+$page:wordcount$: 0
+$system:date$: "2024-02-21"
+$system:dateinenglish$: "February 21, 2024"
+$system:day$: 21
+$system:hour$: 13
+$system:locale$: "en-GB"
+$system:millisecond$: 693
+$system:minute$: 36
+$system:month$: 2
+$system:monthinfull$: "February"
+$system:second$: 23
+$system:time$: "13:36:23"
+$system:timezone$: "Europe/London"
+$system:year$: 2024
+$twitter:card$: "summary_large_image"
+$twitter:description$: "Demo Project"
+$twitter:image$: "https://main--edgeservices--ddttom.hlx.page/media_1569cec12b94846296e92cdf0b08654d8088a1221.png?width=1200&format=pjpg&optimize=medium"
+$twitter:title$: "Home | AEM demo"
+

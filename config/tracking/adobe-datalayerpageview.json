@@ -1,0 +1,14 @@
+{
+    "event": "pageView", 
+    "page": { 
+        "pageName": "$page:name$", 
+        "pageCategory": "$meta:category$", 
+        "pageURL": "$page:canonical$", 
+        "pagePath": "$page:path$", 
+        "pageQueryString": "$page:querystring$", 
+        "previousPageName": "$page:previouspagename$", 
+        "previousPageURL": "$page:previouspageurl$", 
+        "platformVersion": "$system:version$", 
+        "platformPublishDate": "$system:date$"
+    }
+}
