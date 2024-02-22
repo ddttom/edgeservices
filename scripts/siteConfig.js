@@ -4,12 +4,10 @@ import {
   initialize as initClientConfig,
 } from './clientConfig.js';
 
-export const siteConfig = {};
+import { handleMetadataTracking } from './adobe-metadata.js';
+import { replaceTokens, logError } from './meta-helper.js';
 
-export function logError(message) {
-  // eslint-disable-next-line no-console
-  console.error(message);
-}
+export const siteConfig = {};
 
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
@@ -113,56 +111,6 @@ export function extractJsonLd(parsedJson) {
   }
   return parsedJson;
 }
-export function extractJsonTracker(parsedJson) {
-  return parsedJson;
-}
-function replaceTokens(data, text) {
-  let ret = text;
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
-  for (const key in data) {
-    const value = data[key];
-    ret = ret.replaceAll(key, value);
-  }
-  return ret;
-}
-
-async function handleMetadataTracking() {
-  if (siteConfig['$meta:tracking$'] != null) {
-    const trackerlist = siteConfig['$meta:tracking$'];
-    const trackers = trackerlist.split(',');
-    for (let i = 0; i < trackers.length; i += 1) {
-      const tracker = trackers[i].trim();
-      let trackerUrl = tracker;
-      if (trackerUrl) {
-        trackerUrl = `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`;
-        try {
-          const resp = await fetch(trackerUrl);
-          if (!resp.ok) {
-            throw new Error(`Failed to fetch ${trackerUrl} content: ${resp.status}`);
-          }
-          const json = await resp.json();
-          let jsonString = JSON.stringify(json);
-          jsonString = replaceTokens(siteConfig, jsonString);
-          // Create and append a new script element with the processed JSON
-          const script = document.createElement('script');
-          script.type = 'text/javascript';
-          let buildscript = `let datalayer${tracker} = ${jsonString};`;
-          if (tracker === 'page') {
-            buildscript += 'datalayerpage.page.pageQueryString = window.location.search;';
-            buildscript += 'datalayerpage.page.previousPageURL = document.referrer;';
-            buildscript += 'const url = new URL(datalayerpage.page.previousPageURL); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
-            buildscript += 'datalayerpage.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
-          }
-          script.innerHTML = `${buildscript}'; // console.log(JSON.stringify(datalayerpage));`;
-          document.head.appendChild(script);
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
-        }
-      }
-    }
-  }
-}
 async function handleMetadataJsonLd() {
   if (!document.querySelector('script[type="application/ld+json"]')) {
     let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
@@ -215,53 +163,51 @@ export function removeCommentBlocks() {
 export async function initialize() {
   await loadConfiguration();
   initClientConfig();
-  const main = document.querySelector('main');
-  if (main) {
-    removeCommentBlocks(main);
-    handleMetadataJsonLd(main);
-    handleMetadataTracking(main);
-    const metadataNames = [
-      'pagereviewdate',
-      'pageembargodate',
-      'pagepublisheddate',
-      'pagecopyright',
-      'pagecopyright-cc',
-      'videourl',
-      'contenttype',
-      'contenttopic',
-      'contenttechnology',
-      'contentcompany',
-      'contentindustry',
-      'tracking',
-      'category',
-      'contenttitle',
-      'contenttype',
-      'contenttopic',
-      'contenttechnology',
-      'contentcompany',
-      'contentindustry',
-      'contentauthor',
-    ];
-    if (siteConfig['$system:addbyline$'] === 'true') {
-      const firstH1 = document.querySelector('h1');
-      if (firstH1) {
-        const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-        // Append the constructed string to the h1 element's current content
-        const newElement = document.createElement('div');
-        newElement.className = 'byLine';
-        newElement.innerHTML = appendString;
-        firstH1.insertAdjacentElement('afterend', newElement);
-      }
-    }
-    // Loop through the array of metadata names
-    metadataNames.forEach((name) => {
-      // Select all elements with the specified name attribute
-      const elements = document.querySelectorAll(`meta[name="${name}"]`);
+  removeCommentBlocks();
+  handleMetadataJsonLd();
+  handleMetadataTracking(siteConfig);
+  const metadataNames = [
+    'pagereviewdate',
+    'pageembargodate',
+    'pagepublisheddate',
+    'pagecopyright',
+    'pagecopyright-cc',
+    'videourl',
+    'contenttype',
+    'contenttopic',
+    'contenttechnology',
+    'contentcompany',
+    'contentindustry',
+    'tracking',
+    'category',
+    'contenttitle',
+    'contenttype',
+    'contenttopic',
+    'contenttechnology',
+    'contentcompany',
+    'contentindustry',
+    'contentauthor',
+  ];
 
-      // Loop through the NodeList of elements and remove each one
-      elements.forEach((element) => {
-        element.remove();
-      });
-    });
+  if (siteConfig['$system:addbyline$'] === 'true') {
+    const firstH1 = document.querySelector('h1');
+    if (firstH1) {
+      const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+      // Append the constructed string to the h1 element's current content
+      const newElement = document.createElement('div');
+      newElement.className = 'byLine';
+      newElement.innerHTML = appendString;
+      firstH1.insertAdjacentElement('afterend', newElement);
+    }
   }
+  // Loop through the array of metadata names
+  metadataNames.forEach((name) => {
+    // Select all elements with the specified name attribute
+    const elements = document.querySelectorAll(`meta[name="${name}"]`);
+
+    // Loop through the NodeList of elements and remove each one
+    elements.forEach((element) => {
+      element.remove();
+    });
+  });
 }
