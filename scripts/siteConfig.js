@@ -184,8 +184,8 @@ export async function initialize() {
     'contentauthor',
     'lang',
   ];
-  if (siteConfig['$meta:"lang$']) {
-    document.querySelector('html').setAttribute('lang', siteConfig['$meta:"lang$']);
+  if (siteConfig['$meta:lang$']) {
+    document.querySelector('html').setAttribute('lang', siteConfig['$meta:lang$']);
     if (siteConfig['$meta:langs$'] === 'ar') {
       document.querySelector('html').setAttribute('dir', 'rtl');
     }
