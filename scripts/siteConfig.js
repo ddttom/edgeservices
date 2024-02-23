@@ -181,14 +181,15 @@ export async function initialize() {
     'tracking',
     'category',
     'contenttitle',
-    'contenttype',
-    'contenttopic',
-    'contenttechnology',
-    'contentcompany',
-    'contentindustry',
     'contentauthor',
+    'lang',
   ];
+  if (siteConfig['$meta:"lang$']) {
+    document.querySelector('html').setAttribute('lang', siteConfig['$meta:"lang$']);
+    if (siteConfig['$meta:langs$'] === 'ar') {
+      document.querySelector('html').setAttribute('dir', 'rtl');
 
+  }
   if (siteConfig['$system:addbyline$'] === 'true') {
     const firstH1 = document.querySelector('h1');
     if (firstH1) {
