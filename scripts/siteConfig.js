@@ -186,7 +186,7 @@ export async function initialize() {
   ];
   if (siteConfig['$meta:lang$']) {
     document.querySelector('html').setAttribute('lang', siteConfig['$meta:lang$']);
-    if (siteConfig['$meta:langs$'] === 'ar') {
+    if (siteConfig['$meta:lang$'] === 'ar') {
       document.querySelector('html').setAttribute('dir', 'rtl');
     }
   }
