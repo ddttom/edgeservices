@@ -614,11 +614,17 @@ async function loadBlocks(main) {
  */
 function decorateBlock(block) {
   const shortBlockName = block.classList[0];
+  let intentBlockName = '';
+  if (block.classList.length > 1) {
+    // eslint-disable-next-line prefer-destructuring
+    intentBlockName = block.classList[1];
+  }
   if (shortBlockName) {
     block.classList.add('block');
     block.dataset.blockName = shortBlockName;
     block.dataset.blockStatus = 'initialized';
     const blockWrapper = block.parentElement;
+    if (intentBlockName) blockWrapper.classList.add(`${intentBlockName}-wrapper`);
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
     if (section) section.classList.add(`${shortBlockName}-container`);
