@@ -188,7 +188,7 @@ export async function initialize() {
     document.querySelector('html').setAttribute('lang', siteConfig['$meta:"lang$']);
     if (siteConfig['$meta:langs$'] === 'ar') {
       document.querySelector('html').setAttribute('dir', 'rtl');
-
+    }
   }
   if (siteConfig['$system:addbyline$'] === 'true') {
     const firstH1 = document.querySelector('h1');
