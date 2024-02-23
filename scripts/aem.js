@@ -627,7 +627,10 @@ function decorateBlock(block) {
     if (intentBlockName) blockWrapper.classList.add(`${intentBlockName}-wrapper`);
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
-    if (section) section.classList.add(`${shortBlockName}-container`);
+    if (section) {
+      section.classList.add(`${shortBlockName}-container`);
+      section.classList.add(`${intentBlockName}-container`);
+    }
   }
 }
 
