@@ -111,6 +111,7 @@ export function extractJsonLd(parsedJson) {
   }
   return parsedJson;
 }
+
 async function handleMetadataJsonLd() {
   if (!document.querySelector('script[type="application/ld+json"]')) {
     let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
@@ -192,23 +193,25 @@ export async function initialize() {
   }
   if (siteConfig['$system:addbyline$'] === 'true') {
     const firstH1 = document.querySelector('h1');
-    if (firstH1) {
-      const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-      // Append the constructed string to the h1 element's current content
-      const newElement = document.createElement('div');
-      newElement.className = 'byLine';
-      newElement.innerHTML = appendString;
-      firstH1.insertAdjacentElement('afterend', newElement);
+    if (siteConfig['$system:addbyline$'] === 'true') {
+      if (firstH1) {
+        const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+        // Append the constructed string to the h1 element's current content
+        const newElement = document.createElement('div');
+        newElement.className = 'byLine';
+        newElement.innerHTML = appendString;
+        firstH1.insertAdjacentElement('afterend', newElement);
+      }
     }
-  }
-  // Loop through the array of metadata names
-  metadataNames.forEach((name) => {
-    // Select all elements with the specified name attribute
-    const elements = document.querySelectorAll(`meta[name="${name}"]`);
+    // Loop through the array of metadata names
+    metadataNames.forEach((name) => {
+      // Select all elements with the specified name attribute
+      const elements = document.querySelectorAll(`meta[name="${name}"]`);
 
-    // Loop through the NodeList of elements and remove each one
-    elements.forEach((element) => {
-      element.remove();
+      // Loop through the NodeList of elements and remove each one
+      elements.forEach((element) => {
+        element.remove();
+      });
     });
-  });
+  }
 }
