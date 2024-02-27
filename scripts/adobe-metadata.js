@@ -28,7 +28,7 @@ export async function handleMetadataTracking(siteConfig) {
           if (tracker === 'page') {
             buildscript = 'window.cms.track["page"].pageQueryString = window.location.search;';
             buildscript += 'window.cms.track["page"].previousPageURL = document.referrer;';
-            buildscript += 'const url = new URL(datalayerpage.page.previousPageURL); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
+            buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
             buildscript += 'window.cms.track["page"].previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
           }
           if (buildscript.length > 0) {
