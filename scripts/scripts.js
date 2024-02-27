@@ -22,6 +22,10 @@ import {
   initialize as initExternalImage,
 } from './externalImage.js';
 
+import {
+  initialize as initLaunch,
+} from './launch.js';
+
 initSiteConfig();
 initExternalImage();
 
@@ -140,6 +144,7 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
+  initLaunch();
   // eslint-disable-next-line import/no-cycle
   if (setDelayed) {
     window.setTimeout(() => import('./delayed.js'), 3000);
