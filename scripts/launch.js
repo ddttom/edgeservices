@@ -27,6 +27,10 @@ async function loadScript(src, attrs) {
 
 // eslint-disable-next-line import/prefer-default-export
 export async function initialize() {
-  const attrs = ['id="Cookiebot"', 'data-cbid="747c7864-bf4d-4b8f-9e92-69d5eb6be267"', 'data-blockingmode="auto"'];
-  loadScript('https://consent.cookiebot.com/uc.js', attrs);
+  const attrs = {
+    id: 'Cookiebot',
+    'data-cbid': '747c7864-bf4d-4b8f-9e92-69d5eb6be267',
+    'data-blockingmode': 'auto',
+  };
+  await loadScript('https://consent.cookiebot.com/uc.js', attrs);
 }
