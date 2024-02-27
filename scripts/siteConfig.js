@@ -93,8 +93,17 @@ export async function loadConfiguration() {
   }
 
   // make the required globals
-  window.opt.analyticsdelay = siteConfig['$meta:analyticsdelay2$'] || 3000;
-  window.opt.bubble = siteConfig['$system.bubbleapikey$'] || '';
+  if (siteConfig['$meta:analyticsdelay2$'] === undefined) {
+    window.opt.analyticsdelay = 3000;
+  } else {
+    window.opt.analyticsdelay = siteConfig['$meta:analyticsdelay2$'];
+  }
+  if (siteConfig['$system.bubbleapikey$'] === undefined) {
+    window.opt.bubble = '';
+  } else {
+    window.opt.bubble = siteConfig['$system.bubbleapikey$'];
+  }
+
   return siteConfig;
 }
 
