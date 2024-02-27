@@ -11,7 +11,7 @@ export async function handleMetadataTracking(siteConfig) {
       let trackerUrl = tracker;
       if (trackerUrl) {
         trackerUrl = `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`;
-        window.cms.jsonObj = {};
+        window.cms.track = {};
         try {
           // eslint-disable-next-line no-await-in-loop
           const resp = await fetch(trackerUrl);
@@ -22,8 +22,6 @@ export async function handleMetadataTracking(siteConfig) {
           let jsonString = JSON.stringify(json);
           jsonString = replaceTokens(siteConfig, jsonString);
           json = JSON.parse(jsonString);
-          if (!window.cms) window.cms = { track: {} }; // Ensure cms.track exists
-          window.cms.track[tracker] = json;
           window.cms.track[tracker] = json;
           // Create and append a new script element with the processed JSON
           let buildscript = '';
