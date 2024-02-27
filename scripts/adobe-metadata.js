@@ -23,7 +23,7 @@ export async function handleMetadataTracking(siteConfig) {
           // Create and append a new script element with the processed JSON
           const script = document.createElement('script');
           script.type = 'text/javascript';
-          let buildscript = `let window.datalayer${tracker} = ${jsonString};`;
+          let buildscript = `window.datalayer${tracker} = ${jsonString};`;
           if (tracker === 'page') {
             buildscript += 'window.datalayerpage.page.pageQueryString = window.location.search;';
             buildscript += 'window.datalayerpage.page.previousPageURL = document.referrer;';
