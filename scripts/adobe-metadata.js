@@ -22,6 +22,8 @@ export async function handleMetadataTracking(siteConfig) {
           let jsonString = JSON.stringify(json);
           jsonString = replaceTokens(siteConfig, jsonString);
           json = JSON.parse(jsonString);
+          if (!window.cms) window.cms = { track: {} }; // Ensure cms.track exists
+          window.cms.track[tracker] = json;
           window.cms.track[tracker] = json;
           // Create and append a new script element with the processed JSON
           let buildscript = '';
