@@ -23,12 +23,14 @@ export async function handleMetadataTracking(siteConfig) {
           // Create and append a new script element with the processed JSON
           const script = document.createElement('script');
           script.type = 'text/javascript';
-          let buildscript = `window.datalayer${tracker} = ${jsonString};`;
+          script.textContent = jsonString;
+
+          let buildscript = `window.opt.datalayer${tracker} = ${jsonString};`;
           if (tracker === 'page') {
-            buildscript += 'window.datalayerpage.page.pageQueryString = window.location.search;';
-            buildscript += 'window.datalayerpage.page.previousPageURL = document.referrer;';
+            buildscript += 'window.opt.datalayerpage.page.pageQueryString = window.location.search;';
+            buildscript += 'window.opt.datalayerpage.page.previousPageURL = document.referrer;';
             buildscript += 'const url = new URL(datalayerpage.page.previousPageURL); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
-            buildscript += 'window.datalayerpage.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
+            buildscript += 'window.opt.datalayerpage.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
           }
           script.innerHTML = `${buildscript}'; // console.log(JSON.stringify(window.datalayerpage));`;
           document.head.appendChild(script);
