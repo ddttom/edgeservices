@@ -93,6 +93,7 @@ export async function loadConfiguration() {
   }
 
   // make the required globals
+  window.opt = {};
   if (siteConfig['$meta:analyticsdelay2$'] === undefined) {
     window.opt.analyticsdelay = 3000;
   } else {
