@@ -6,7 +6,7 @@ import { initialize as initLaunch } from './launch.js';
 sampleRUM('cwv');
 // add more delayed functionality here
 initLaunch();
-window.danteEmbed = `https://chat.dante-ai.com/embed?${window.opt.bubble}&mode=false&bubble=true&image=null&bubbleopen=false`;
+window.danteEmbed = `https://chat.dante-ai.com/embed?${window.cms.bubble}&mode=false&bubble=true&image=null&bubbleopen=false`;
 
 loadScript('https://chat.dante-ai.com/bubble-embed.js');
 loadScript('https://chat.dante-ai.com/dante-embed.js');
