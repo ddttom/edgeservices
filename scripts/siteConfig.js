@@ -89,8 +89,12 @@ export async function loadConfiguration() {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Configuration load error: ${error.message}`);
-    throw error; // Rethrow for potential handling at a higher level
+    throw error;
   }
+
+  // make the required globals
+  window.opt.analyticsdelay = siteConfig['$meta:analyticsdelay2$'] || 3000;
+  window.opt.bubble = siteConfig['$system.bubbleapikey$'] || '';
   return siteConfig;
 }
 
@@ -184,6 +188,7 @@ export async function initialize() {
     'contenttitle',
     'contentauthor',
     'lang',
+    'analyticsdelay',
   ];
   if (siteConfig['$meta:lang$']) {
     document.querySelector('html').setAttribute('lang', siteConfig['$meta:lang$']);

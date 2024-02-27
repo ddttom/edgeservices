@@ -22,12 +22,6 @@ import {
   initialize as initExternalImage,
 } from './externalImage.js';
 
-import {
-  initialize as initLaunch,
-} from './launch.js';
-
-window.launcher = false;
-
 initSiteConfig();
 initExternalImage();
 
@@ -146,19 +140,16 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  if (window.launcher === true) {
-    initLaunch();
-  }
+  // load anything that can be postponed to the latest here
   // eslint-disable-next-line import/no-cycle
   if (setDelayed) {
-    window.setTimeout(() => import('./delayed.js'), 3000);
+    window.setTimeout(() => import('./delayed.js'), window.opt.analyticsdelay);
   }
-  // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('suppressFrame')) {
+  if (urlParams.get('suppressFrame') || window.location.pathname.includes('tools/sidekick')) {
     window.hlx.suppressFrame = true;
     document.body.querySelector('header').remove();
     document.body.querySelector('footer').remove();
