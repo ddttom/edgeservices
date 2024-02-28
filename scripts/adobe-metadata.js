@@ -30,7 +30,7 @@ export async function handleMetadataTracking(siteConfig) {
           const fraction = `window.cms.track["${tracker}"] = ${jsonString};\n`;
           buildscript += fraction;
           if (tracker === 'page') {
-            buildscript += 'window.cms.track.page.pageQueryString = ""';
+            buildscript += 'window.cms.track.page.pageQueryString = "";\n';
             buildscript += 'if (window.location.search) window.cms.track.page.pageQueryString = window.location.search;\n';
             buildscript += 'window.cms.track.page.previousPageURL = document.referrer;\n';
             buildscript += 'const url = new URL(document.referrer);\n';
