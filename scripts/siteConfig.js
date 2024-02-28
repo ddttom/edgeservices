@@ -40,7 +40,7 @@ export async function loadConfiguration() {
     const winloc = window.location.href;
     let environment = 'unknown';
     if (window.location.href.includes('hlx.page')) {
-      environment = 'staging';
+      environment = 'stage';
     }
     if (window.location.href.includes('hlx.live')) {
       environment = 'production';
@@ -74,7 +74,37 @@ export async function loadConfiguration() {
     siteConfig['$system:second$'] = new Date().getSeconds();
     siteConfig['$system:millisecond$'] = new Date().getMilliseconds();
     siteConfig['$system:dateinenglish$'] = `${siteConfig['$system:monthinfull$']} ${siteConfig['$system:day$']}, ${siteConfig['$system:year$']}`;
+    const metaTitle = document.querySelector('meta[name="title"]');
 
+    if (!metaTitle) {
+      // 1. Attempt to find the first H1 tag
+      let h1 = document.querySelector('h1');
+      // 2. If no H1 found, get the first text node
+      if (!h1) {
+        const findFirstText = (node) => {
+          // eslint-disable-next-line no-restricted-syntax
+          for (const child of node.childNodes) {
+            if (child.nodeType === Node.TEXT_NODE && child.textContent.trim()) {
+              return child;
+            }
+            const found = findFirstText(child);
+            if (found) return found;
+          }
+          return null; // No text node found at all
+        };
+        const firstText = findFirstText(document.body);
+        h1 = firstText; // Treat the text node as a source
+      }
+      // 3. Extract the first line, with basic trimming
+      if (h1) {
+        const firstLine = h1.textContent.split('\n')[0].trim();
+        // 4. Create and set the meta tag
+        const title = document.createElement('meta');
+        title.name = 'title';
+        title.content = firstLine;
+        document.head.appendChild(title);
+      }
+    }
     const metaTags = document.querySelectorAll('meta');
 
     metaTags.forEach((metaTag) => {
@@ -220,13 +250,15 @@ export async function initialize() {
   if (siteConfig['$system:addbyline$'] === 'true') {
     const firstH1 = document.querySelector('h1');
     if (siteConfig['$system:addbyline$'] === 'true') {
-      if (firstH1) {
-        const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-        // Append the constructed string to the h1 element's current content
-        const newElement = document.createElement('div');
-        newElement.className = 'byLine';
-        newElement.innerHTML = appendString;
-        firstH1.insertAdjacentElement('afterend', newElement);
+      if (!siteConfig['$meta:suppressbyline$']) {
+        if (firstH1) {
+          const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+          // Append the constructed string to the h1 element's current content
+          const newElement = document.createElement('div');
+          newElement.className = 'byLine';
+          newElement.innerHTML = appendString;
+          firstH1.insertAdjacentElement('afterend', newElement);
+        }
       }
     }
     // Loop through the array of metadata names
