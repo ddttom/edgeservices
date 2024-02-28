@@ -28,12 +28,12 @@ export async function handleMetadataTracking(siteConfig) {
           jsonString = replaceTokens(json, jsonString);
           window.cms.track[tracker] = jsonString;
           if (tracker === 'page') {
-            buildscript += 'window.cms.track.page.pageQueryString = window.location.search;';
-            buildscript += 'window.cms.track.page.previousPageURL = document.referrer;';
-            buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
-            buildscript += 'window.cms.track.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
+            buildscript += 'window.cms.track.page.pageQueryString = window.location.search;\n';
+            buildscript += 'window.cms.track.page.previousPageURL = document.referrer;\n';
+            buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;\n';
+            buildscript += 'window.cms.track.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;\n';
           }
-          const fraction = `window.cms.track["${tracker}"] = ${jsonString};`;
+          const fraction = `window.cms.track["${tracker}"] = ${jsonString};\n`;
           buildscript += fraction;
         } catch (error) {
           // eslint-disable-next-line no-console
