@@ -25,7 +25,7 @@ export async function handleMetadataTracking(siteConfig) {
           }
           const json = await resp.json();
           let jsonString = JSON.stringify(json);
-          jsonString = replaceTokens(json, jsonString);
+          jsonString = replaceTokens(siteConfig, jsonString);
           window.cms.track[tracker] = jsonString;
           if (tracker === 'page') {
             buildscript += '\nwindow.cms.track.page.pageQueryString = window.location.search;\n';
