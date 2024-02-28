@@ -24,8 +24,8 @@ export async function handleMetadataTracking(siteConfig) {
             throw new Error(`Failed to fetch ${trackerUrl} content: ${resp.status}`);
           }
           const json = await resp.json();
-          const jsonString = JSON.stringify(json);
-          window.cms.track[tracker] = replaceTokens(siteConfig, jsonString);
+          const jsonString = replaceTokens(JSON.stringify(json));
+          window.cms.track[tracker] = jsonString;
           if (tracker === 'page') {
             buildscript += 'window.cms.track["page"] = {};';
             buildscript += 'window.cms.track["page"].pageQueryString = window.location.search;';
