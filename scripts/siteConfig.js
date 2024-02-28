@@ -21,7 +21,7 @@ export async function loadConfiguration() {
     const jsonData = await response.json();
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of jsonData.data) {
-      const key = entry.Key;
+      const key = entry.Item;
       let formattedKey = key.replace(/\./g, ':');
       formattedKey = formattedKey.replace(/\$/g, '');
       formattedKey = `$${formattedKey}$`;
