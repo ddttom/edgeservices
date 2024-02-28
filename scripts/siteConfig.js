@@ -109,8 +109,8 @@ export async function loadConfiguration() {
   let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
   const bubbleapikey = siteConfig['$system:bubbleapikey$'] === undefined ? '' : siteConfig['$system:bubbleapikey$'];
-  buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${bubbleapikey}"`;
-  buildscript += `window.cmsplus.environment = ${window.cmsplus.environment}\n`;
+  buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${bubbleapikey}";\n`;
+  buildscript += `window.cmsplus.environment = ${window.cmsplus.environment};\n`;
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.textContent = buildscript;
