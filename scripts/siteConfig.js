@@ -21,7 +21,7 @@ export async function loadConfiguration() {
     const jsonData = await response.json();
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of jsonData.data) {
-      const formattedKey = `$${entry.Key.replace(/\./g, ':').replace(/\$/g, '')}$`;
+      const formattedKey = `$${(entry.Key).replace(/\./g, ':').replace(/\$/g, '')}$`;
       // Assigning entry.Value to siteConfig with the formatted key, replacing 'dots' with 'colons and ensuring $ is used
       siteConfig[formattedKey] = entry.Value;
     }
