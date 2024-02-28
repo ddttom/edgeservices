@@ -40,10 +40,10 @@ export async function handleMetadataTracking(siteConfig) {
           console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
         }
       }
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.textContent = buildscript;
-      document.head.appendChild(script);
     }
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.textContent = buildscript;
+    document.head.appendChild(script);
   }
 }
