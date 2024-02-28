@@ -10,13 +10,13 @@ export async function handleMetadataTracking(siteConfig) {
   if (siteConfig['$meta:tracking$'] != null) {
     const trackerlist = siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
-    let buildscript = ''; // window.cms.track = window.cms.track || {};';
+    let buildscript = ''; // window.cmsplus.track = window.cmsplus.track || {};';
     for (let i = 0; i < trackers.length; i += 1) {
       const tracker = trackers[i].trim();
       let trackerUrl = tracker;
       if (trackerUrl) {
         trackerUrl = `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`;
-        window.cms.track = {};
+        window.cmsplus.track = {};
         try {
           // eslint-disable-next-line no-await-in-loop
           const resp = await fetch(trackerUrl);
@@ -26,16 +26,16 @@ export async function handleMetadataTracking(siteConfig) {
           const json = await resp.json();
           let jsonString = JSON.stringify(json);
           jsonString = replaceTokens(siteConfig, jsonString);
-          window.cms.track[tracker] = jsonString;
-          const fraction = `window.cms.track["${tracker}"] = ${jsonString};\n`;
+          window.cmsplus.track[tracker] = jsonString;
+          const fraction = `window.cmsplus.track["${tracker}"] = ${jsonString};\n`;
           buildscript += fraction;
           if (tracker === 'page') {
-            buildscript += 'window.cms.track.page.pageQueryString = "";\n';
-            buildscript += 'if (window.location.search) window.cms.track.page.pageQueryString = window.location.search;\n';
-            buildscript += 'window.cms.track.page.previousPageURL = document.referrer;\n';
+            buildscript += 'window.cmsplus.track.page.pageQueryString = "";\n';
+            buildscript += 'if (window.location.search) window.cmsplus.track.page.pageQueryString = window.location.search;\n';
+            buildscript += 'window.cmsplus.track.page.previousPageURL = document.referrer;\n';
             buildscript += 'const url = new URL(document.referrer);\n';
             buildscript += 'pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;\n';
-            buildscript += 'window.cms.track.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;\n';
+            buildscript += 'window.cmsplus.track.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;\n';
           }
         } catch (error) {
           // eslint-disable-next-line no-console

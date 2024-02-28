@@ -143,7 +143,7 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
   // eslint-disable-next-line import/no-cycle
   if (setDelayed) {
-    window.setTimeout(() => import('./delayed.js'), window.cms.analyticsdelay);
+    window.setTimeout(() => import('./delayed.js'), window.cmsplus.analyticsdelay);
   }
 }
 
