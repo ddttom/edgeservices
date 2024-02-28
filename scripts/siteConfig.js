@@ -53,7 +53,7 @@ export async function loadConfiguration() {
     siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
     siteConfig['$page:wordcount$'] = wordCount;
     siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
-    siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 120) + 1).toString();
+    siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 140) + 1).toString();
     siteConfig['$page:title$'] = document.title;
     siteConfig['$page:canonical$'] = href;
     siteConfig['$system:platformVersion$'] = 'Franklin++ 1.0.0';
