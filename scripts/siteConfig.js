@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable prefer-destructuring */
 import {
@@ -20,7 +21,9 @@ export async function loadConfiguration() {
     const jsonData = await response.json();
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of jsonData.data) {
-      siteConfig[`$${entry.Key.replaceAll('.', ':').replaceAll('$', '')}$`] = entry.Value;
+      const formattedKey = `$${entry.Key.replace(/\./g, ':').replace(/\$/g, '')}$`;
+      // Assigning entry.Value to siteConfig with the formatted key, replacing 'dots' with 'colons and ensuring $ is used
+      siteConfig[formattedKey] = entry.Value;
     }
     const now = new Date().toISOString();
     const today = now.split('T')[0];
