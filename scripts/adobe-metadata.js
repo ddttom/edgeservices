@@ -33,7 +33,8 @@ export async function handleMetadataTracking(siteConfig) {
             buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
             buildscript += 'window.cms.track["page"].previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
           }
-          buildscript += `window.cms.track["${tracker}"] = ${jsonString})};`;
+          const fraction = `window.cms.track["${tracker}"] = ${jsonString})};`;
+          buildscript += fraction;
         } catch (error) {
           // eslint-disable-next-line no-console
           console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
