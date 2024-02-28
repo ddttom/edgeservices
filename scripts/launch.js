@@ -22,4 +22,11 @@ export async function initialize() {
   await loadScript('https://consent.cookiebot.com/uc.js', attrs);
   await loadScript('https://assets.adobedtm.com/d4e187856f02/84a8f19b48f1/launch-445ea36a9b64-development.min.js', {});
   await loadScript('https://try.abtasty.com/54d41c1c745275ad6d723c2122a0693d.js', {});
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  if (window.cmsplus.track.page) {
+    window.adobeDataLayer.push(window.cmsplus.track.page);
+  }
+  if (window.cmsplus.track.view) {
+    window.adobeDataLayer.push(window.cmsplus.track.view);
+  }
 }
