@@ -32,7 +32,7 @@ export async function handleMetadataTracking(siteConfig) {
             buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
             buildscript += 'window.cms.track["page"].previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
           }
-          buildscript += `window.cms.track[${tracker}] = ${JSON.stringify(window.cms.track[tracker])};`;
+          buildscript += `window.cms.track["${tracker}"] = ${JSON.stringify(window.cms.track[tracker])};`;
           const script = document.createElement('script');
           script.type = 'text/javascript';
           script.textContent = jsonString;
