@@ -247,17 +247,19 @@ export async function initialize() {
       document.querySelector('html').setAttribute('dir', 'rtl');
     }
   }
-  if (siteConfig['$system:addbyline$'] === 'true') {
-    const firstH1 = document.querySelector('h1');
+  if (window.cmsplus.environment !== 'production') {
     if (siteConfig['$system:addbyline$'] === 'true') {
-      if (!siteConfig['$meta:suppressbyline$']) {
-        if (firstH1) {
-          const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-          // Append the constructed string to the h1 element's current content
-          const newElement = document.createElement('div');
-          newElement.className = 'byLine';
-          newElement.innerHTML = appendString;
-          firstH1.insertAdjacentElement('afterend', newElement);
+      const firstH1 = document.querySelector('h1');
+      if (siteConfig['$system:addbyline$'] === 'true') {
+        if (!siteConfig['$meta:suppressbyline$']) {
+          if (firstH1) {
+            const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+            // Append the constructed string to the h1 element's current content
+            const newElement = document.createElement('div');
+            newElement.className = 'byLine';
+            newElement.innerHTML = appendString;
+            firstH1.insertAdjacentElement('afterend', newElement);
+          }
         }
       }
     }
