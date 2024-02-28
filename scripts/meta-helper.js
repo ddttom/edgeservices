@@ -3,9 +3,10 @@ export function replaceTokens(data, text) {
   let ret = text;
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
   for (const key in data) {
-    const value = data[key];
-    const regex = new RegExp(key, 'g');
-    ret = ret.replace(regex, value);
+    if (Object.hasOwnProperty.call(data, key)) {
+      const value = data[key];
+      ret = ret.replaceAll(key, value);
+    }
   }
   return ret;
 }
