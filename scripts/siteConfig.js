@@ -105,7 +105,7 @@ export async function loadConfiguration() {
     throw error;
   }
   // make the required globals
-  let buildscript = 'window.cms = window.cms || {};\n';
+  let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
   const bubbleapikey = siteConfig['$system:bubbleapikey$'] === undefined ? '' : siteConfig['$system:bubbleapikey$'];
   buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${bubbleapikey}"`;
