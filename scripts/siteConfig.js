@@ -21,8 +21,7 @@ export async function loadConfiguration() {
     const jsonData = await response.json();
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of jsonData.data) {
-      const formattedKey = entry.Item.replace(/\./g, ':');
-      siteConfig[formattedKey] = entry.Value;
+      siteConfig[entry.Item] = entry.Value;
     }
     const now = new Date().toISOString();
     const today = now.split('T')[0];
