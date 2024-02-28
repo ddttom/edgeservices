@@ -9,6 +9,7 @@ import { handleMetadataTracking } from './adobe-metadata.js';
 import { replaceTokens, logError } from './meta-helper.js';
 
 export const siteConfig = {};
+window.cmsplus = window.cmsplus || {};
 
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
