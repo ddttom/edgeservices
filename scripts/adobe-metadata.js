@@ -24,20 +24,20 @@ export async function handleMetadataTracking(siteConfig) {
           json = JSON.parse(jsonString);
           window.cms.track[tracker] = json;
           // Create and append a new script element with the processed JSON
-          let buildscript = '';
+          let buildscript = 'window.cms.track = window.cms.track || {};';
           if (tracker === 'page') {
-            buildscript = 'window.cms.track["page"].pageQueryString = window.location.search;';
+            buildscript += 'window.cms.track["page"] = {};';
+            buildscript += 'window.cms.track["page"].pageQueryString = window.location.search;';
             buildscript += 'window.cms.track["page"].previousPageURL = document.referrer;';
             buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
             buildscript += 'window.cms.track["page"].previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
           }
-          if (buildscript.length > 0) {
-            const script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.textContent = jsonString;
-            script.innerHTML = buildscript;
-            document.head.appendChild(script);
-          }
+          buildscript += `window.cms.track[${tracker}] = ${JSON.stringify(window.cms.track[tracker])};`;
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.textContent = jsonString;
+          script.innerHTML = buildscript;
+          document.head.appendChild(script);
         } catch (error) {
           // eslint-disable-next-line no-console
           console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
