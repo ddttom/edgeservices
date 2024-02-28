@@ -36,6 +36,17 @@ export async function loadConfiguration() {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
     const winloc = window.location.href;
+    let env = 'unknown';
+    if (window.location.href.includes('hlx.page')) {
+      env = 'staging';
+    }
+    if (window.location.href.includes('hlx.live')) {
+      env = 'production';
+    }
+    if (window.location.href.includes('localhost')) {
+      env = 'dev';
+    }
+    siteConfig['$system:environment$'] = env;
     siteConfig['$page.location$'] = winloc;
     siteConfig['$page:url$'] = href;
     siteConfig['$page:name$'] = pname;
@@ -91,19 +102,15 @@ export async function loadConfiguration() {
     console.error(`Configuration load error: ${error.message}`);
     throw error;
   }
-
   // make the required globals
-  window.cms = {};
-  if (siteConfig['$meta:analyticsdelay2$'] === undefined) {
-    window.cms.analyticsdelay = 3000;
-  } else {
-    window.cms.analyticsdelay = siteConfig['$meta:analyticsdelay2$'];
-  }
-  if (siteConfig['$system.bubbleapikey$'] === undefined) {
-    window.cms.bubble = '';
-  } else {
-    window.cms.bubble = siteConfig['$system.bubbleapikey$'];
-  }
+  let buildscript = 'window.cms = window.cms || {};\n';
+  const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
+  const bubbleapikey = siteConfig['$system.bubbleapikey$'] === undefined ? '' : siteConfig['$system.bubbleapikey$'];
+  buildscript += `window.cms.analyticsdelay = ${delay};\nwindow.cms.bubble = "${bubbleapikey}"`;
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.textContent = buildscript;
+  document.head.appendChild(script);
 
   return siteConfig;
 }

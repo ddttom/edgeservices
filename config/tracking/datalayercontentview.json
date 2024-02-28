@@ -2,11 +2,11 @@
     "event": "contentView", 
     "content": { 
         "contentType": "$meta:contenttype$", 
-        "contentTitle": "page:title$", 
+        "contentTitle": "$page:title$", 
         "contentTopic": "$meta:contenttopic$",
         "contentTechnology": "$meta:contenttechnology$", 
         "contentCompany": "$meta:contentcompany$", 
-        "contentIndustry": "meta:contentindustry$", 
+        "contentIndustry": "$meta:contentindustry$", 
         "contentAuthor": "$meta:author$",  
         "contentPublishDate": "$system:isodate$"
     }

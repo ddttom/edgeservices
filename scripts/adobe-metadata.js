@@ -1,11 +1,16 @@
 /* eslint-disable no-await-in-loop */
 /* adobe specific meta data handling */
 import { replaceTokens } from './meta-helper.js';
+/**
+ * Adobe specific meta data handling
+ * @param {object} siteConfig - the current site configuration
+ */
 // eslint-disable-next-line import/prefer-default-export
 export async function handleMetadataTracking(siteConfig) {
   if (siteConfig['$meta:tracking$'] != null) {
     const trackerlist = siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
+    let buildscript = 'window.cms.track = window.cms.track || {};';
     for (let i = 0; i < trackers.length; i += 1) {
       const tracker = trackers[i].trim();
       let trackerUrl = tracker;
@@ -18,13 +23,9 @@ export async function handleMetadataTracking(siteConfig) {
           if (!resp.ok) {
             throw new Error(`Failed to fetch ${trackerUrl} content: ${resp.status}`);
           }
-          let json = await resp.json();
-          let jsonString = JSON.stringify(json);
-          jsonString = replaceTokens(siteConfig, jsonString);
-          json = JSON.parse(jsonString);
-          window.cms.track[tracker] = json;
-          // Create and append a new script element with the processed JSON
-          let buildscript = 'window.cms.track = window.cms.track || {};';
+          const json = await resp.json();
+          const jsonString = JSON.stringify(json);
+          window.cms.track[tracker] = replaceTokens(siteConfig, jsonString);
           if (tracker === 'page') {
             buildscript += 'window.cms.track["page"] = {};';
             buildscript += 'window.cms.track["page"].pageQueryString = window.location.search;';
@@ -32,17 +33,16 @@ export async function handleMetadataTracking(siteConfig) {
             buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
             buildscript += 'window.cms.track["page"].previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;';
           }
-          buildscript += `window.cms.track["${tracker}"] = ${JSON.stringify(window.cms.track[tracker])};`;
-          const script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.textContent = jsonString;
-          script.innerHTML = buildscript;
-          document.head.appendChild(script);
+          buildscript += `window.cms.track["${tracker}"] = ${jsonString})};`;
         } catch (error) {
           // eslint-disable-next-line no-console
           console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
         }
       }
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.textContent = buildscript;
+      document.head.appendChild(script);
     }
   }
 }
