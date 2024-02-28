@@ -10,7 +10,7 @@ export async function handleMetadataTracking(siteConfig) {
   if (siteConfig['$meta:tracking$'] != null) {
     const trackerlist = siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
-    let buildscript = 'window.cms.track = window.cms.track || {};';
+    let buildscript = ''; // window.cms.track = window.cms.track || {};';
     for (let i = 0; i < trackers.length; i += 1) {
       const tracker = trackers[i].trim();
       let trackerUrl = tracker;
