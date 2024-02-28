@@ -27,15 +27,16 @@ export async function handleMetadataTracking(siteConfig) {
           let jsonString = JSON.stringify(json);
           jsonString = replaceTokens(siteConfig, jsonString);
           window.cms.track[tracker] = jsonString;
+          const fraction = `window.cms.track["${tracker}"] = ${jsonString};\n`;
+          buildscript += fraction;
           if (tracker === 'page') {
-            buildscript += '\nwindow.cms.track.page.pageQueryString = window.location.search;\n';
+            buildscript += 'window.cms.track.page.pageQueryString = ""';
+            buildscript += 'if (window.location.search) window.cms.track.page.pageQueryString = window.location.search;\n';
             buildscript += 'window.cms.track.page.previousPageURL = document.referrer;\n';
             buildscript += 'const url = new URL(document.referrer);\n';
             buildscript += 'pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;\n';
             buildscript += 'window.cms.track.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;\n';
           }
-          const fraction = `window.cms.track["${tracker}"] = ${jsonString};\n`;
-          buildscript += fraction;
         } catch (error) {
           // eslint-disable-next-line no-console
           console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
