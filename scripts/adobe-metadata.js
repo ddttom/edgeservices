@@ -28,7 +28,6 @@ export async function handleMetadataTracking(siteConfig) {
           jsonString = replaceTokens(json, jsonString);
           window.cms.track[tracker] = jsonString;
           if (tracker === 'page') {
-            buildscript += 'window.cms.track.page = {};';
             buildscript += 'window.cms.track.page.pageQueryString = window.location.search;';
             buildscript += 'window.cms.track.page.previousPageURL = document.referrer;';
             buildscript += 'const url = new URL(document.referrer); const pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;';
