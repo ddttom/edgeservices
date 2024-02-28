@@ -20,7 +20,7 @@ export async function loadConfiguration() {
     const jsonData = await response.json();
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of jsonData.data) {
-      siteConfig[entry.Item] = entry.Value;
+      siteConfig[`$${entry.Key.replaceAll('.', ':').replaceAll('$', '')}$`] = entry.Value;
     }
     const now = new Date().toISOString();
     const today = now.split('T')[0];
@@ -105,7 +105,7 @@ export async function loadConfiguration() {
   // make the required globals
   let buildscript = 'window.cms = window.cms || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
-  const bubbleapikey = siteConfig['$system.bubbleapikey$'] === undefined ? '' : siteConfig['$system.bubbleapikey$'];
+  const bubbleapikey = siteConfig['$system:bubbleapikey$'] === undefined ? '' : siteConfig['$system:bubbleapikey$'];
   buildscript += `window.cms.analyticsdelay = ${delay};\nwindow.cms.bubble = "${bubbleapikey}"`;
   const script = document.createElement('script');
   script.type = 'text/javascript';
