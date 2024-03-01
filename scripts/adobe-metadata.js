@@ -27,7 +27,7 @@ export async function handleMetadataTracking(siteConfig) {
           let jsonString = JSON.stringify(json);
           jsonString = replaceTokens(siteConfig, jsonString);
           window.cmsplus.track[tracker] = jsonString;
-          const fraction = `window.cmsplus.track["${tracker}"] = ${jsonString};\n\n`;
+          const fraction = `\nwindow.cmsplus.track["${tracker}"] = ${jsonString};\n`;
           buildscript += fraction;
           if (tracker === 'page') {
             buildscript += `window.cmsplus.track.page.pageQueryString = "";
