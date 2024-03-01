@@ -27,19 +27,19 @@ export async function handleMetadataTracking(siteConfig) {
           let jsonString = JSON.stringify(json);
           jsonString = replaceTokens(siteConfig, jsonString);
           window.cmsplus.track[tracker] = jsonString;
-          const fraction = `window.cmsplus.track["${tracker}"] = ${jsonString};\n`;
+          const fraction = `window.cmsplus.track["${tracker}"] = ${jsonString};\n\n`;
           buildscript += fraction;
           if (tracker === 'page') {
             buildscript += `window.cmsplus.track.page.pageQueryString = "";
-            if (window.location.search) {
-                window.cmsplus.track.page.pageQueryString = window.location.search;
-            }
-            window.cmsplus.track.page.previousPageURL = document.referrer;
-            const url = new URL(document.referrer);
-            let pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;
-            pathname = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-            window.cmsplus.track.page.previousPageName = pathname;
-            `;
+if (window.location.search) {
+  window.cmsplus.track.page.pageQueryString = window.location.search;
+}
+window.cmsplus.track.page.previousPageURL = document.referrer;
+const url = new URL(document.referrer);
+let pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;
+pathname = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+window.cmsplus.track.page.previousPageName = pathname;
+`;
           }
         } catch (error) {
           // eslint-disable-next-line no-console
