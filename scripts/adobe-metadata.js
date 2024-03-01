@@ -30,7 +30,8 @@ export async function handleMetadataTracking(siteConfig) {
           const fraction = `\nwindow.cmsplus.track["${tracker}"] = ${jsonString};\n`;
           buildscript += fraction;
           if (tracker === 'page') {
-            buildscript += `window.cmsplus.track.page.pageQueryString = "";
+            buildscript += `
+window.cmsplus.track.page.pageQueryString = "";
 if (window.location.search) {
   window.cmsplus.track.page.pageQueryString = window.location.search;
 }
