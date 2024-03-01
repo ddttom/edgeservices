@@ -10,7 +10,7 @@ export async function handleMetadataTracking(siteConfig) {
   if (siteConfig['$meta:tracking$'] != null) {
     const trackerlist = siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
-    let buildscript = ''; // window.cmsplus.track = window.cmsplus.track || {};';
+    let buildscript = '';
     for (let i = 0; i < trackers.length; i += 1) {
       const tracker = trackers[i].trim();
       let trackerUrl = tracker;
@@ -30,12 +30,16 @@ export async function handleMetadataTracking(siteConfig) {
           const fraction = `window.cmsplus.track["${tracker}"] = ${jsonString};\n`;
           buildscript += fraction;
           if (tracker === 'page') {
-            buildscript += 'window.cmsplus.track.page.pageQueryString = "";\n';
-            buildscript += 'if (window.location.search) window.cmsplus.track.page.pageQueryString = window.location.search;\n';
-            buildscript += 'window.cmsplus.track.page.previousPageURL = document.referrer;\n';
-            buildscript += 'const url = new URL(document.referrer);\n';
-            buildscript += 'pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;\n';
-            buildscript += 'window.cmsplus.track.page.previousPageName = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;\n';
+            buildscript += `window.cmsplus.track.page.pageQueryString = "";
+            if (window.location.search) {
+                window.cmsplus.track.page.pageQueryString = window.location.search;
+            }
+            window.cmsplus.track.page.previousPageURL = document.referrer;
+            const url = new URL(document.referrer);
+            let pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;
+            pathname = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+            window.cmsplus.track.page.previousPageName = pathname;
+            `;
           }
         } catch (error) {
           // eslint-disable-next-line no-console
