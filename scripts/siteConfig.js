@@ -130,7 +130,7 @@ export async function loadConfiguration() {
         siteConfig['$meta:contentauthor$'] = siteConfig['$meta:author$'];
       }
       if (key.startsWith('dc-')) {
-        dc.push({ Item: key, Value: value });
+        dc[key] = value;
       }
     });
   } catch (error) {
