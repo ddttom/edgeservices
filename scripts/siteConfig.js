@@ -151,10 +151,10 @@ export async function loadConfiguration() {
   script.textContent = buildscript;
   document.head.appendChild(script);
 
-  buildscript = JSON.stringify(dc);
   script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.textContent = buildscript;
+  script.type = 'application/dc+json';
+  script.setAttribute('data-role', 'dublin core');
+  script.textContent = JSON.stringify(dc);
   document.head.appendChild(script);
 
   return siteConfig;
