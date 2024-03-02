@@ -110,8 +110,6 @@ export async function loadConfiguration() {
     metaTags.forEach((metaTag) => {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
       const value = metaTag.getAttribute('content');
-      // eslint-disable-next-line no-console
-      console.log(key, value);
       if (key.startsWith('dc-')) {
         dc[key.replace('dc-', 'dc:')] = value;
       }
@@ -135,6 +133,8 @@ export async function loadConfiguration() {
         siteConfig['$meta:contentauthor$'] = siteConfig['$meta:author$'];
       }
     });
+    // eslint-disable-next-line no-console
+    console.log(dc);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Configuration load error: ${error.message}`);
