@@ -113,10 +113,10 @@ export async function loadConfiguration() {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
       const value = metaTag.getAttribute('content');
       if (key.startsWith('dc-')) {
-        dc[key.replace('dc-', 'dc:')] = value;
+        dc[key.replace('dc-', 'dc:').replaceAll(' ', '')] = value;
       }
       if (key.startsWith('co-')) {
-        co[key.replace('co-', 'co:')] = value;
+        co[key.replace('co-', 'co:').replaceAll(' ', '')] = value;
       }
       if (key && value) {
         let prefix = '';
