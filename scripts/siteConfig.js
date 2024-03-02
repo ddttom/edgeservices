@@ -110,6 +110,11 @@ export async function loadConfiguration() {
     metaTags.forEach((metaTag) => {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
       const value = metaTag.getAttribute('content');
+      // eslint-disable-next-line no-console
+      console.log(key, value);
+      if (key.startsWith('dc-')) {
+        dc[key.replace('dc-', 'dc:')] = value;
+      }
       if (key && value) {
         let prefix = '';
         if (!key.includes(':')) {
@@ -128,9 +133,6 @@ export async function loadConfiguration() {
       }
       if (siteConfig['$meta:contentauthor$'] == null) {
         siteConfig['$meta:contentauthor$'] = siteConfig['$meta:author$'];
-      }
-      if (key.startsWith('dc-')) {
-        dc[key.replace('dc-', 'dc:')] = value;
       }
     });
   } catch (error) {
