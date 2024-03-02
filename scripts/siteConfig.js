@@ -10,6 +10,8 @@ import { replaceTokens, logError } from './meta-helper.js';
 
 export const siteConfig = {};
 export const dc = {};
+export const co = {};
+
 window.cmsplus = window.cmsplus || {};
 
 export async function loadConfiguration() {
@@ -113,6 +115,9 @@ export async function loadConfiguration() {
       if (key.startsWith('dc-')) {
         dc[key.replace('dc-', 'dc:')] = value;
       }
+      if (key.startsWith('co-')) {
+        co[key.replace('co-', 'co:')] = value;
+      }
       if (key && value) {
         let prefix = '';
         if (!key.includes(':')) {
@@ -154,6 +159,12 @@ export async function loadConfiguration() {
   script = document.createElement('script');
   script.type = 'application/dc+json';
   script.setAttribute('data-role', 'dublin core');
+  script.textContent = JSON.stringify(dc);
+  document.head.appendChild(script);
+
+  script = document.createElement('script');
+  script.type = 'application/co+json';
+  script.setAttribute('data-role', 'content ops');
   script.textContent = JSON.stringify(dc);
   document.head.appendChild(script);
 
@@ -236,6 +247,14 @@ export async function initialize() {
   const metadataNames = [
     'analyticsdelay',
     'category',
+    'co-embargodatetime',
+    'co-publisheddatetime',
+    'co-reviewdatetime',
+    'co-expirydatetime',
+    'co-startdatetime',
+    'co-enddatetime',
+    'co-restrictions',
+    'co-tags',
     'contentauthor',
     'contentcompany',
     'contentindustry',
@@ -266,9 +285,6 @@ export async function initialize() {
     'dc-title',
     'dc-type',
     'lang',
-    'pageembargodate',
-    'pagepublisheddate',
-    'pagereviewdate',
     'tracking',
     'videourl',
   ];
