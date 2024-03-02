@@ -165,7 +165,7 @@ export async function loadConfiguration() {
   script = document.createElement('script');
   script.type = 'application/co+json';
   script.setAttribute('data-role', 'content ops');
-  script.textContent = JSON.stringify(dc);
+  script.textContent = JSON.stringify(co);
   document.head.appendChild(script);
 
   return siteConfig;
