@@ -9,6 +9,7 @@ import { handleMetadataTracking } from './adobe-metadata.js';
 import { replaceTokens, logError } from './meta-helper.js';
 
 export const siteConfig = {};
+export const dc = {};
 window.cmsplus = window.cmsplus || {};
 
 export async function loadConfiguration() {
@@ -106,7 +107,6 @@ export async function loadConfiguration() {
       }
     }
     const metaTags = document.querySelectorAll('meta');
-    const dc = {};
     metaTags.forEach((metaTag) => {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
       const value = metaTag.getAttribute('content');
