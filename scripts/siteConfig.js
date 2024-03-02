@@ -159,13 +159,13 @@ export async function loadConfiguration() {
   script = document.createElement('script');
   script.type = 'application/dc+json';
   script.setAttribute('data-role', 'dublin core');
-  script.textContent = JSON.stringify(dc);
+  script.textContent = replaceTokens(siteConfig, JSON.stringify(dc));
   document.head.appendChild(script);
 
   script = document.createElement('script');
   script.type = 'application/co+json';
   script.setAttribute('data-role', 'content ops');
-  script.textContent = JSON.stringify(co);
+  script.textContent = replaceTokens(siteConfig, JSON.stringify(co));
   document.head.appendChild(script);
 
   return siteConfig;
