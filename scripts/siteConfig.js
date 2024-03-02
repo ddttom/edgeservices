@@ -106,7 +106,7 @@ export async function loadConfiguration() {
       }
     }
     const metaTags = document.querySelectorAll('meta');
-
+    const dc = {};
     metaTags.forEach((metaTag) => {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
       const value = metaTag.getAttribute('content');
@@ -128,6 +128,9 @@ export async function loadConfiguration() {
       }
       if (siteConfig['$meta:contentauthor$'] == null) {
         siteConfig['$meta:contentauthor$'] = siteConfig['$meta:author$'];
+      }
+      if (key.startsWith('dc-')) {
+        dc.push({ Item: key, Value: value });
       }
     });
   } catch (error) {
@@ -223,23 +226,43 @@ export async function initialize() {
   handleMetadataJsonLd();
   handleMetadataTracking(siteConfig);
   const metadataNames = [
-    'pagereviewdate',
-    'pageembargodate',
-    'pagepublisheddate',
-    'pagecopyright',
-    'pagecopyright-cc',
-    'videourl',
-    'contenttype',
-    'contenttopic',
-    'contenttechnology',
+    'analyticsdelay',
+    'category',
+    'contentauthor',
     'contentcompany',
     'contentindustry',
-    'tracking',
-    'category',
+    'contenttechnology',
     'contenttitle',
-    'contentauthor',
+    'contenttopic',
+    'contenttype',
+    'dc-accessRights',
+    'dc-author',
+    'dc-audience',
+    'dc-contributor',
+    'dc-coverage',
+    'dc-creator',
+    'dc-date',
+    'dc-description',
+    'dc-educationLevel',
+    'dc-format',
+    'dc-identifier',
+    'dc-language',
+    'dc-license',
+    'dc-publisher',
+    'dc-relation',
+    'dc-provenance',
+    'dc-rights',
+    'dc-rightsHolder',
+    'dc-source',
+    'dc-subject',
+    'dc-title',
+    'dc-type',
     'lang',
-    'analyticsdelay',
+    'pageembargodate',
+    'pagepublisheddate',
+    'pagereviewdate',
+    'tracking',
+    'videourl',
   ];
   if (siteConfig['$meta:lang$']) {
     document.querySelector('html').setAttribute('lang', siteConfig['$meta:lang$']);
