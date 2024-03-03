@@ -56,7 +56,9 @@ export async function loadConfiguration() {
     siteConfig['$co:defaultreviedwperiod'] = 365;
     siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
     siteConfig['$co:defaultstartdatetime'] = today;
-    siteConfig['$co:restrictions'] = 'none';
+    siteConfig['$co:dedfaultrestrictions'] = 'none';
+    siteConfig['$co:defaulttags$'] = 'none';
+
     siteConfig['$system:environment$'] = environment;
 
     siteConfig['$page.location$'] = winloc;
@@ -153,7 +155,6 @@ export async function loadConfiguration() {
     console.error(`Configuration load error: ${error.message}`);
     throw error;
   }
-
   // make the required globals
   let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
@@ -172,6 +173,48 @@ export async function loadConfiguration() {
     script.setAttribute('data-role', 'dublin core');
     script.textContent = replaceTokens(siteConfig, dcString);
     document.head.appendChild(script);
+  }
+  /*
+    Content Ops values:
+  {
+    "co:reviewdatetime": "2 march 2026",
+    "co:embargodatetime": "1 may 2024",
+    "co:startdatetime": "1 may 2024",
+    "co:publisheddatetime": "2024-03-03",
+    "co:expirydatetime": "4 march 2026",
+    "co:restrictions": "none",
+    "co:tags": "Help, article, graphic"
+  }
+    siteConfig['$co:defaultreviedwperiod'] = 365;
+    siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
+    siteConfig['$co:defaultstartdatetime'] = today;
+    siteConfig['$co:restrictions'] = 'none';
+
+  */
+  const currentDate = new Date();
+  let futureDate = new Date();
+  let futurePeriod = '';
+  if (!co['co:reviewdatetime']) {
+    futurePeriod = siteConfig['$co:defaultreviedwperiod'];
+    futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
+    co['co:reviewdatetime'] = futureDate.toISOString();
+  }
+  if (!co['co:startdatetime']) {
+    co['co:startdatetime'] = currentDate.toISOString();
+  }
+  if (!co['co:publisheddatetime']) {
+    co['co:publisheddatetime'] = currentDate.toISOString();
+  }
+  if (!co['co:expirydatetime']) {
+    futurePeriod = siteConfig['$co:defaultexpiryperiod'];
+    futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
+    co['co:expirydatetime'] = futureDate.toISOString();
+  }
+  if (!co['co:restrictions']) {
+    co['co:restrictions'] = siteConfig['$co:defaultrestrictions'];
+  }
+  if (!co['co:tags']) {
+    co['co:tags'] = siteConfig['$co:defaulttags'];
   }
   const coString = JSON.stringify(co);
   if (coString.length > 0) {
