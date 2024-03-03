@@ -152,7 +152,7 @@ export async function loadConfiguration() {
     // eslint-disable-next-line no-console
     console.error(`Configuration load error: ${error.message}`);
     throw error;
-  
+  }
 
   // make the required globals
   let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
