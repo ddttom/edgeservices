@@ -160,13 +160,16 @@ export async function loadConfiguration() {
     lang = siteConfig['$meta:lang$'];
   }
   if (lang === '') {
-    lang = siteConfig['$meta:language$'];
+    lang = siteConfig['$meta:language$'] || lang;
   }
   if (lang === '') {
-    lang = siteConfig['$meta:dc-language$'];
+    lang = siteConfig['$meta:dc-language$'] || lang;
   }
   if (lang === '') {
-    lang = window.navigator.language;
+    lang = window.navigator.language || lang;
+  }
+  if (lang === '') {
+    lang = 'en';
   }
   siteConfig['$system:lang$'] = lang;
   // make the required globals
