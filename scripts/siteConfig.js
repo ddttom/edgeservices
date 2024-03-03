@@ -171,7 +171,7 @@ export async function loadConfiguration() {
   if (lang === '') {
     lang = 'en';
   }
-  siteConfig['$system:lang$'] = lang;
+  siteConfig['$system:language$'] = lang;
   // make the required globals
   let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
@@ -372,6 +372,7 @@ export async function initialize() {
   }
 
   co['co:language'] = lang;
+  co['co:author'] = siteConfig['$meta:author$'];
 
   if (window.cmsplus.environment !== 'production') {
     if (siteConfig['$system:addbyline$'] === 'true') {
