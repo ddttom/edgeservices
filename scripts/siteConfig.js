@@ -12,7 +12,29 @@ export const siteConfig = {};
 export const dc = {};
 export const co = {};
 
+const environmentConfig = {
+  local: 'localhost',
+  stage: 'hlx.page',
+  production: 'hlx.live',
+  default: 'unknown',
+};
+
 window.cmsplus = window.cmsplus || {};
+
+function findTitleElement() {
+  const h1 = document.querySelector('h1'); // Prioritize H1
+  if (h1) return h1;
+
+  // Look in more specific areas (adjust selectors as needed)
+  const mainContent = document.querySelector('main') || document.querySelector('article');
+  if (mainContent) {
+    const potentialText = mainContent.firstChild;
+    if (potentialText && potentialText.nodeType === Node.TEXT_NODE) {
+      return potentialText;
+    }
+  }
+  return null; // No suitable title found
+}
 
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
@@ -41,25 +63,29 @@ export async function loadConfiguration() {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
     const winloc = window.location.href;
-    let environment = 'unknown';
-    if (window.location.href.includes('hlx.page')) {
-      environment = 'stage';
-    }
-    if (window.location.href.includes('hlx.live')) {
-      environment = 'production';
-    }
-    if (window.location.href.includes('localhost')) {
-      environment = 'dev';
+
+    const environmentMap = Object.entries(environmentConfig).reduce((map, [env, pattern]) => {
+      map[pattern] = env;
+      return map;
+    }, {});
+
+    let environment = environmentConfig.default;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const pattern in environmentMap) {
+      if (window.location.href.includes(pattern)) {
+        environment = environmentMap[pattern];
+        break; // Exit after finding the first match
+      }
     }
     window.cmsplus.environment = environment;
 
-    siteConfig['$co:defaultreviedwperiod'] = 365;
+    siteConfig['$co:defaultreviewperiod'] = 365;
     siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
     siteConfig['$co:defaultstartdatetime'] = today;
-    siteConfig['$co:dedfaultrestrictions'] = 'none';
+    siteConfig['$co:defaultrestrictions'] = 'none';
     siteConfig['$co:defaulttags$'] = 'none';
 
-    siteConfig['$system:environment$'] = environment;
+    siteConfig['$system:environment$'] = window.cmsplus.environment;
 
     siteConfig['$page.location$'] = winloc;
     siteConfig['$page:url$'] = href;
@@ -88,33 +114,13 @@ export async function loadConfiguration() {
     siteConfig['$system:dateinenglish$'] = `${siteConfig['$system:monthinfull$']} ${siteConfig['$system:day$']}, ${siteConfig['$system:year$']}`;
 
     const metaTitle = document.querySelector('meta[name="title"]');
-
     if (!metaTitle) {
-      // 1. Attempt to find the first H1 tag
-      let h1 = document.querySelector('h1');
-      // 2. If no H1 found, get the first text node
-      if (!h1) {
-        const findFirstText = (node) => {
-          // eslint-disable-next-line no-restricted-syntax
-          for (const child of node.childNodes) {
-            if (child.nodeType === Node.TEXT_NODE && child.textContent.trim()) {
-              return child;
-            }
-            const found = findFirstText(child);
-            if (found) return found;
-          }
-          return null; // No text node found at all
-        };
-        const firstText = findFirstText(document.body);
-        h1 = firstText; // Treat the text node as a source
-      }
-      // 3. Extract the first line, with basic trimming
-      if (h1) {
-        const firstLine = h1.textContent.split('\n')[0].trim();
-        // 4. Create and set the meta tag
+      const titleElement = findTitleElement();
+      if (titleElement) {
+        const defaultTitle = titleElement.textContent.trim();
         const title = document.createElement('meta');
         title.name = 'title';
-        title.content = firstLine;
+        title.content = defaultTitle;
         document.head.appendChild(title);
       }
     }
@@ -199,7 +205,7 @@ export async function loadConfiguration() {
   let futureDate = new Date();
   let futurePeriod = '';
   if (!co['co:reviewdatetime']) {
-    futurePeriod = siteConfig['$co:defaultreviedwperiod'];
+    futurePeriod = siteConfig['$co:defaultreviewperiod'];
     futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
     co['co:reviewdatetime'] = futureDate.toISOString();
   }
@@ -248,7 +254,6 @@ export function extractJsonLd(parsedJson) {
   }
   return parsedJson;
 }
-
 async function handleMetadataJsonLd() {
   if (!document.querySelector('script[type="application/ld+json"]')) {
     let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
