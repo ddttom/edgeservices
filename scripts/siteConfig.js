@@ -148,8 +148,6 @@ export async function loadConfiguration() {
         siteConfig['$meta:contentauthor$'] = siteConfig['$meta:author$'];
       }
     });
-    // eslint-disable-next-line no-console
-    console.log(dc);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Configuration load error: ${error.message}`);
@@ -172,6 +170,14 @@ export async function loadConfiguration() {
     lang = 'en';
   }
   siteConfig['$system:language$'] = lang;
+  document.querySelector('html').setAttribute('lang', lang);
+  if (lang === 'ar') {
+    document.querySelector('html').setAttribute('dir', 'rtl');
+  }
+
+  co['co:language'] = lang;
+  co['co:author'] = siteConfig['$meta:author$'];
+
   // make the required globals
   let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
@@ -365,15 +371,6 @@ export async function initialize() {
     'tracking',
     'videourl',
   ];
-  const lang = siteConfig['$system:language$'];
-  document.querySelector('html').setAttribute('lang', lang);
-  if (lang === 'ar') {
-    document.querySelector('html').setAttribute('dir', 'rtl');
-  }
-
-  co['co:language'] = lang;
-  co['co:author'] = siteConfig['$meta:author$'];
-
   if (window.cmsplus.environment !== 'production') {
     if (siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
