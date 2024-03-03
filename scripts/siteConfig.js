@@ -31,7 +31,7 @@ export async function loadConfiguration() {
     const today = now.split('T')[0];
     let href = '';
     const canonicalLink = document.querySelector('link[rel="canonical"]');
-    if (canonicalLink) { // Make sure the element was found
+    if (canonicalLink) {
       href = canonicalLink.href;
     }
     const pname = new URL(window.location.href).pathname;
@@ -52,7 +52,13 @@ export async function loadConfiguration() {
       environment = 'dev';
     }
     window.cmsplus.environment = environment;
+
+    siteConfig['$co:defaultreviedwperiod'] = 365;
+    siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
+    siteConfig['$co:defaultstartdatetime'] = today;
+    siteConfig['$co:restrictions'] = 'none';
     siteConfig['$system:environment$'] = environment;
+
     siteConfig['$page.location$'] = winloc;
     siteConfig['$page:url$'] = href;
     siteConfig['$page:name$'] = pname;
@@ -62,6 +68,7 @@ export async function loadConfiguration() {
     siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 140) + 1).toString();
     siteConfig['$page:title$'] = document.title;
     siteConfig['$page:canonical$'] = href;
+
     siteConfig['$system:platformVersion$'] = 'Franklin++ 1.0.0';
     siteConfig['$system:date$'] = today;
     siteConfig['$system:isodate$'] = now;
@@ -77,6 +84,7 @@ export async function loadConfiguration() {
     siteConfig['$system:second$'] = new Date().getSeconds();
     siteConfig['$system:millisecond$'] = new Date().getMilliseconds();
     siteConfig['$system:dateinenglish$'] = `${siteConfig['$system:monthinfull$']} ${siteConfig['$system:day$']}, ${siteConfig['$system:year$']}`;
+
     const metaTitle = document.querySelector('meta[name="title"]');
 
     if (!metaTitle) {
@@ -144,7 +152,8 @@ export async function loadConfiguration() {
     // eslint-disable-next-line no-console
     console.error(`Configuration load error: ${error.message}`);
     throw error;
-  }
+  
+
   // make the required globals
   let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
@@ -156,18 +165,22 @@ export async function loadConfiguration() {
   script.textContent = buildscript;
   document.head.appendChild(script);
 
-  script = document.createElement('script');
-  script.type = 'application/dc+json';
-  script.setAttribute('data-role', 'dublin core');
-  script.textContent = replaceTokens(siteConfig, JSON.stringify(dc));
-  document.head.appendChild(script);
-
-  script = document.createElement('script');
-  script.type = 'application/co+json';
-  script.setAttribute('data-role', 'content ops');
-  script.textContent = replaceTokens(siteConfig, JSON.stringify(co));
-  document.head.appendChild(script);
-
+  const dcString = JSON.stringify(dc);
+  if (dcString.length > 0) {
+    script = document.createElement('script');
+    script.type = 'application/dc+json';
+    script.setAttribute('data-role', 'dublin core');
+    script.textContent = replaceTokens(siteConfig, dcString);
+    document.head.appendChild(script);
+  }
+  const coString = JSON.stringify(co);
+  if (coString.length > 0) {
+    script = document.createElement('script');
+    script.type = 'application/co+json';
+    script.setAttribute('data-role', 'content ops');
+    script.textContent = replaceTokens(siteConfig, coString);
+    document.head.appendChild(script);
+  }
   return siteConfig;
 }
 
@@ -195,7 +208,7 @@ async function handleMetadataJsonLd() {
     if (!jsonLdMetaElement) {
       jsonLdMetaElement = document.createElement('meta');
       jsonLdMetaElement.setAttribute('name', 'json-ld');
-      jsonLdMetaElement.setAttribute('content', 'owner'); // Default role
+      jsonLdMetaElement.setAttribute('content', 'owner');
       document.head.appendChild(jsonLdMetaElement);
     }
     const content = jsonLdMetaElement.getAttribute('content');
@@ -224,6 +237,7 @@ async function handleMetadataJsonLd() {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
       script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
+      jsonLdMetaElement.setAttribute('id', 'ldMeta');
       script.textContent = jsonString;
       document.head.appendChild(script);
       document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
