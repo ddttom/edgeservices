@@ -155,6 +155,20 @@ export async function loadConfiguration() {
     console.error(`Configuration load error: ${error.message}`);
     throw error;
   }
+  let lang = '';
+  if (siteConfig['$meta:lang$']) {
+    lang = siteConfig['$meta:lang$'];
+  }
+  if (lang === '') {
+    lang = siteConfig['$meta:language$'];
+  }
+  if (lang === '') {
+    lang = siteConfig['$meta:dc-language$'];
+  }
+  if (lang === '') {
+    lang = window.navigator.language;
+  }
+  siteConfig['$system:lang$'] = lang;
   // make the required globals
   let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
@@ -348,12 +362,14 @@ export async function initialize() {
     'tracking',
     'videourl',
   ];
-  if (siteConfig['$meta:lang$']) {
-    document.querySelector('html').setAttribute('lang', siteConfig['$meta:lang$']);
-    if (siteConfig['$meta:lang$'] === 'ar') {
-      document.querySelector('html').setAttribute('dir', 'rtl');
-    }
+  const lang = siteConfig['$system:language$'];
+  document.querySelector('html').setAttribute('lang', lang);
+  if (lang === 'ar') {
+    document.querySelector('html').setAttribute('dir', 'rtl');
   }
+
+  co['co:language'] = lang;
+
   if (window.cmsplus.environment !== 'production') {
     if (siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
