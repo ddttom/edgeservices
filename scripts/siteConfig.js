@@ -153,22 +153,19 @@ export async function loadConfiguration() {
     console.error(`Configuration load error: ${error.message}`);
     throw error;
   }
-  let lang = '';
-  if (siteConfig['$meta:lang$']) {
-    lang = siteConfig['$meta:lang$'];
-  }
-  if (lang === '') {
-    lang = siteConfig['$meta:language$'] || lang;
-  }
-  if (lang === '') {
-    lang = siteConfig['$meta:dc-language$'] || lang;
-  }
-  if (lang === '') {
-    lang = window.navigator.language || lang;
-  }
-  if (lang === '') {
-    lang = 'en';
-  }
+
+  // decode the language
+  const defaultLang = 'en';
+  const metaProperties = [
+    '$meta:lang$',
+    '$meta:language$',
+    '$meta:dc-language$',
+  ];
+
+  const lang = metaProperties.reduce((acc, prop) => acc || siteConfig[prop], '')
+             || window.navigator.language
+             || defaultLang;
+
   siteConfig['$system:language$'] = lang;
   document.querySelector('html').setAttribute('lang', lang);
   if (lang === 'ar') {
@@ -197,23 +194,7 @@ export async function loadConfiguration() {
     script.textContent = replaceTokens(siteConfig, dcString);
     document.head.appendChild(script);
   }
-  /*
-    Content Ops values:
-  {
-    "co:reviewdatetime": "2 march 2026",
-    "co:embargodatetime": "1 may 2024",
-    "co:startdatetime": "1 may 2024",
-    "co:publisheddatetime": "2024-03-03",
-    "co:expirydatetime": "4 march 2026",
-    "co:restrictions": "none",
-    "co:tags": "Help, article, graphic"
-  }
-    siteConfig['$co:defaultreviedwperiod'] = 365;
-    siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
-    siteConfig['$co:defaultstartdatetime'] = today;
-    siteConfig['$co:restrictions'] = 'none';
 
-  */
   const currentDate = new Date();
   let futureDate = new Date();
   let futurePeriod = '';
