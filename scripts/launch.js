@@ -29,4 +29,5 @@ export async function initialize() {
   if (window.cmsplus.track.view) {
     window.adobeDataLayer.push(window.cmsplus.track.view);
   }
+  await loadScript('./clientscript.js');
 }
