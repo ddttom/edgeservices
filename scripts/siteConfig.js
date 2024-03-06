@@ -12,14 +12,26 @@ export const siteConfig = {};
 export const dc = {};
 export const co = {};
 
+window.cmsplus = window.cmsplus || {};
+
 const environmentConfig = {
+  final: '.html',
   local: 'localhost',
   stage: 'hlx.page',
   production: 'hlx.live',
   default: 'unknown',
 };
 
-window.cmsplus = window.cmsplus || {};
+// Precalculate a regular expression for efficient matching
+const environmentPatterns = new RegExp(Object.keys(environmentConfig).join('|'));
+
+// Determine the environment based on the URL
+let environment = environmentConfig.default; // Start with the default
+if (environmentPatterns.test(window.location.href)) {
+  const matchedPattern = window.location.href.match(environmentPatterns)[0];
+  environment = environmentConfig[matchedPattern];
+}
+window.cmsplus.environment = environment;
 
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
@@ -63,21 +75,6 @@ export async function loadConfiguration() {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
     const winloc = window.location.href;
-
-    const environmentMap = Object.entries(environmentConfig).reduce((map, [env, pattern]) => {
-      map[pattern] = env;
-      return map;
-    }, {});
-
-    let environment = environmentConfig.default;
-    // eslint-disable-next-line no-restricted-syntax
-    for (const pattern in environmentMap) {
-      if (window.location.href.includes(pattern)) {
-        environment = environmentMap[pattern];
-        break; // Exit after finding the first match
-      }
-    }
-    window.cmsplus.environment = environment;
 
     siteConfig['$co:defaultreviewperiod'] = 365;
     siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
