@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-cycle
 import { sampleRUM, loadScript } from './aem.js';
 import { initialize as initLaunch } from './launch.js';
 

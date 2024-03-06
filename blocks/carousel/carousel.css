@@ -151,7 +151,6 @@ main .testimonial-section {
 }
 
 .testimonial-carousel {
-  padding: var(--spacing-xl) 0 var(--spacing-xl) 0;
   background-color: var(--color-western-snow);
   box-shadow: 0 0 0 100vmax var(--color-western-snow);
   clip-path: inset(0 -100vmax);
@@ -173,11 +172,11 @@ main .testimonial-section {
   min-height: auto;
   order: 1;
   width: 100vw;
+  scrollbar-width: none;
 }
 
 .testimonial-carousel  .carousel-slide {
   min-height: auto;
-  margin-bottom: var(--spacing-m);
 }
 
 .testimonial-carousel  .carousel-slide h4{
@@ -189,8 +188,21 @@ main .testimonial-section {
   margin-bottom: 0;
 }
 
+.testimonial-carousel  .carousel-slide p:last-child {
+  margin-bottom: 0;
+}
+
 .testimonial-carousel .carousel-slide-image {
   margin: 0 1rem;
+}
+
+.testimonial-carousel .icon {
+  height: 60px;
+  display: block;
+}
+
+.testimonial-carousel .icon img {
+  height: 100%;
 }
 
 /* Image Carousel */

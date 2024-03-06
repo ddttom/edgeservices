@@ -196,22 +196,64 @@ export default async function decorate(block) {
     bindEvents(block);
 
     // Autoplay functionality
+    // const startAutoplay = () => {
+    //   autoplayTimer = setInterval(() => {
+    //     const currentSlideIndex = parseInt(block.dataset.activeSlide, 10);
+    //     const nextSlideIndex = (currentSlideIndex + 1) % rows.length;
+    //     showSlide(block, nextSlideIndex);
+    //   }, autoplayInterval);
+    // };
+
+    // const stopAutoplay = () => {
+    //   clearInterval(autoplayTimer);
+    // };
+
+    // startAutoplay();
+
+    // block.addEventListener('mouseenter', stopAutoplay);
+    // block.addEventListener('mouseleave', startAutoplay);
+
     const startAutoplay = () => {
       autoplayTimer = setInterval(() => {
-        const currentSlideIndex = parseInt(block.dataset.activeSlide, 10);
-        const nextSlideIndex = (currentSlideIndex + 1) % rows.length;
+        const currentSlideIndex = block.dataset.activeSlide ? parseInt(block.dataset.activeSlide, 10) : 0;
+        const nextSlideIndex = (currentSlideIndex + 1) % (rows.length || 1);
         showSlide(block, nextSlideIndex);
       }, autoplayInterval);
     };
-
     const stopAutoplay = () => {
       clearInterval(autoplayTimer);
     };
-
     startAutoplay();
-
     block.addEventListener('mouseenter', stopAutoplay);
     block.addEventListener('mouseleave', startAutoplay);
+    function showSlide(block, slideIndex = 0) {
+      if (!block) {
+        console.error('Block element is undefined');
+        return;
+      }
+      const slides = block.querySelectorAll('.carousel-slide');
+      if (!slides || slides.length === 0) {
+        console.error('No slides found in the block element');
+        return;
+      }
+      let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
+      if (slideIndex >= slides.length) realSlideIndex = 0;
+      const activeSlide = slides[realSlideIndex];
+      if (!activeSlide) {
+        console.error('Active slide is undefined');
+        return;
+      }
+      activeSlide
+        .querySelectorAll('a')
+        .forEach((link) => link.removeAttribute('tabindex'));
+      if (block.querySelector('.carousel-slides')) {
+        block.querySelector('.carousel-slides').scrollTo({
+          top: 0,
+          left: activeSlide.offsetLeft,
+          behavior: 'smooth',
+        });
+      }
+    }
   }
 }
 
