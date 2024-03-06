@@ -1,39 +1,104 @@
-$company:email$: "info@reply.com"
-$company:logo$: "https://www.comwrap.com/etc.clientlibs/comwrap/clientlibs/clientlib-site/resources/images/logos/cw-reply-logo.svg"
-$company:name$: "Comwrap Reply UK"
-$company:telephone$: "01904 704552"
-$company:url$:"https://www.comwrap.uk"
-$meta:author$: "Comwrap Reply UK"
-$meta:description$: "Demo Project"
-$meta:json-ld$: "owner"
-$meta:longdescription$: "This is a long description; it shows that the json-ld can read it About the page not the component"
-$meta:referrer$: "no-referrer-when-downgrade"
-$meta:viewport$: "width=device-width, initial-scale=1"
-$og:description$: "Demo Project"
-$og:image$: "https://main--edgeservices--ddttom.hlx.page/media_1569cec12b94846296e92cdf0b08654d8088a1221.png?width=1200&format=pjpg&optimize=medium"
-$og:image_secure_url$: "https://main--edgeservices--ddttom.hlx.page/media_1569cec12b94846296e92cdf0b08654d8088a1221.png?width=1200&format=pjpg&optimize=medium"
-$og:title$: "Home | AEM demo"
-$og:url$: "https://main--edgeservices--ddttom.hlx.page/"
-$page:canonical$: "https://main--edgeservices--ddttom.hlx.page/"
-$page:linkcount$: 5
-$page:readspeed$: "1"
-$page:title$: "Home | AEM demo"
-$page:wordcount$: 0
-$system:date$: "2024-02-21"
-$system:dateinenglish$: "February 21, 2024"
-$system:day$: 21
-$system:hour$: 13
-$system:locale$: "en-GB"
-$system:millisecond$: 693
-$system:minute$: 36
-$system:month$: 2
-$system:monthinfull$: "February"
-$system:second$: 23
-$system:time$: "13:36:23"
-$system:timezone$: "Europe/London"
-$system:year$: 2024
-$twitter:card$: "summary_large_image"
-$twitter:description$: "Demo Project"
-$twitter:image$: "https://main--edgeservices--ddttom.hlx.page/media_1569cec12b94846296e92cdf0b08654d8088a1221.png?width=1200&format=pjpg&optimize=medium"
-$twitter:title$: "Home | AEM demo"
-
+{
+    "$company:name$": "Comwrap Reply UK",
+    "$company:email$": "info@reply.com",
+    "$company:telephone$": "01904 704552",
+    "$company:url$": "https://www.comwrap.uk",
+    "$company:logo$": "https://www.comwrap.com/etc.clientlibs/comwrap/clientlibs/clientlib-site/resources/images/logos/cw-reply-logo.svg",
+    "$system:version$": "Franklin++  v1.0.0",
+    "$system:bubbleapikey$": "kb_id=4de3e5f2-7296-4e36-b722-c709f27e4664&token=58905c65-7389-489a-8d4e-4c0792aa5a23&modeltype=gpt-3.5-turbo",
+    "$co:defaultreviewperiod": 365,
+    "$co:defaultexpiryperiod": 730,
+    "$co:defaultstartdatetime": "2024-03-06",
+    "$co:defaultrestrictions": "none",
+    "$co:defaulttags$": "none",
+    "$system:environment$": "unknown",
+    "$page.location$": "https://main--edgeservices--ddttom.hlx.page/complex-index",
+    "$page:url$": "https://main--edgeservices--ddttom.hlx.page/complex-",
+    "$page:name$": "/complex-index",
+    "$page:path$": "https://main--edgeservices--ddttom.hlx.page/complex-index",
+    "$page:wordcount$": 0,
+    "$page:linkcount$": 1,
+    "$page:readspeed$": "1",
+    "$page:title$": "Home | AEM demo",
+    "$page:canonical$": "https://main--edgeservices--ddttom.hlx.page/complex-",
+    "$system:platformVersion$": "Franklin++ 1.0.0",
+    "$system:date$": "2024-03-06",
+    "$system:isodate$": "2024-03-06T20:35:55.553Z",
+    "$system:time$": "21:35:55",
+    "$system:timezone$": "Europe/Oslo",
+    "$system:locale$": "en-GB",
+    "$system:year$": 2024,
+    "$system:month$": 3,
+    "$system:monthinfull$": "March",
+    "$system:day$": 6,
+    "$system:hour$": 21,
+    "$system:minute$": 35,
+    "$system:second$": 55,
+    "$system:millisecond$": 553,
+    "$system:dateinenglish$": "March 6, 2024",
+    "$meta:description$": "Demo Project",
+    "$meta:author$": "Comwrap Reply UK",
+    "$meta:contentauthor$": "Ronan Moorhouse",
+    "$og:title$": "Home | AEM demo",
+    "$og:description$": "Demo Project",
+    "$og:url$": "https://main--edgeservices--ddttom.hlx.page/complex-",
+    "$og:image$": "https://main--edgeservices--ddttom.hlx.page/media_1bf0c771de4b148bf1fa50a95734d3c5589a6c47c.jpeg?width=1200&format=pjpg&optimize=medium",
+    "$og:image_secure_url$": "https://main--edgeservices--ddttom.hlx.page/media_1bf0c771de4b148bf1fa50a95734d3c5589a6c47c.jpeg?width=1200&format=pjpg&optimize=medium",
+    "$twitter:card$": "summary_large_image",
+    "$twitter:title$": "Home | AEM demo",
+    "$twitter:description$": "Demo Project",
+    "$twitter:image$": "https://main--edgeservices--ddttom.hlx.page/media_1bf0c771de4b148bf1fa50a95734d3c5589a6c47c.jpeg?width=1200&format=pjpg&optimize=medium",
+    "$meta:referrer$": "no-referrer-when-downgrade",
+    "$meta:json-ld$": "event",
+    "$meta:longdescription$": "This is a long description; it shows that the json-ld can read it About the page not the component",
+    "$meta:category$": "Contact us",
+    "$meta:tracking$": "page,content",
+    "$meta:contenttype$": "blog",
+    "$meta:contenttitle$": "Top 3 web analytics tips",
+    "$meta:contenttopic$": "Web Analytics",
+    "$meta:contentcompany$": "Techem",
+    "$meta:contentindustry$": "manufacturing",
+    "$meta:analyticsdelay$": "2000",
+    "$meta:dc-title$": "Surfers are a unique breed",
+    "$meta:dc-author$": "Ronan Moorhouse",
+    "$meta:dc-contributor$": "Tom Cranstoun, illustrator",
+    "$meta:dc-coverage$": "2000-2009; Ireland, Coastal Regions",
+    "$meta:dc-creator$": "Jane Doe",
+    "$meta:dc-identifier$": "https://www.environmentalinstitute.org/library/GreatBarrierReefClimateChange.pdf",
+    "$meta:dc-language$": "en",
+    "$meta:dc-relation$": "Related dataset: Dataset on Coral Species of the Great Barrier Reef",
+    "$meta:dc-publisher$": "Environmental Research Institute",
+    "$meta:dc-license$": "https://creativecommons.org/licenses/by/4.0/",
+    "$meta:dc-source$": "Journal of Marine Science and Environmental Change, Volume 29, Issue 4",
+    "$meta:dc-subject$": "Surfers in the marine science industry",
+    "$meta:dc-type$": "Academic Paper",
+    "$meta:dc-date$": "2023-06-15",
+    "$meta:dc-format$": "Textual",
+    "$meta:dc-description$": "This paper explores the various effects of climate change on the biodiversity of the Great Barrier Reef, including coral bleaching and changes in species distribution with regard to Surfers",
+    "$meta:dc-audience$": "Researchers in Computational Linguistics",
+    "$meta:dc-provenance$": "Donated by the author to the University Library on 2020-06-01",
+    "$meta:dc-rights$": "restricted",
+    "$meta:dc-rightsholder$": "University of Example",
+    "$meta:dc-accessrights$": "Restricted to department members",
+    "$meta:dc-educationlevel$": "Graduate",
+    "$meta:co-reviewdatetime$": "2 march 2026",
+    "$meta:co-embargodatetime$": "1 may 2024",
+    "$meta:co-startdatetime$": "1 may 2024",
+    "$meta:co-publisheddatetime$": "$system:date$",
+    "$meta:co-expirydatetime$": "4 march 2026",
+    "$meta:co-restrictions$": "none",
+    "$meta:co-tags$": "Help, article, graphic",
+    "$meta:eventname$": "Dam event",
+    "$meta:eventstartdatetime$": "13 march 2024",
+    "$meta:eventenddatetime$": "14 march 2024",
+    "$meta:eventlocationname$": "Glasgow green",
+    "$meta:eventstreetadress$": "13, the green",
+    "$meta:eventcity$": "Glasgow",
+    "$meta:eventregion$": "UK",
+    "$meta:eventpostalcode$": "G21 3lf",
+    "$meta:eventimageurl$": "….thumbnail,png",
+    "$meta:eventdescription$": "The best Dam event in glasgow",
+    "$meta:eventsignupurl$": "www.signup.com",
+    "$meta:viewport$": "width=device-width, initial-scale=1",
+    "$system:language$": "en"
+}

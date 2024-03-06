@@ -15,8 +15,8 @@
         "postalCode": "$meta:eventpostalcode$"
       }
     },
-    "image": "$event:image$",
-    "description": "$event:description$",
+    "image": "$meta:eventimageurl$",
+    "description": "$meta:eventdescription$",
     "offers": {
       "@type": "Offer",
       "price": "$meta:price$",
