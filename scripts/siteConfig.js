@@ -307,54 +307,8 @@ export async function initialize() {
   removeCommentBlocks();
   handleMetadataJsonLd();
   handleMetadataTracking(siteConfig);
-  const metadataNames = [
-    'analyticsdelay',
-    'category',
-    'co-embargodatetime',
-    'co-publisheddatetime',
-    'co-reviewdatetime',
-    'co-expirydatetime',
-    'co-startdatetime',
-    'co-enddatetime',
-    'co-restrictions',
-    'co-tags',
-    'contentauthor',
-    'contentcompany',
-    'contentindustry',
-    'contenttechnology',
-    'contenttitle',
-    'contenttopic',
-    'contenttype',
-    'dc-accessRights',
-    'dc-author',
-    'dc-audience',
-    'dc-contributor',
-    'dc-coverage',
-    'dc-creator',
-    'dc-date',
-    'dc-description',
-    'dc-educationLevel',
-    'dc-format',
-    'dc-identifier',
-    'dc-language',
-    'dc-license',
-    'dc-publisher',
-    'dc-relation',
-    'dc-rightsholder',
-    'dc-accessrights',
-    'dc-educationlevel',
-    'dc-provenance',
-    'dc-rights',
-    'dc-rightsHolder',
-    'dc-source',
-    'dc-subject',
-    'dc-title',
-    'dc-type',
-    'lang',
-    'tracking',
-    'videourl',
-  ];
-  if (window.cmsplus.environment !== 'production') {
+
+  if (window.cmsplus.environment !== 'final') {
     if (siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
       if (siteConfig['$system:addbyline$'] === 'true') {
@@ -370,15 +324,22 @@ export async function initialize() {
         }
       }
     }
-    // Loop through the array of metadata names
-    metadataNames.forEach((name) => {
-      // Select all elements with the specified name attribute
-      const elements = document.querySelectorAll(`meta[name="${name}"]`);
+    const metadataNames = [
+      'description',
+      'twitter:card',
+      'twitter:title',
+      'twitter:description',
+      'twitter:image',
+      'referrer',
+      'viewport',
+    ];
+    const elements = document.querySelectorAll('meta[name]');
 
-      // Loop through the NodeList of elements and remove each one
-      elements.forEach((element) => {
+    elements.forEach((element) => {
+      const name = element.getAttribute('name');
+      if (!metadataNames.includes(name)) {
         element.remove();
-      });
+      }
     });
   }
 }
