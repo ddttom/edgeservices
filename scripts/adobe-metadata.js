@@ -1,11 +1,23 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable no-await-in-loop */
 /* adobe specific meta data handling */
-import { replaceTokens } from './meta-helper.js';
+
 /**
  * Adobe specific meta data handling
  * @param {object} siteConfig - the current site configuration
  */
-// eslint-disable-next-line import/prefer-default-export
+function replaceTokens(data, text) {
+  let ret = text;
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const key in data) {
+    if (Object.hasOwnProperty.call(data, key)) {
+      const item = key;
+      const value = data[item];
+      ret = ret.replaceAll(item, value);
+    }
+  }
+  return ret;
+}
 export async function handleMetadataTracking(siteConfig) {
   if (siteConfig['$meta:tracking$'] != null) {
     const trackerlist = siteConfig['$meta:tracking$'];

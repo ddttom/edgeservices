@@ -1,12 +1,14 @@
+/* eslint-disable no-console */
+/* eslint-disable comma-dangle */
 /* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable prefer-destructuring */
 import {
-  initialize as initClientConfig,
+  initialize as initClientConfig
 } from './clientConfig.js';
 
 import { handleMetadataTracking } from './adobe-metadata.js';
-import { replaceTokens, logError } from './meta-helper.js';
+
 
 export const siteConfig = {};
 export const dc = {};
@@ -19,7 +21,7 @@ const environmentConfig = {
   local: 'localhost',
   stage: 'hlx.page',
   production: 'hlx.live',
-  default: 'unknown',
+  default: 'unknown'
 };
 
 // Precalculate a regular expression for efficient matching
@@ -32,7 +34,18 @@ if (environmentPatterns.test(window.location.href)) {
   environment = environmentConfig[matchedPattern];
 }
 window.cmsplus.environment = environment;
-
+function replaceTokens(data, text) {
+  let ret = text;
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const key in data) {
+    if (Object.hasOwnProperty.call(data, key)) {
+      const item = key;
+      const value = data[item];
+      ret = ret.replaceAll(item, value);
+    }
+  }
+  return ret;
+}
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
   if (h1) return h1;
@@ -219,9 +232,7 @@ export async function loadConfiguration() {
     '$meta:dc-language$',
   ];
 
-  const lang = metaProperties.reduce((acc, prop) => acc || siteConfig[prop], '')
-             || window.navigator.language
-             || defaultLang;
+  const lang = metaProperties.reduce((acc, prop) => acc || siteConfig[prop], '') || window.navigator.language || defaultLang;
 
   siteConfig['$system:language$'] = lang;
   document.querySelector('html').setAttribute('lang', lang);
@@ -347,7 +358,7 @@ async function handleMetadataJsonLd() {
       document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
     } catch (error) {
     // no schema.org for your content, just use the content as is
-      logError('Error processing JSON-LD metadata:', error);
+      console.error('Error processing JSON-LD metadata:', error);
     }
   }
 }

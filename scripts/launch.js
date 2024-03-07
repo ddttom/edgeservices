@@ -1,6 +1,19 @@
 // This is the last chance, things in here are not allowed to change the display of the DOM.
 // Quick and dirty for Comwrap -- make configurable
 import { loadScript } from './aem.js';
+/* eslint-disable no-plusplus */
+/* eslint-disable no-mixed-operators */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-void */
+/* eslint-disable prefer-spread */
+/* eslint-disable no-console */
+/* eslint-disable no-multi-assign */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable func-names */
 
 // for comwrap
 // Cookie Consent (Cookiebot)
@@ -30,19 +43,6 @@ export async function initialize() {
     window.adobeDataLayer.push(window.cmsplus.track.view);
   }
 }
-/* eslint-disable no-plusplus */
-/* eslint-disable no-mixed-operators */
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-void */
-/* eslint-disable prefer-spread */
-/* eslint-disable no-console */
-/* eslint-disable no-multi-assign */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-param-reassign */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable prefer-rest-params */
-/* eslint-disable func-names */
 
 // <!-- Hotjar Tracking Code for https://www.comwrap.uk -->
 (function (h, o, t, j, a, r) {
@@ -107,4 +107,3 @@ export async function initialize() {
     }
   }
 }());
-

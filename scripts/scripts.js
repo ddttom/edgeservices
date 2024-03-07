@@ -11,15 +11,15 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
+  loadCSS
 } from './aem.js';
 
 import {
-  initialize as initSiteConfig,
+  initialize as initSiteConfig
 } from './siteConfig.js';
 
 import {
-  initialize as initExternalImage,
+  initialize as initExternalImage
 } from './externalImage.js';
 
 initSiteConfig();
