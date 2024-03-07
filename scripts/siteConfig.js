@@ -9,7 +9,6 @@ import {
 
 import { handleMetadataTracking } from './adobe-metadata.js';
 
-
 export const siteConfig = {};
 export const dc = {};
 export const co = {};
@@ -125,7 +124,6 @@ export async function loadConfiguration() {
       siteConfig[entry.Item] = entry.Value;
     }
     const now = new Date().toISOString();
-    const today = now.split('T')[0];
     let href = '';
     const canonicalLink = document.querySelector('link[rel="canonical"]');
     if (canonicalLink) {
@@ -140,7 +138,7 @@ export async function loadConfiguration() {
 
     siteConfig['$co:defaultreviewperiod'] = 365;
     siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
-    siteConfig['$co:defaultstartdatetime'] = today;
+    siteConfig['$co:defaultstartdatetime'] = now;
     siteConfig['$co:defaultrestrictions'] = 'none';
     siteConfig['$co:defaulttags$'] = 'none';
 
@@ -157,7 +155,7 @@ export async function loadConfiguration() {
     siteConfig['$page:canonical$'] = href;
 
     siteConfig['$system:platformVersion$'] = 'Franklin++ 1.0.0';
-    siteConfig['$system:date$'] = today;
+    siteConfig['$system:date$'] = now;
     siteConfig['$system:isodate$'] = now;
     siteConfig['$system:time$'] = new Date().toLocaleTimeString();
     siteConfig['$system:timezone$'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
