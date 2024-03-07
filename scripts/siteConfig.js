@@ -173,7 +173,7 @@ export async function loadConfiguration() {
     metaTags.forEach((metaTag) => {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
       let value = metaTag.getAttribute('content');
-      if (key.contains('date')) {
+      if (key.includes('date')) {
         value = convertToISODate(value);
       }
 
