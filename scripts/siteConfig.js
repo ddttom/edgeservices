@@ -33,8 +33,6 @@ if (environmentPatterns.test(window.location.href)) {
 }
 window.cmsplus.environment = environment;
 
-const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
   if (h1) return h1;
@@ -49,54 +47,54 @@ function findTitleElement() {
   }
   return null; // No suitable title found
 }
+const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 function getMonthNumber(monthName) {
   return monthName ? months.indexOf(monthName.toLowerCase()) + 1 : null;
 }
+
 function convertToISODate(input) {
-  if (input.indexOf('T') >= 0) {
-    return input; // we have iso - no need to convert
+  // First, try to directly parse the input using the Date constructor.
+  // This works well for ISO and some common formats.
+  const parsedDate = new Date(input);
+  if (!Number.isNaN(parsedDate.getTime())) {
+    return parsedDate.toISOString();
   }
-  // Regular expression to match various date and time formats
+
+  // Custom parsing for more specific formats
   const regex = /^(\d{1,2})?\s*([a-zA-Z]+)?\s*(\d{1,2})[,\s]?\s*(\d{4})(?:\s*([0-9:]+\s*[aApP][mM])?)?\s*$/i;
   const match = regex.exec(input);
 
   if (match) {
-    let hours; let minutes; let seconds; let meridiem;
-
-    // Extract date components
     const day = parseInt(match[3], 10);
     const month = getMonthNumber(match[2]);
     const year = parseInt(match[4], 10);
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
 
-    // Extract time components (if present)
-    const timeStr = match[5];
-    if (timeStr) {
-      const [timeValue, ampm] = timeStr.split(/\s+/);
-      const [hourStr, minuteStr, secondStr] = timeValue.split(':');
-      hours = parseInt(hourStr, 10);
-      minutes = parseInt(minuteStr || '0', 10);
-      seconds = parseInt(secondStr || '0', 10);
-      meridiem = ampm ? ampm.toLowerCase() : '';
+    // Extract time components if present
+    if (match[5]) {
+      const [time, meridiem] = match[5].split(/\s+/);
+      const [hrs, mins, secs] = time.split(':').map((num) => parseInt(num, 10));
 
-      // Handle 12-hour clock format
-      if (meridiem) {
-        hours = (hours % 12) + (meridiem === 'pm' ? 12 : 0);
-      }
-    } else {
-      hours = 0;
-      minutes = 0;
-      seconds = 0;
+      hours = hrs % 12;
+      if (meridiem.toLowerCase() === 'pm') hours += 12;
+      minutes = mins || 0;
+      seconds = secs || 0;
     }
 
-    // Create a Date object
     const date = new Date(year, month - 1, day, hours, minutes, seconds);
-
-    // Return the ISO date format
     return date.toISOString();
   }
 
-  // Invalid input format
+  // For formats not covered, attempt to use Date.parse and check for validity
+  const fallbackParsedDate = Date.parse(input);
+  if (!Number.isNaN(fallbackParsedDate)) {
+    return new Date(fallbackParsedDate).toISOString();
+  }
+
+  // Return original input if all parsing attempts fail
   return input;
 }
 
