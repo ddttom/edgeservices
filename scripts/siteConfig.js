@@ -54,6 +54,9 @@ function getMonthNumber(monthName) {
   return monthName ? months.indexOf(monthName.toLowerCase()) + 1 : null;
 }
 function convertToISODate(input) {
+  if (input.indexOf('T') >= 0) {
+    return input; // we have iso - no need to convert
+  }
   // Regular expression to match various date and time formats
   const regex = /^(\d{1,2})?\s*([a-zA-Z]+)?\s*(\d{1,2})[,\s]?\s*(\d{4})(?:\s*([0-9:]+\s*[aApP][mM])?)?\s*$/i;
   const match = regex.exec(input);
@@ -94,7 +97,7 @@ function convertToISODate(input) {
   }
 
   // Invalid input format
-  return null;
+  return input;
 }
 
 export async function loadConfiguration() {
@@ -173,6 +176,7 @@ export async function loadConfiguration() {
     metaTags.forEach((metaTag) => {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
       let value = metaTag.getAttribute('content');
+      key = key.replaceAll(' ', '');
       if (key.includes('date')) {
         value = convertToISODate(value);
       }
