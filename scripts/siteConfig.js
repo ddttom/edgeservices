@@ -33,6 +33,8 @@ if (environmentPatterns.test(window.location.href)) {
 }
 window.cmsplus.environment = environment;
 
+const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
   if (h1) return h1;
@@ -46,6 +48,53 @@ function findTitleElement() {
     }
   }
   return null; // No suitable title found
+}
+
+function getMonthNumber(monthName) {
+  return monthName ? months.indexOf(monthName.toLowerCase()) + 1 : null;
+}
+function convertToISODate(input) {
+  // Regular expression to match various date and time formats
+  const regex = /^(\d{1,2})?\s*([a-zA-Z]+)?\s*(\d{1,2})[,\s]?\s*(\d{4})(?:\s*([0-9:]+\s*[aApP][mM])?)?\s*$/i;
+  const match = regex.exec(input);
+
+  if (match) {
+    let hours; let minutes; let seconds; let meridiem;
+
+    // Extract date components
+    const day = parseInt(match[3], 10);
+    const month = getMonthNumber(match[2]);
+    const year = parseInt(match[4], 10);
+
+    // Extract time components (if present)
+    const timeStr = match[5];
+    if (timeStr) {
+      const [timeValue, ampm] = timeStr.split(/\s+/);
+      const [hourStr, minuteStr, secondStr] = timeValue.split(':');
+      hours = parseInt(hourStr, 10);
+      minutes = parseInt(minuteStr || '0', 10);
+      seconds = parseInt(secondStr || '0', 10);
+      meridiem = ampm ? ampm.toLowerCase() : '';
+
+      // Handle 12-hour clock format
+      if (meridiem) {
+        hours = (hours % 12) + (meridiem === 'pm' ? 12 : 0);
+      }
+    } else {
+      hours = 0;
+      minutes = 0;
+      seconds = 0;
+    }
+
+    // Create a Date object
+    const date = new Date(year, month - 1, day, hours, minutes, seconds);
+
+    // Return the ISO date format
+    return date.toISOString();
+  }
+
+  // Invalid input format
+  return null;
 }
 
 export async function loadConfiguration() {
@@ -72,7 +121,6 @@ export async function loadConfiguration() {
 
     const text = document.body.innerText; // Get the visible text content of the body
     const wordCount = text.split(/\s+/).filter(Boolean).length; // Split by whitespace and count
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const thismonth = new Date().getMonth();
     const winloc = window.location.href;
 
@@ -124,7 +172,11 @@ export async function loadConfiguration() {
     const metaTags = document.querySelectorAll('meta');
     metaTags.forEach((metaTag) => {
       let key = metaTag.getAttribute('name') || metaTag.getAttribute('property');
-      const value = metaTag.getAttribute('content');
+      let value = metaTag.getAttribute('content');
+      if (key.contains('date')) {
+        value = convertToISODate(value);
+      }
+
       if (key.startsWith('dc-')) {
         dc[key.replace('dc-', 'dc:').replaceAll(' ', '')] = value;
       }
@@ -251,6 +303,7 @@ export function extractJsonLd(parsedJson) {
   }
   return parsedJson;
 }
+
 async function handleMetadataJsonLd() {
   if (!document.querySelector('script[type="application/ld+json"]')) {
     let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
