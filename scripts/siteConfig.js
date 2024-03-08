@@ -144,7 +144,7 @@ export async function loadConfiguration() {
 
     siteConfig['$system:environment$'] = window.cmsplus.environment;
 
-    siteConfig['$page.location$'] = winloc;
+    siteConfig['$page:location$'] = winloc;
     siteConfig['$page:url$'] = href;
     siteConfig['$page:name$'] = pname;
     siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
