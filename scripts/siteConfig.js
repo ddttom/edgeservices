@@ -370,7 +370,7 @@ export async function loadConfiguration() {
   debugPanel.style.left = '0';
   debugPanel.style.width = '100%';
   debugPanel.style.zIndex = '9999';
-  debugPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  // debugPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
   document.body.appendChild(debugPanel);
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.shiftKey && event.key === 'D') { //  Ctrl + Shift + D
