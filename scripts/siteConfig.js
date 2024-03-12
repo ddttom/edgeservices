@@ -106,7 +106,10 @@ function convertToISODate(input) {
   // Return original input if all parsing attempts fail
   return input;
 }
-
+function debug() {
+  // eslint-disable-next-line no-alert
+  alert('debug');
+}
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
 
@@ -309,6 +312,7 @@ export async function loadConfiguration() {
   floatingDiv.style.zIndex = '100';
   floatingDiv.style.cursor = 'pointer';
   floatingDiv.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.3)'; // Subtle shadow
+  floatingDiv.addEventListener('click', debug); 
   const bodyElement = document.body;
   bodyElement.insertBefore(floatingDiv, bodyElement.firstChild);
   const floatingGraphicDiv = document.getElementById('floating-graphic');
