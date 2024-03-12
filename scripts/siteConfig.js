@@ -108,7 +108,6 @@ function convertToISODate(input) {
 }
 function toggleDebugPanel() {
   const debugPanel = document.getElementById('debug-panel');
-  debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
   debugPanel.style.cssText = `
   position: fixed;
   top: 0;
@@ -116,8 +115,8 @@ function toggleDebugPanel() {
   width: 100%;
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.5);
-  display: block; /* Ensure it's visible */
 `;
+  debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
 }
 function debug() {
   toggleDebugPanel();
