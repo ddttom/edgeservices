@@ -110,11 +110,6 @@ function toggleDebugPanel() {
   const debugPanel = document.getElementById('debug-panel');
   debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
 }
-
-function debug() {
-  toggleDebugPanel();
-}
-
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
 
@@ -309,27 +304,8 @@ export async function loadConfiguration() {
   const debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
 
-  // Set styles to keep it hidden
+  // Set initial styles for the debug panel
   debugPanel.style.display = 'none';
-
-  // **2. Build the content of the debug panel:**
-  let content = '';
-
-  // Add siteConfig key-value pairs:
-  content += '<h3>siteConfig</h3>';
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
-  for (const key in siteConfig) {
-    content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
-  }
-
-  // Add other values:
-  content += '<h3>Other Values</h3>';
-  content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
-  content += `<p><strong>dcString:</strong> ${dcString}</p>`;
-  content += `<p><strong>ocString:</strong> ${coString}</p>`;
-
-  // Set the content of the debug panel:
-  debugPanel.innerHTML = content;
   debugPanel.style.position = 'fixed';
   debugPanel.style.top = '0';
   debugPanel.style.left = '0';
@@ -337,9 +313,29 @@ export async function loadConfiguration() {
   debugPanel.style.height = '100vh';
   debugPanel.style.overflowY = 'auto';
   debugPanel.style.zIndex = '9998';
+
+  // Build the content of the debug panel
+  let content = '<h3>siteConfig</h3>';
+
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const key in siteConfig) {
+    content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
+  }
+
+  content += '<h3>Other Values</h3>';
+  content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
+  content += `<p><strong>dcString:</strong> ${dcString}</p>`;
+  content += `<p><strong>ocString:</strong> ${coString}</p>`;
+
+  // Set the content
+  debugPanel.innerHTML = content;
+
+  // Append to body
   document.body.appendChild(debugPanel);
+
+  // Event listener for keyboard shortcut
   document.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && event.shiftKey && event.key === 'D') { //  Ctrl + Shift + D
+    if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
       toggleDebugPanel();
     }
   });
@@ -445,6 +441,14 @@ export async function initialize() {
       'twitter:image',
       'referrer',
       'viewport',
+      'title',
+      'og:title',
+      'og:description',
+      'og:image',
+      'og:type',
+      'og:url',
+      'og:site_name',
+      'keywords'
     ];
     const elements = document.querySelectorAll('meta[name]');
 
