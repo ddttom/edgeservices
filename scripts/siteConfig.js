@@ -42,6 +42,73 @@ function replaceTokens(data, text) {
   }
   return ret;
 }
+
+export function extractJsonLd(parsedJson) {
+  const jsonLd = { };
+  const hasDataArray = 'data' in parsedJson && Array.isArray(parsedJson.data);
+  if (hasDataArray) {
+    parsedJson.data.forEach((item) => {
+      let key = item.Item.trim().toLowerCase();
+      const reservedKeySet = new Set(['type', 'context', 'id', 'value', 'reverse', 'container', 'graph']);
+      if (reservedKeySet.has(key)) {
+        key = `@${key}`;
+      }
+      const value = item.Value.trim();
+      jsonLd[key] = value;
+    });
+    return jsonLd;
+  }
+  return parsedJson;
+}
+
+async function handleMetadataJsonLd() {
+  let jsonString = '';
+  if (!document.querySelector('script[type="application/ld+json"]')) {
+    let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
+    if (!jsonLdMetaElement) {
+      jsonLdMetaElement = document.createElement('meta');
+      jsonLdMetaElement.setAttribute('name', 'json-ld');
+      jsonLdMetaElement.setAttribute('content', 'owner');
+      document.head.appendChild(jsonLdMetaElement);
+    }
+    const content = jsonLdMetaElement.getAttribute('content');
+    jsonLdMetaElement.remove();
+    // assume we have an url, if not we have a role -  construct url on the fly
+    let jsonDataUrl = content;
+
+    try {
+    // Attempt to parse the content as a URL
+    // eslint-disable-next-line no-new
+      new URL(content);
+    } catch (error) {
+    // Content is not a URL, construct the JSON-LD URL based on content and current domain
+      jsonDataUrl = `${window.location.origin}/config/json-ld/${content}.json`;
+    }
+    try {
+      const resp = await fetch(jsonDataUrl);
+      if (!resp.ok) {
+        throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
+      }
+      let json = await resp.json();
+      json = extractJsonLd(json);
+      jsonString = JSON.stringify(json, null, '\t');
+      jsonString = replaceTokens(siteConfig, jsonString);
+      // Create and append a new script element with the processed JSON-LD data
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
+      jsonLdMetaElement.setAttribute('id', 'ldMeta');
+      script.textContent = jsonString;
+      document.head.appendChild(script);
+      document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
+    } catch (error) {
+    // no schema.org for your content, just use the content as is
+      console.error('Error processing JSON-LD metadata:', error);
+    }
+  }
+  return jsonString;
+}
+
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
   if (h1) return h1;
@@ -154,7 +221,7 @@ export async function loadConfiguration() {
     siteConfig['$page:title$'] = document.title;
     siteConfig['$page:canonical$'] = href;
 
-    siteConfig['$system:platformVersion$'] = 'Franklin++ 1.0.0';
+    siteConfig['$system:platformVersion$'] = 'AI Optiflow 1.0.0';
     siteConfig['$system:date$'] = now;
     siteConfig['$system:isodate$'] = now;
     siteConfig['$system:time$'] = new Date().toLocaleTimeString();
@@ -301,6 +368,8 @@ export async function loadConfiguration() {
     script.textContent = replaceTokens(siteConfig, coString);
     document.head.appendChild(script);
   }
+  // **** all variables must be declared by now ******
+  const jsonldString = handleMetadataJsonLd();
   const debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
 
@@ -308,7 +377,7 @@ export async function loadConfiguration() {
   debugPanel.style.display = 'none';
   debugPanel.style.position = 'fixed';
   debugPanel.style.top = '0';
-  debugPanel.style.left = '0';
+  debugPanel.style.left = '10';
   debugPanel.style.width = '50%';
   debugPanel.style.height = '100vh';
   debugPanel.style.overflowY = 'auto';
@@ -332,6 +401,9 @@ export async function loadConfiguration() {
   } else {
     content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
   }
+  if (jsonldString.length > 0) {
+    content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
+  }
   content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
   content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
 
@@ -349,70 +421,6 @@ export async function loadConfiguration() {
   });
   return siteConfig;
 }
-
-export function extractJsonLd(parsedJson) {
-  const jsonLd = { };
-  const hasDataArray = 'data' in parsedJson && Array.isArray(parsedJson.data);
-  if (hasDataArray) {
-    parsedJson.data.forEach((item) => {
-      let key = item.Item.trim().toLowerCase();
-      const reservedKeySet = new Set(['type', 'context', 'id', 'value', 'reverse', 'container', 'graph']);
-      if (reservedKeySet.has(key)) {
-        key = `@${key}`;
-      }
-      const value = item.Value.trim();
-      jsonLd[key] = value;
-    });
-    return jsonLd;
-  }
-  return parsedJson;
-}
-
-async function handleMetadataJsonLd() {
-  if (!document.querySelector('script[type="application/ld+json"]')) {
-    let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
-    if (!jsonLdMetaElement) {
-      jsonLdMetaElement = document.createElement('meta');
-      jsonLdMetaElement.setAttribute('name', 'json-ld');
-      jsonLdMetaElement.setAttribute('content', 'owner');
-      document.head.appendChild(jsonLdMetaElement);
-    }
-    const content = jsonLdMetaElement.getAttribute('content');
-    jsonLdMetaElement.remove();
-    // assume we have an url, if not we have a role -  construct url on the fly
-    let jsonDataUrl = content;
-
-    try {
-    // Attempt to parse the content as a URL
-    // eslint-disable-next-line no-new
-      new URL(content);
-    } catch (error) {
-    // Content is not a URL, construct the JSON-LD URL based on content and current domain
-      jsonDataUrl = `${window.location.origin}/config/json-ld/${content}.json`;
-    }
-    try {
-      const resp = await fetch(jsonDataUrl);
-      if (!resp.ok) {
-        throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
-      }
-      let json = await resp.json();
-      json = extractJsonLd(json);
-      let jsonString = JSON.stringify(json, null, '\t');
-      jsonString = replaceTokens(siteConfig, jsonString);
-      // Create and append a new script element with the processed JSON-LD data
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
-      jsonLdMetaElement.setAttribute('id', 'ldMeta');
-      script.textContent = jsonString;
-      document.head.appendChild(script);
-      document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
-    } catch (error) {
-    // no schema.org for your content, just use the content as is
-      console.error('Error processing JSON-LD metadata:', error);
-    }
-  }
-}
 export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
 }
@@ -422,7 +430,6 @@ export async function initialize() {
   await loadConfiguration();
   initClientConfig();
   removeCommentBlocks();
-  handleMetadataJsonLd();
   handleMetadataTracking(siteConfig);
 
   if (window.cmsplus.environment !== 'final') {
