@@ -330,8 +330,8 @@ export async function loadConfiguration() {
   } else {
     content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
   }
-  content += `<p><strong>dcString:</strong> ${dcString}</p>`;
-  content += `<p><strong>ocString:</strong> ${coString}</p>`;
+  content += `<p><strong>dcString:</strong> <pre>${dcString}</pre></p>`;
+  content += `<p><strong>ocString:</strong> <pre>${coString}</pre></p>`;
 
   // Set the content
   debugPanel.innerHTML = content;
