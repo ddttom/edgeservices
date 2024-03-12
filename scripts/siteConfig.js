@@ -106,10 +106,14 @@ function convertToISODate(input) {
   // Return original input if all parsing attempts fail
   return input;
 }
-function debug() {
+function toggleDebugPanel() {
   const debugPanel = document.getElementById('debug-panel');
-  debugPanel.style.display = 'block';
+  debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
 }
+function debug() {
+  toggleDebugPanel();
+}
+
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
 
@@ -364,8 +368,7 @@ export async function loadConfiguration() {
   document.body.appendChild(debugPanel);
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.shiftKey && event.key === 'D') { //  Ctrl + Shift + D
-      debugPanel = document.getElementById('debug-panel');
-      debugPanel.style.display = 'block';
+      toggleDebugPanel();
     }
   });
   return siteConfig;
