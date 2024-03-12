@@ -159,13 +159,20 @@ export async function loadConfiguration() {
     siteConfig['$system:locale$'] = Intl.DateTimeFormat().resolvedOptions().locale;
     siteConfig['$system:year$'] = new Date().getFullYear();
     siteConfig['$system:month$'] = thismonth + 1;
-    siteConfig['$system:monthinfull$'] = months[thismonth];
     siteConfig['$system:day$'] = new Date().getDate();
     siteConfig['$system:hour$'] = new Date().getHours();
     siteConfig['$system:minute$'] = new Date().getMinutes();
     siteConfig['$system:second$'] = new Date().getSeconds();
     siteConfig['$system:millisecond$'] = new Date().getMilliseconds();
-    siteConfig['$system:dateinenglish$'] = `${siteConfig['$system:monthinfull$']} ${siteConfig['$system:day$']}, ${siteConfig['$system:year$']}`;
+
+    const month = months[thismonth] + 1;
+    const firstLetter = month.charAt(0).toUpperCase();
+    const restOfWord = month.slice(1);
+    const capitalizedMonth = firstLetter + restOfWord;
+    siteConfig['$system:monthinfull$'] = capitalizedMonth;
+    siteConfig['$system:monthinshort$'] = capitalizedMonth.slice(0, 3);
+
+    siteConfig['$system:dateinenglish$'] = `${capitalizedMonth} ${siteConfig['$system:day$']}, ${siteConfig['$system:year$']}`;
 
     const metaTitle = document.querySelector('meta[name="title"]');
     if (!metaTitle) {
@@ -291,6 +298,32 @@ export async function loadConfiguration() {
     script.textContent = replaceTokens(siteConfig, coString);
     document.head.appendChild(script);
   }
+
+  const floatingDiv = document.createElement('div');
+  floatingDiv.id = 'floating-graphic';
+  floatingDiv.style.backgroundColor = 'blue';
+  floatingDiv.style.width = '50px';
+  floatingDiv.style.height = '50px';
+  floatingDiv.style.position = 'fixed';
+  floatingDiv.style.top = '10px';
+  floatingDiv.style.left = '10px';
+  floatingDiv.style.zIndex = '100';
+  floatingDiv.style.cursor = 'pointer';
+
+  // Get a reference to the body element
+  const bodyElement = document.body;
+
+  bodyElement.insertBefore(floatingDiv, bodyElement.firstChild);
+  const floatingGraphicDiv = document.getElementById('floating-graphic');
+
+  const svgImage = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgImage.setAttribute('width', '100'); // Example width - adjust as needed
+  svgImage.setAttribute('height', '100'); // Example height -  adjust as needed
+
+  svgImage.setAttribute('xlink:href', '/icons/bug.svg');
+
+  floatingGraphicDiv.appendChild(svgImage);
+
   return siteConfig;
 }
 
