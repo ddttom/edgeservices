@@ -316,8 +316,9 @@ export async function loadConfiguration() {
   floatingDiv.style.left = '10px';
   floatingDiv.style.zIndex = '100';
   floatingDiv.style.cursor = 'pointer';
+  floatingDiv.style.zIndex = '9999';
   floatingDiv.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.3)'; // Subtle shadow
-  floatingDiv.addEventListener('click', debug);
+  floatingDiv.addEventListener('click', toggleDebugPanel());
   const bodyElement = document.body;
   bodyElement.insertBefore(floatingDiv, bodyElement.firstChild);
   const floatingGraphicDiv = document.getElementById('floating-graphic');
@@ -368,8 +369,10 @@ export async function loadConfiguration() {
   debugPanel.style.position = 'fixed';
   debugPanel.style.top = '0';
   debugPanel.style.left = '0';
-  debugPanel.style.width = '100%';
-  debugPanel.style.zIndex = '9999';
+  debugPanel.style.width = '50%';
+  debugPanel.style.height = '100vh'; // Adjust this value as necessary
+  debugPanel.style.overflowY = 'auto'; // Enables vertical scrolling
+  debugPanel.style.zIndex = '9998';
   // debugPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
   document.body.appendChild(debugPanel);
   document.addEventListener('keydown', (event) => {
