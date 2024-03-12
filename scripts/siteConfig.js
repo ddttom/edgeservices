@@ -354,7 +354,7 @@ export async function loadConfiguration() {
   content += '<h3>siteConfig</h3>';
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
   for (const key in siteConfig) {
-    content += `<p><strong>${key}:</strong> ${siteConfig[key]}</p>`;
+    content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
   }
 
   // Add other values:
