@@ -300,7 +300,7 @@ export async function loadConfiguration() {
   }
   const floatingDiv = document.createElement('div');
   floatingDiv.id = 'floating-graphic';
-  floatingDiv.style.backgroundColor = 'white'; // High contrast for black bug
+  floatingDiv.style.backgroundColor = 'black';
   floatingDiv.style.width = '50px';
   floatingDiv.style.height = '50px';
   floatingDiv.style.position = 'fixed';
