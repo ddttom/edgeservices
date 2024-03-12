@@ -300,7 +300,7 @@ export async function loadConfiguration() {
   }
   const floatingDiv = document.createElement('div');
   floatingDiv.id = 'floating-graphic';
-  floatingDiv.style.backgroundColor = 'black';
+  floatingDiv.style.backgroundColor = 'blue';
   floatingDiv.style.width = '50px';
   floatingDiv.style.height = '50px';
   floatingDiv.style.position = 'fixed';
@@ -313,8 +313,8 @@ export async function loadConfiguration() {
   bodyElement.insertBefore(floatingDiv, bodyElement.firstChild);
   const floatingGraphicDiv = document.getElementById('floating-graphic');
   const svgImage = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svgImage.setAttribute('width', '100'); // Example width - adjust as needed
-  svgImage.setAttribute('height', '100'); // Example height - adjust as needed
+  svgImage.setAttribute('width', '50');
+  svgImage.setAttribute('height', '50');
   svgImage.setAttribute('xlink:href', '/icons/bug.svg');
   floatingGraphicDiv.appendChild(svgImage);
   floatingDiv.style.transition = 'transform 0.2s ease-in-out';
