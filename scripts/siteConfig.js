@@ -298,10 +298,9 @@ export async function loadConfiguration() {
     script.textContent = replaceTokens(siteConfig, coString);
     document.head.appendChild(script);
   }
-
   const floatingDiv = document.createElement('div');
   floatingDiv.id = 'floating-graphic';
-  floatingDiv.style.backgroundColor = 'blue';
+  floatingDiv.style.backgroundColor = 'white'; // High contrast for black bug
   floatingDiv.style.width = '50px';
   floatingDiv.style.height = '50px';
   floatingDiv.style.position = 'fixed';
@@ -309,21 +308,29 @@ export async function loadConfiguration() {
   floatingDiv.style.left = '10px';
   floatingDiv.style.zIndex = '100';
   floatingDiv.style.cursor = 'pointer';
-
-  // Get a reference to the body element
+  floatingDiv.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.3)'; // Subtle shadow
   const bodyElement = document.body;
-
   bodyElement.insertBefore(floatingDiv, bodyElement.firstChild);
   const floatingGraphicDiv = document.getElementById('floating-graphic');
-
   const svgImage = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svgImage.setAttribute('width', '100'); // Example width - adjust as needed
-  svgImage.setAttribute('height', '100'); // Example height -  adjust as needed
-
+  svgImage.setAttribute('height', '100'); // Example height - adjust as needed
   svgImage.setAttribute('xlink:href', '/icons/bug.svg');
-
   floatingGraphicDiv.appendChild(svgImage);
-
+  floatingDiv.style.transition = 'transform 0.2s ease-in-out';
+  floatingDiv.addEventListener('mouseover', () => {
+    floatingDiv.style.transform = 'scale(1.1)';
+  });
+  floatingDiv.addEventListener('mouseout', () => {
+    floatingDiv.style.transform = 'scale(1)';
+  });
+  floatingDiv.style.opacity = '0.8';
+  floatingDiv.addEventListener('mouseover', () => {
+    floatingDiv.style.opacity = '1';
+  });
+  floatingDiv.addEventListener('mouseout', () => {
+    floatingDiv.style.opacity = '0.8';
+  });
   return siteConfig;
 }
 
