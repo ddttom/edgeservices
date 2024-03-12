@@ -108,16 +108,9 @@ function convertToISODate(input) {
 }
 function toggleDebugPanel() {
   const debugPanel = document.getElementById('debug-panel');
-  debugPanel.style.cssText = `
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.5);
-`;
   debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
 }
+
 function debug() {
   toggleDebugPanel();
 }
@@ -367,12 +360,17 @@ export async function loadConfiguration() {
   // Add other values:
   content += '<h3>Other Values</h3>';
   content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
-  content += `<p><strong>dcString:</strong> ${window.dcString}</p>`;
-  content += `<p><strong>ocString:</strong> ${window.ocString}</p>`;
+  content += `<p><strong>dcString:</strong> ${dcString}</p>`;
+  content += `<p><strong>ocString:</strong> ${coString}</p>`;
 
   // Set the content of the debug panel:
   debugPanel.innerHTML = content;
-
+  debugPanel.style.position = 'fixed';
+  debugPanel.style.top = '0';
+  debugPanel.style.left = '0';
+  debugPanel.style.width = '100%';
+  debugPanel.style.zIndex = '9999';
+  debugPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
   document.body.appendChild(debugPanel);
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.shiftKey && event.key === 'D') { //  Ctrl + Shift + D
