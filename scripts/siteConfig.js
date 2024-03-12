@@ -324,14 +324,16 @@ export async function loadConfiguration() {
 
   content += '<h3>Other Values</h3>';
   if (window.cmsplus && typeof window.cmsplus === 'object') {
+    content += '<pre>';
     Object.entries(window.cmsplus).forEach(([key, value]) => {
       content += `<p><strong>${key}:</strong> ${value}</p>`;
     });
+    content += '</pre>';
   } else {
     content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
   }
-  content += `<p><strong>dcString:</strong> <pre>${dcString}</pre></p>`;
-  content += `<p><strong>ocString:</strong> <pre>${coString}</pre></p>`;
+  content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
+  content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
 
   // Set the content
   debugPanel.innerHTML = content;
