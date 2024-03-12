@@ -14,32 +14,20 @@ export const dc = {};
 export const co = {};
 
 window.cmsplus = window.cmsplus || {};
-const environmentConfig = {
-  final: '.html',
-  local: 'localhost',
-  stage: 'hlx.page',
-  production: 'hlx.live',
-  default: 'unknown'
-};
-
-// Precalculate a regular expression for efficient matching
-// Use the 'i' flag for case-insensitivity if needed
-const environmentPatterns = new RegExp(Object.keys(environmentConfig).join('|'), 'i');
 
 // Determine the environment based on the URL
-let environment = environmentConfig.default; // Start with the default
+let environment = 'unknown'; // Start with the default
 
-// Debugging: Log the patterns and URL
-console.log('Environment Patterns:', environmentPatterns);
-console.log('Window Location:', window.location.href);
-
-if (environmentPatterns.test(window.location.href)) {
-  const matchedPattern = window.location.href.match(environmentPatterns)[0];
-  // Debugging: Log the matched pattern
-  console.log('Matched Pattern:', matchedPattern);
-
-  environment = environmentConfig[matchedPattern];
+// Use simple string checks for each environment
+if (window.location.href.includes('.html')) {
+  environment = 'final';
+} else if (window.location.href.includes('helix.page')) {
+  environment = 'stage';
+} else if (window.location.href.includes('helix.live')) {
+  environment = 'production';
 }
+
+window.cmsplus.environment = environment;
 
 window.cmsplus.environment = environment;
 function replaceTokens(data, text) {
