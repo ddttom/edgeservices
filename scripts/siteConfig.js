@@ -21,10 +21,10 @@ let environment = 'unknown'; // Start with the default
 // Use simple string checks for each environment
 if (window.location.href.includes('.html')) {
   environment = 'final';
-} else if (window.location.href.includes('helix.page')) {
-  environment = 'stage';
-} else if (window.location.href.includes('helix.live')) {
-  environment = 'production';
+} else if (window.location.href.includes('.page')) {
+  environment = 'preview';
+} else if (window.location.href.includes('.live')) {
+  environment = 'live';
 }
 
 window.cmsplus.environment = environment;
