@@ -14,7 +14,6 @@ export const dc = {};
 export const co = {};
 
 window.cmsplus = window.cmsplus || {};
-
 const environmentConfig = {
   final: '.html',
   local: 'localhost',
@@ -24,14 +23,24 @@ const environmentConfig = {
 };
 
 // Precalculate a regular expression for efficient matching
-const environmentPatterns = new RegExp(Object.keys(environmentConfig).join('|'));
+// Use the 'i' flag for case-insensitivity if needed
+const environmentPatterns = new RegExp(Object.keys(environmentConfig).join('|'), 'i');
 
 // Determine the environment based on the URL
 let environment = environmentConfig.default; // Start with the default
+
+// Debugging: Log the patterns and URL
+console.log('Environment Patterns:', environmentPatterns);
+console.log('Window Location:', window.location.href);
+
 if (environmentPatterns.test(window.location.href)) {
   const matchedPattern = window.location.href.match(environmentPatterns)[0];
+  // Debugging: Log the matched pattern
+  console.log('Matched Pattern:', matchedPattern);
+
   environment = environmentConfig[matchedPattern];
 }
+
 window.cmsplus.environment = environment;
 function replaceTokens(data, text) {
   let ret = text;
