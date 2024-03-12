@@ -168,7 +168,7 @@ export async function loadConfiguration() {
     siteConfig['$system:second$'] = new Date().getSeconds();
     siteConfig['$system:millisecond$'] = new Date().getMilliseconds();
 
-    const month = months[thismonth] + 1;
+    const month = months[thismonth];
     const firstLetter = month.charAt(0).toUpperCase();
     const restOfWord = month.slice(1);
     const capitalizedMonth = firstLetter + restOfWord;
@@ -259,7 +259,7 @@ export async function loadConfiguration() {
   script.textContent = buildscript;
   document.head.appendChild(script);
 
-  const dcString = JSON.stringify(dc);
+  const dcString = JSON.stringify(dc, null, 2);
   if (dcString.length > 0) {
     script = document.createElement('script');
     script.type = 'application/dc+json';
@@ -293,7 +293,7 @@ export async function loadConfiguration() {
   if (!co['co:tags']) {
     co['co:tags'] = siteConfig['$co:defaulttags'];
   }
-  const coString = JSON.stringify(co);
+  const coString = JSON.stringify(co, null, 2);
   if (coString.length > 0) {
     script = document.createElement('script');
     script.type = 'application/co+json';
@@ -323,7 +323,13 @@ export async function loadConfiguration() {
   }
 
   content += '<h3>Other Values</h3>';
-  content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
+  if (window.cmsplus && typeof window.cmsplus === 'object') {
+    Object.entries(window.cmsplus).forEach(([key, value]) => {
+      content += `<p><strong>${key}:</strong> ${value}</p>`;
+    });
+  } else {
+    content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
+  }
   content += `<p><strong>dcString:</strong> ${dcString}</p>`;
   content += `<p><strong>ocString:</strong> ${coString}</p>`;
 
@@ -389,7 +395,7 @@ async function handleMetadataJsonLd() {
       }
       let json = await resp.json();
       json = extractJsonLd(json);
-      let jsonString = JSON.stringify(json);
+      let jsonString = JSON.stringify(json, null, 2);
       jsonString = replaceTokens(siteConfig, jsonString);
       // Create and append a new script element with the processed JSON-LD data
       const script = document.createElement('script');
