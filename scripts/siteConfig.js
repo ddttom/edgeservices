@@ -312,7 +312,7 @@ export async function loadConfiguration() {
   floatingDiv.style.zIndex = '100';
   floatingDiv.style.cursor = 'pointer';
   floatingDiv.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.3)'; // Subtle shadow
-  floatingDiv.addEventListener('click', debug); 
+  floatingDiv.addEventListener('click', debug);
   const bodyElement = document.body;
   bodyElement.insertBefore(floatingDiv, bodyElement.firstChild);
   const floatingGraphicDiv = document.getElementById('floating-graphic');
@@ -335,6 +335,34 @@ export async function loadConfiguration() {
   floatingDiv.addEventListener('mouseout', () => {
     floatingDiv.style.opacity = '0.8';
   });
+
+  const debugPanel = document.createElement('div');
+  debugPanel.id = 'debug-panel';
+
+  // Set styles to keep it hidden
+  debugPanel.style.display = 'none';
+
+  // **2. Build the content of the debug panel:**
+  let content = '';
+
+  // Add siteConfig key-value pairs:
+  content += '<h3>siteConfig</h3>';
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const key in siteConfig) {
+    content += `<p><strong>${key}:</strong> ${siteConfig[key]}</p>`;
+  }
+
+  // Add other values:
+  content += '<h3>Other Values</h3>';
+  content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
+  content += `<p><strong>dcString:</strong> ${window.dcString}</p>`;
+  content += `<p><strong>ocString:</strong> ${window.ocString}</p>`;
+
+  // Set the content of the debug panel:
+  debugPanel.innerHTML = content;
+
+  // **3. Append the debug panel to the body:**
+  document.body.appendChild(debugPanel);
   return siteConfig;
 }
 
