@@ -336,7 +336,7 @@ export async function loadConfiguration() {
     floatingDiv.style.opacity = '0.8';
   });
 
-  const debugPanel = document.createElement('div');
+  let debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
 
   // Set styles to keep it hidden
@@ -361,8 +361,13 @@ export async function loadConfiguration() {
   // Set the content of the debug panel:
   debugPanel.innerHTML = content;
 
-  // **3. Append the debug panel to the body:**
   document.body.appendChild(debugPanel);
+  document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.shiftKey && event.key === 'D') { //  Ctrl + Shift + D
+      debugPanel = document.getElementById('debug-panel');
+      debugPanel.style.display = 'block';
+    }
+  });
   return siteConfig;
 }
 
