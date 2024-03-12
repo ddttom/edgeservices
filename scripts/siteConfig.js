@@ -306,42 +306,6 @@ export async function loadConfiguration() {
     script.textContent = replaceTokens(siteConfig, coString);
     document.head.appendChild(script);
   }
-  const floatingDiv = document.createElement('div');
-  floatingDiv.id = 'floating-graphic';
-  floatingDiv.style.backgroundColor = 'blue';
-  floatingDiv.style.width = '50px';
-  floatingDiv.style.height = '50px';
-  floatingDiv.style.position = 'fixed';
-  floatingDiv.style.top = '10px';
-  floatingDiv.style.left = '10px';
-  floatingDiv.style.zIndex = '100';
-  floatingDiv.style.cursor = 'pointer';
-  floatingDiv.style.zIndex = '9999';
-  floatingDiv.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.3)'; // Subtle shadow
-  floatingDiv.addEventListener('click', toggleDebugPanel());
-  const bodyElement = document.body;
-  bodyElement.insertBefore(floatingDiv, bodyElement.firstChild);
-  const floatingGraphicDiv = document.getElementById('floating-graphic');
-  const svgImage = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svgImage.setAttribute('width', '50');
-  svgImage.setAttribute('height', '50');
-  svgImage.setAttribute('xlink:href', '/icons/bug.svg');
-  floatingGraphicDiv.appendChild(svgImage);
-  floatingDiv.style.transition = 'transform 0.2s ease-in-out';
-  floatingDiv.addEventListener('mouseover', () => {
-    floatingDiv.style.transform = 'scale(1.1)';
-  });
-  floatingDiv.addEventListener('mouseout', () => {
-    floatingDiv.style.transform = 'scale(1)';
-  });
-  floatingDiv.style.opacity = '0.8';
-  floatingDiv.addEventListener('mouseover', () => {
-    floatingDiv.style.opacity = '1';
-  });
-  floatingDiv.addEventListener('mouseout', () => {
-    floatingDiv.style.opacity = '0.8';
-  });
-
   const debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
 
@@ -370,10 +334,9 @@ export async function loadConfiguration() {
   debugPanel.style.top = '0';
   debugPanel.style.left = '0';
   debugPanel.style.width = '50%';
-  debugPanel.style.height = '100vh'; // Adjust this value as necessary
-  debugPanel.style.overflowY = 'auto'; // Enables vertical scrolling
+  debugPanel.style.height = '100vh';
+  debugPanel.style.overflowY = 'auto';
   debugPanel.style.zIndex = '9998';
-  // debugPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
   document.body.appendChild(debugPanel);
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.shiftKey && event.key === 'D') { //  Ctrl + Shift + D
