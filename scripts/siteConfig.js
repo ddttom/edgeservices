@@ -107,8 +107,8 @@ function convertToISODate(input) {
   return input;
 }
 function debug() {
-  // eslint-disable-next-line no-alert
-  alert('debug');
+  const debugPanel = document.getElementById('debug-panel');
+  debugPanel.style.display = 'block';
 }
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
