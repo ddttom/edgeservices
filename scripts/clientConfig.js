@@ -3,7 +3,6 @@
 // Place any Client- Centered Code/  Configuration in here /
 
 import { initialize as initTracker } from './adobe-metadata.js';
-import { siteConfig } from './siteConfig.js';
 
 export async function initialize() {
   window.cmsplus.bubbleallowed = false; // window.cmsplus.environment === 'production';
