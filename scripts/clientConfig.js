@@ -6,5 +6,5 @@ import { initialize as initTracker } from './adobe-metadata.js';
 
 export async function initialize() {
   window.cmsplus.bubbleallowed = false; // window.cmsplus.environment === 'production';
-  window.metadataTracker = initTracker();
+  window.metadataTracker = initTracker;
 }
