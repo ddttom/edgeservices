@@ -369,7 +369,7 @@ export async function loadConfiguration() {
     document.head.appendChild(script);
   }
   // **** all variables must be declared by now ******
-  const jsonldString = handleMetadataJsonLd();
+  const jsonldString = await handleMetadataJsonLd();
   const debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
 
@@ -384,14 +384,8 @@ export async function loadConfiguration() {
   debugPanel.style.zIndex = '9998';
 
   // Build the content of the debug panel
-  let content = '<h3>siteConfig</h3>';
+  let content = '<h3>Variables</h3>';
 
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
-  for (const key in siteConfig) {
-    content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
-  }
-
-  content += '<h3>Other Values</h3>';
   if (window.cmsplus && typeof window.cmsplus === 'object') {
     content += '<pre>';
     Object.entries(window.cmsplus).forEach(([key, value]) => {
@@ -406,6 +400,11 @@ export async function loadConfiguration() {
   }
   content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
   content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
+  content += '<h3>site configuration</h3>';
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const key in siteConfig) {
+    content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
+  }
 
   // Set the content
   debugPanel.innerHTML = content;
