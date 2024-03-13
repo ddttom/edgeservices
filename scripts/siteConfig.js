@@ -370,54 +370,48 @@ export async function loadConfiguration() {
   }
   // **** all variables must be declared by now ******
   const jsonldString = await handleMetadataJsonLd();
-  const debugPanel = document.createElement('div');
-  debugPanel.id = 'debug-panel';
+  if (environment === 'preview') {
+    const debugPanel = document.createElement('div');
+    debugPanel.id = 'debug-panel';
 
-  // Set initial styles for the debug panel
-  debugPanel.style.display = 'none';
-  debugPanel.style.position = 'fixed';
-  debugPanel.style.top = '0';
-  debugPanel.style.left = '10';
-  debugPanel.style.width = '50%';
-  debugPanel.style.height = '100vh';
-  debugPanel.style.overflowY = 'auto';
-  debugPanel.style.zIndex = '9998';
+    // Set initial styles for the debug panel
+    debugPanel.style.display = 'none';
+    debugPanel.style.position = 'fixed';
+    debugPanel.style.top = '0';
+    debugPanel.style.left = '10';
+    debugPanel.style.width = '50%';
+    debugPanel.style.height = '100vh';
+    debugPanel.style.overflowY = 'auto';
+    debugPanel.style.zIndex = '9998';
+    debugPanel.style.backgroundColor = 'white';
 
-  // Build the content of the debug panel
-  let content = '<h3>Variables</h3>';
+    // Build the content of the debug panel
+    let content = '<h3>Variables</h3>';
 
-  if (window.cmsplus && typeof window.cmsplus === 'object') {
-    content += '<pre>';
-    Object.entries(window.cmsplus).forEach(([key, value]) => {
-      content += `<p><strong>${key}:</strong> ${value}</p>`;
-    });
-    content += '</pre>';
-  } else {
-    content += `<p><strong>cmsplus:</strong> ${window.cmsplus}</p>`;
-  }
-  if (jsonldString.length > 0) {
-    content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
-  }
-  content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
-  content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
-  content += '<h3>site configuration</h3>';
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
-  for (const key in siteConfig) {
-    content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
-  }
-
-  // Set the content
-  debugPanel.innerHTML = content;
-
-  // Append to body
-  document.body.appendChild(debugPanel);
-
-  // Event listener for keyboard shortcut
-  document.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
-      toggleDebugPanel();
+    if (jsonldString.length > 0) {
+      content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
     }
-  });
+    content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
+    content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
+    content += '<h3>site configuration</h3>';
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const key in siteConfig) {
+      content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
+    }
+
+    // Set the content
+    debugPanel.innerHTML = content;
+
+    // Append to body
+    document.body.appendChild(debugPanel);
+
+    // Event listener for keyboard shortcut
+    document.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
+        toggleDebugPanel();
+      }
+    });
+  }
   return siteConfig;
 }
 export function removeCommentBlocks() {
