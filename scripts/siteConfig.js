@@ -378,15 +378,16 @@ export async function loadConfiguration() {
     debugPanel.style.display = 'none';
     debugPanel.style.position = 'fixed';
     debugPanel.style.top = '0';
-    debugPanel.style.left = '10';
+    debugPanel.style.left = '0';
     debugPanel.style.width = '50%';
     debugPanel.style.height = '100vh';
     debugPanel.style.overflowY = 'auto';
     debugPanel.style.zIndex = '9998';
     debugPanel.style.backgroundColor = 'white';
+    debugPanel.style.margin = 10;
 
     // Build the content of the debug panel
-    let content = '<h3>Variables</h3>';
+    let content = '<h3>Variables, Shift-Ctrl-d to close</h3>';
 
     if (jsonldString.length > 0) {
       content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
