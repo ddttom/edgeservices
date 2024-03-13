@@ -421,7 +421,9 @@ export async function initialize() {
   await loadConfiguration();
   initClientConfig();
   removeCommentBlocks();
-  window.metadataTracker();
+  if (window.metadataTracker) {
+    window.metadataTracker();
+  }
 
   if (window.cmsplus.environment !== 'final') {
     if (siteConfig['$system:addbyline$'] === 'true') {
