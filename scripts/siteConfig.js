@@ -409,6 +409,7 @@ export async function loadConfiguration() {
       }
     });
   }
+  window.siteConfig = siteConfig;
   return siteConfig;
 }
 export function removeCommentBlocks() {

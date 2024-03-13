@@ -18,11 +18,13 @@ function replaceTokens(data, text) {
   }
   return ret;
 }
-export function initialize(siteConfig) {
+export function initialize() {
   // eslint-disable-next-line no-use-before-define
-  handleMetadataTracking(siteConfig);
+  handleMetadataTracking();
 }
-export async function handleMetadataTracking(siteConfig) {
+export async function handleMetadataTracking() {
+  // eslint-disable-next-line prefer-destructuring
+  const siteConfig = window.siteConfig;
   if (siteConfig['$meta:tracking$'] != null) {
     const trackerlist = siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
