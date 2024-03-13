@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-await-in-loop */
 /* adobe specific meta data handling */
-
+/* NO CLIENT CODE IN HERE JUST SETUP FOR ADOBE */
 /**
  * Adobe specific meta data handling
  * @param {object} siteConfig - the current site configuration

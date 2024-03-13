@@ -7,8 +7,6 @@ import {
   initialize as initClientConfig
 } from './clientConfig.js';
 
-import { handleMetadataTracking } from './adobe-metadata.js';
-
 export const siteConfig = {};
 export const dc = {};
 export const co = {};
@@ -26,9 +24,6 @@ if (window.location.href.includes('.html')) {
 } else if (window.location.href.includes('.live')) {
   environment = 'live';
 }
-
-window.cmsplus.environment = environment;
-
 window.cmsplus.environment = environment;
 function replaceTokens(data, text) {
   let ret = text;
@@ -425,7 +420,7 @@ export async function initialize() {
   await loadConfiguration();
   initClientConfig();
   removeCommentBlocks();
-  handleMetadataTracking(siteConfig);
+  window.metadatatracker(siteConfig);
 
   if (window.cmsplus.environment !== 'final') {
     if (siteConfig['$system:addbyline$'] === 'true') {
