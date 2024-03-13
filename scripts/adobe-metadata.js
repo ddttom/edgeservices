@@ -18,6 +18,10 @@ function replaceTokens(data, text) {
   }
   return ret;
 }
+export function initialize(siteConfig) {
+  // eslint-disable-next-line no-use-before-define
+  handleMetadataTracking(siteConfig);
+}
 export async function handleMetadataTracking(siteConfig) {
   if (siteConfig['$meta:tracking$'] != null) {
     const trackerlist = siteConfig['$meta:tracking$'];

@@ -2,9 +2,10 @@
 
 // Place any Client- Centered Code/  Configuration in here /
 
-import { handleMetadataTracking } from './adobe-metadata.js';
+import { initialize as initTracker } from './adobe-metadata.js';
+import { siteConfig } from './siteConfig.js';
 
 export async function initialize() {
   window.cmsplus.bubbleallowed = false; // window.cmsplus.environment === 'production';
-  window.metadataTracker = handleMetadataTracking();
+  window.metadataTracker = initTracker();
 }
