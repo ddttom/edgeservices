@@ -384,7 +384,7 @@ export async function loadConfiguration() {
     debugPanel.style.overflowY = 'auto';
     debugPanel.style.zIndex = '9998';
     debugPanel.style.backgroundColor = 'white';
-    debugPanel.style.margin = 10;
+    debugPanel.style.margin = '2em 10px';
 
     // Build the content of the debug panel
     let content = '<h3>Variables, Shift-Ctrl-d to close</h3>';
