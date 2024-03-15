@@ -311,7 +311,7 @@ export async function loadConfiguration() {
   co['co:author'] = siteConfig['$meta:author$'];
 
   // make the required globals
-  let buildscript = 'window.cmsplus = window.cmsplus || {};\n';
+  let buildscript = '\nwindow.cmsplus = window.cmsplus || {};\n';
   const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
   const bubbleapikey = siteConfig['$system:bubbleapikey$'] === undefined ? '' : siteConfig['$system:bubbleapikey$'];
   buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${bubbleapikey}";\n`;
@@ -365,49 +365,55 @@ export async function loadConfiguration() {
   }
   // **** all variables must be declared by now ******
   const jsonldString = await handleMetadataJsonLd();
-  if (environment === 'preview') {
-    const debugPanel = document.createElement('div');
-    debugPanel.id = 'debug-panel';
+  if (!window.location.search.includes('skipdebug')) {
+    if (environment === 'preview') {
+      const debugPanel = document.createElement('div');
+      debugPanel.id = 'debug-panel';
 
-    // Set initial styles for the debug panel
-    debugPanel.style.display = 'none';
-    debugPanel.style.position = 'fixed';
-    debugPanel.style.top = '0';
-    debugPanel.style.left = '0';
-    debugPanel.style.width = '50%';
-    debugPanel.style.height = '100vh';
-    debugPanel.style.overflowY = 'auto';
-    debugPanel.style.zIndex = '9998';
-    debugPanel.style.backgroundColor = 'white';
-    debugPanel.style.margin = '2em 10px';
-    debugPanel.style.border = '1px solid black';
+      // Set initial styles for the debug panel
+      debugPanel.style.display = 'none';
+      debugPanel.style.position = 'fixed';
+      debugPanel.style.top = '0';
+      debugPanel.style.left = '0';
+      debugPanel.style.width = '50%';
+      debugPanel.style.height = '100vh';
+      debugPanel.style.overflowY = 'auto';
+      debugPanel.style.zIndex = '9998';
+      debugPanel.style.backgroundColor = 'white';
+      debugPanel.style.margin = '2em 10px';
+      debugPanel.style.border = '1px solid black';
 
-    // Build the content of the debug panel
-    let content = '<h3>Variables, Shift-Ctrl-d to close</h3>';
+      // Build the content of the debug panel
+      let content = '<h3>Variables, Shift-Ctrl-d to close</h3>';
 
-    if (jsonldString.length > 0) {
-      content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
-    }
-    content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
-    content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
-    content += '<h3>site configuration</h3>';
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const key in siteConfig) {
-      content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
-    }
-
-    // Set the content
-    debugPanel.innerHTML = content;
-
-    // Append to body
-    document.body.appendChild(debugPanel);
-
-    // Event listener for keyboard shortcut
-    document.addEventListener('keydown', (event) => {
-      if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
-        toggleDebugPanel();
+      if (jsonldString.length > 0) {
+        content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
       }
-    });
+      if (dcString.length > 0) {
+        content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
+      }
+      if (coString.length > 0) {
+        content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
+      }
+      content += '<h3>site configuration</h3>';
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const key in siteConfig) {
+        content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
+      }
+
+      // Set the content
+      debugPanel.innerHTML = content;
+
+      // Append to body
+      document.body.appendChild(debugPanel);
+
+      // Event listener for keyboard shortcut
+      document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
+          toggleDebugPanel();
+        }
+      });
+    }
   }
   window.siteConfig = siteConfig;
   return siteConfig;
