@@ -322,7 +322,7 @@ export async function loadConfiguration() {
   document.head.appendChild(script);
 
   const dcString = JSON.stringify(dc, null, '\t');
-  if (dcString.length > 0) {
+  if (dcString.length > 2) {
     script = document.createElement('script');
     script.type = 'application/dc+json';
     script.setAttribute('data-role', 'dublin core');
@@ -356,7 +356,7 @@ export async function loadConfiguration() {
     co['co:tags'] = siteConfig['$co:defaulttags'];
   }
   const coString = JSON.stringify(co, null, '\t');
-  if (coString.length > 0) {
+  if (coString.length > 2) {
     script = document.createElement('script');
     script.type = 'application/co+json';
     script.setAttribute('data-role', 'content ops');
@@ -386,13 +386,13 @@ export async function loadConfiguration() {
       // Build the content of the debug panel
       let content = '<h3>Variables, Shift-Ctrl-d to close</h3>';
 
-      if (jsonldString.length > 0) {
+      if (jsonldString.length > 2) {
         content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
       }
-      if (dcString.length > 0) {
+      if (dcString.length > 2) {
         content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
       }
-      if (coString.length > 0) {
+      if (coString.length > 2) {
         content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
       }
       content += '<h3>site configuration</h3>';
