@@ -400,7 +400,18 @@ export async function loadConfiguration() {
       for (const key in siteConfig) {
         content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
       }
+      // Define the Regular Expression pattern to match $word:word$ patterns
+      const pattern = /\$[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\$/g;
+      const matches = content.match(pattern) || [];
 
+      if (matches.length > 0) {
+        content += '<h3>Unmatched Replaceable Tokens</h3>';
+        // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const match of matches) {
+          const token = match.replace('$', '').replace(':', '');
+          content += `<strong>${token}:</strong> ${siteConfig[token]}<br>`;
+        }
+      }
       // Set the content
       debugPanel.innerHTML = content;
 
