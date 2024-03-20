@@ -30,3 +30,27 @@ if (window.cmsplus.bubbleallowed === true) {
   // eslint-disable-next-line no-undef
   loadScript('https://chat.dante-ai.com/dante-embed.js');
 }
+
+// Add button="role" to every blink with button class
+const buttonRole = document.querySelectorAll('.button');
+buttonRole.forEach(button => {
+  button.setAttribute('role', 'button');
+});
+
+// Add target blank to all external website linked on the website
+// Get the current site's domain
+const siteDomain = window.location.hostname;
+const currentPage = window.location.href;
+
+links.forEach(link => {
+  const linkDomain = new URL(link.href).hostname;
+  if (linkDomain !== siteDomain && !link.href.startsWith('/') && !link.href.startsWith('#')) {
+    link.setAttribute('target', '_blank');
+  }
+});
+
+links.forEach(link => {
+  if (link.href === currentPage) {
+    link.classList.add('current');
+  }
+});

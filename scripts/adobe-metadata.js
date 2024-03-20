@@ -29,12 +29,12 @@ export async function handleMetadataTracking() {
     const trackerlist = siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
     let buildscript = '';
+    window.cmsplus.track = {};
     for (let i = 0; i < trackers.length; i += 1) {
       const tracker = trackers[i].trim();
       let trackerUrl = tracker;
       if (trackerUrl) {
         trackerUrl = `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`;
-        window.cmsplus.track = {};
         try {
           // eslint-disable-next-line no-await-in-loop
           const resp = await fetch(trackerUrl);
