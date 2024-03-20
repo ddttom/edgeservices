@@ -34,7 +34,7 @@ export async function initialize() {
   };
   await loadScript('https://consent.cookiebot.com/uc.js', attrs);
   await loadScript('https://assets.adobedtm.com/d4e187856f02/84a8f19b48f1/launch-9fc11833104d.min.js', {}); //   extra %22
-  await loadScript('https://try.abtasty.com/54d41c1c745275ad6d723c2122a0693d.js', {});
+  await loadScript('https://try.abtasty.com/54d41c1c745275ad6d723c2122a0693d.js', {}); // fix it
   window.adobeDataLayer = window.adobeDataLayer || [];
   try {
     if (window.cmsplus) {
