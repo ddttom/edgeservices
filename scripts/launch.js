@@ -27,6 +27,7 @@ import { loadScript } from './aem.js';
 
 // eslint-disable-next-line import/prefer-default-export
 export async function initialize() {
+  //  Comwrap Specific
   const attrs = {
     id: 'Cookiebot',
     'data-cbid': '747c7864-bf4d-4b8f-9e92-69d5eb6be267',
@@ -47,5 +48,14 @@ export async function initialize() {
     }
   } catch (e) {
     console.log('failed to add cmsplus data to adobeDataLayer', e);
+  }
+
+  // any client with dante ai chatbot
+  if (window.cmsplus.bubbleallowed === true) {
+    window.danteEmbed = `https://chat.dante-ai.com/embed?${window.cmsplus.bubble}&mode=false&bubble=true&image=null&bubbleopen=false`;
+    // eslint-disable-next-line no-undef
+    loadScript('https://chat.dante-ai.com/bubble-embed.js');
+    // eslint-disable-next-line no-undef
+    loadScript('https://chat.dante-ai.com/dante-embed.js');
   }
 }

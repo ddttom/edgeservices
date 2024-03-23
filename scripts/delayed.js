@@ -1,4 +1,4 @@
-import { sampleRUM, loadScript } from './aem.js';
+import { sampleRUM } from './aem.js';
 import { initialize as initLaunch } from './launch.js';
 
 // Core Web Vitals RUM collection
@@ -23,17 +23,9 @@ links.forEach((link) => {
 if (window.cmsplus.analyticsdelay > 0) {
   initLaunch(); // only client code in here
 }
-if (window.cmsplus.bubbleallowed === true) {
-  window.danteEmbed = `https://chat.dante-ai.com/embed?${window.cmsplus.bubble}&mode=false&bubble=true&image=null&bubbleopen=false`;
-  // eslint-disable-next-line no-undef
-  loadScript('https://chat.dante-ai.com/bubble-embed.js');
-  // eslint-disable-next-line no-undef
-  loadScript('https://chat.dante-ai.com/dante-embed.js');
-}
-
 // Add button="role" to every blink with button class
 const buttonRole = document.querySelectorAll('.button');
-buttonRole.forEach(button => {
+buttonRole.forEach((button) => {
   button.setAttribute('role', 'button');
 });
 
@@ -42,14 +34,14 @@ buttonRole.forEach(button => {
 const siteDomain = window.location.hostname;
 const currentPage = window.location.href;
 
-links.forEach(link => {
+links.forEach((link) => {
   const linkDomain = new URL(link.href).hostname;
   if (linkDomain !== siteDomain && !link.href.startsWith('/') && !link.href.startsWith('#')) {
     link.setAttribute('target', '_blank');
   }
 });
 
-links.forEach(link => {
+links.forEach((link) => {
   if (link.href === currentPage) {
     link.classList.add('current');
   }
