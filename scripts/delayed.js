@@ -21,7 +21,7 @@ links.forEach((link) => {
 });
 
 if (window.cmsplus.analyticsdelay > 0) {
-  initLaunch();
+  initLaunch(); // only client code in here
 }
 if (window.cmsplus.bubbleallowed === true) {
   window.danteEmbed = `https://chat.dante-ai.com/embed?${window.cmsplus.bubble}&mode=false&bubble=true&image=null&bubbleopen=false`;

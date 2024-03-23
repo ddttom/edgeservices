@@ -24,7 +24,19 @@ if (window.location.href.includes('.html')) {
 } else if (window.location.href.includes('.live')) {
   environment = 'live';
 }
+let locality = 'unknown'; // Start with the default
+if (window.location.href.includes('localhost')) {
+  locality = 'local';
+} else if (window.location.href.includes('stage')) {
+  locality = 'stage';
+} else if (window.location.href.includes('prod')) {
+  locality = 'prod';
+} else if (window.location.href.includes('dev')) {
+  locality = 'dev';
+}
+
 window.cmsplus.environment = environment;
+window.cmsplus.locality = locality;
 function replaceTokens(data, text) {
   let ret = text;
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
@@ -183,7 +195,7 @@ export async function loadConfiguration() {
     const jsonData = await response.json();
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of jsonData.data) {
-      siteConfig[entry.Item] = entry.Value;
+      window.siteConfig[entry.Item] = entry.Value;
     }
     const now = new Date().toISOString();
     let href = '';
@@ -198,46 +210,46 @@ export async function loadConfiguration() {
     const thismonth = new Date().getMonth();
     const winloc = window.location.href;
 
-    siteConfig['$co:defaultreviewperiod'] = 365;
-    siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
-    siteConfig['$co:defaultstartdatetime'] = now;
-    siteConfig['$co:defaultrestrictions'] = 'none';
-    siteConfig['$co:defaulttags$'] = 'none';
+    window.siteConfig['$co:defaultreviewperiod'] = 365;
+    window.siteConfig['$co:defaultexpiryperiod'] = 365 * 2;
+    window.siteConfig['$co:defaultstartdatetime'] = now;
+    window.siteConfig['$co:defaultrestrictions'] = 'none';
+    window.siteConfig['$co:defaulttags$'] = 'none';
 
-    siteConfig['$system:environment$'] = window.cmsplus.environment;
+    window.siteConfig['$system:environment$'] = window.cmsplus.environment;
 
-    siteConfig['$page:location$'] = winloc;
-    siteConfig['$page:url$'] = href;
-    siteConfig['$page:name$'] = pname;
-    siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
-    siteConfig['$page:wordcount$'] = wordCount;
-    siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
-    siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 140) + 1).toString();
-    siteConfig['$page:title$'] = document.title;
-    siteConfig['$page:canonical$'] = href;
+    window.siteConfig['$page:location$'] = winloc;
+    window.siteConfig['$page:url$'] = href;
+    window.siteConfig['$page:name$'] = pname;
+    window.siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
+    window.siteConfig['$page:wordcount$'] = wordCount;
+    window.siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
+    window.siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 140) + 1).toString();
+    window.siteConfig['$page:title$'] = document.title;
+    window.siteConfig['$page:canonical$'] = href;
 
-    siteConfig['$system:platformVersion$'] = 'AI Optiflow 1.0.0';
-    siteConfig['$system:date$'] = now;
-    siteConfig['$system:isodate$'] = now;
-    siteConfig['$system:time$'] = new Date().toLocaleTimeString();
-    siteConfig['$system:timezone$'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    siteConfig['$system:locale$'] = Intl.DateTimeFormat().resolvedOptions().locale;
-    siteConfig['$system:year$'] = new Date().getFullYear();
-    siteConfig['$system:month$'] = thismonth + 1;
-    siteConfig['$system:day$'] = new Date().getDate();
-    siteConfig['$system:hour$'] = new Date().getHours();
-    siteConfig['$system:minute$'] = new Date().getMinutes();
-    siteConfig['$system:second$'] = new Date().getSeconds();
-    siteConfig['$system:millisecond$'] = new Date().getMilliseconds();
+    window.siteConfig['$system:platformVersion$'] = 'AI Optiflow 1.0.0';
+    window.siteConfig['$system:date$'] = now;
+    window.siteConfig['$system:isodate$'] = now;
+    window.siteConfig['$system:time$'] = new Date().toLocaleTimeString();
+    window.siteConfig['$system:timezone$'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    window.siteConfig['$system:locale$'] = Intl.DateTimeFormat().resolvedOptions().locale;
+    window.siteConfig['$system:year$'] = new Date().getFullYear();
+    window.siteConfig['$system:month$'] = thismonth + 1;
+    window.siteConfig['$system:day$'] = new Date().getDate();
+    window.siteConfig['$system:hour$'] = new Date().getHours();
+    window.siteConfig['$system:minute$'] = new Date().getMinutes();
+    window.siteConfig['$system:second$'] = new Date().getSeconds();
+    window.siteConfig['$system:millisecond$'] = new Date().getMilliseconds();
 
     const month = months[thismonth];
     const firstLetter = month.charAt(0).toUpperCase();
     const restOfWord = month.slice(1);
     const capitalizedMonth = firstLetter + restOfWord;
-    siteConfig['$system:monthinfull$'] = capitalizedMonth;
-    siteConfig['$system:monthinshort$'] = capitalizedMonth.slice(0, 3);
+    window.siteConfig['$system:monthinfull$'] = capitalizedMonth;
+    window.siteConfig['$system:monthinshort$'] = capitalizedMonth.slice(0, 3);
 
-    siteConfig['$system:dateinenglish$'] = `${capitalizedMonth} ${siteConfig['$system:day$']}, ${siteConfig['$system:year$']}`;
+    window.siteConfig['$system:dateinenglish$'] = `${capitalizedMonth} ${window.siteConfig['$system:day$']}, ${window.siteConfig['$system:year$']}`;
 
     const metaTitle = document.querySelector('meta[name="title"]');
     if (!metaTitle) {
@@ -276,13 +288,13 @@ export async function loadConfiguration() {
         if (key === 'og:image:secure_url') {
           key = 'og:image_secure_url';
         }
-        siteConfig[`$${prefix}${key}$`] = value;
+        window.siteConfig[`$${prefix}${key}$`] = value;
       }
-      if (siteConfig['$meta:author$'] == null) {
-        siteConfig['$meta:author$'] = siteConfig['$company:name$'];
+      if (window.siteConfig['$meta:author$'] == null) {
+        window.siteConfig['$meta:author$'] = window.siteConfig['$company:name$'];
       }
-      if (siteConfig['$meta:contentauthor$'] == null) {
-        siteConfig['$meta:contentauthor$'] = siteConfig['$meta:author$'];
+      if (window.siteConfig['$meta:contentauthor$'] == null) {
+        window.siteConfig['$meta:contentauthor$'] = window.siteConfig['$meta:author$'];
       }
     });
   } catch (error) {
@@ -299,21 +311,21 @@ export async function loadConfiguration() {
     '$meta:dc-language$',
   ];
 
-  const lang = metaProperties.reduce((acc, prop) => acc || siteConfig[prop], '') || window.navigator.language || defaultLang;
+  const lang = metaProperties.reduce((acc, prop) => acc || window.siteConfig[prop], '') || window.navigator.language || defaultLang;
 
-  siteConfig['$system:language$'] = lang;
+  window.siteConfig['$system:language$'] = lang;
   document.querySelector('html').setAttribute('lang', lang);
   if (lang === 'ar') {
     document.querySelector('html').setAttribute('dir', 'rtl');
   }
 
   co['co:language'] = lang;
-  co['co:author'] = siteConfig['$meta:author$'];
+  co['co:author'] = window.siteConfig['$meta:author$'];
 
   // make the required globals
   let buildscript = '\nwindow.cmsplus = window.cmsplus || {};\n';
-  const delay = siteConfig['$meta:analyticsdelay1$'] === undefined ? 3000 : siteConfig['$meta:analyticsdelay1$'];
-  const bubbleapikey = siteConfig['$system:bubbleapikey$'] === undefined ? '' : siteConfig['$system:bubbleapikey$'];
+  const delay = window.siteConfig['$meta:analyticsdelay$'] === undefined ? 3000 : window.siteConfig['$meta:analyticsdelay$'];
+  const bubbleapikey = window.siteConfig['$system:bubbleapikey$'] === undefined ? '' : window.siteConfig['$system:bubbleapikey$'];
   buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${bubbleapikey}";\n`;
   buildscript += `window.cmsplus.environment = "${window.cmsplus.environment}";\n`;
   let script = document.createElement('script');
@@ -334,7 +346,7 @@ export async function loadConfiguration() {
   let futureDate = new Date();
   let futurePeriod = '';
   if (!co['co:reviewdatetime']) {
-    futurePeriod = siteConfig['$co:defaultreviewperiod'];
+    futurePeriod = window.siteConfig['$co:defaultreviewperiod'];
     futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
     co['co:reviewdatetime'] = futureDate.toISOString();
   }
@@ -345,15 +357,15 @@ export async function loadConfiguration() {
     co['co:publisheddatetime'] = currentDate.toISOString();
   }
   if (!co['co:expirydatetime']) {
-    futurePeriod = siteConfig['$co:defaultexpiryperiod'];
+    futurePeriod = window.siteConfig['$co:defaultexpiryperiod'];
     futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
     co['co:expirydatetime'] = futureDate.toISOString();
   }
   if (!co['co:restrictions']) {
-    co['co:restrictions'] = siteConfig['$co:defaultrestrictions'];
+    co['co:restrictions'] = window.siteConfig['$co:defaultrestrictions'];
   }
   if (!co['co:tags']) {
-    co['co:tags'] = siteConfig['$co:defaulttags'];
+    co['co:tags'] = window.siteConfig['$co:defaulttags'];
   }
   const coString = JSON.stringify(co, null, '\t');
   if (coString.length > 2) {
@@ -398,7 +410,7 @@ export async function loadConfiguration() {
       content += '<h3>site configuration</h3>';
       // eslint-disable-next-line no-restricted-syntax, guard-for-in
       for (const key in siteConfig) {
-        content += `<strong>${key}:</strong> ${siteConfig[key]}<br>`;
+        content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
       // Define the Regular Expression pattern to match $word:word$ patterns
       const pattern = /\$[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\$/g;
@@ -409,7 +421,7 @@ export async function loadConfiguration() {
         // eslint-disable-next-line no-restricted-syntax, guard-for-in
         for (const match of matches) {
           const token = match.replace('$', '').replace(':', '');
-          content += `<strong>${token}:</strong> ${siteConfig[token]}<br>`;
+          content += `<strong>${token}:</strong> ${window.siteConfig[token]}<br>`;
         }
       }
       // Set the content
@@ -443,12 +455,12 @@ export async function initialize() {
   }
 
   if (window.cmsplus.environment !== 'final') {
-    if (siteConfig['$system:addbyline$'] === 'true') {
+    if (window.siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
-      if (siteConfig['$system:addbyline$'] === 'true') {
-        if (!siteConfig['$meta:suppressbyline$']) {
+      if (window.siteConfig['$system:addbyline$'] === 'true') {
+        if (!window.siteConfig['$meta:suppressbyline$']) {
           if (firstH1) {
-            const appendString = `Published: ${siteConfig['$system:dateinenglish$']}; By ${siteConfig['$meta:author$']},  ${siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+            const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
             // Append the constructed string to the h1 element's current content
             const newElement = document.createElement('div');
             newElement.className = 'byLine';

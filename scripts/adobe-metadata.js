@@ -25,8 +25,8 @@ export function initialize() {
 export async function handleMetadataTracking() {
   // eslint-disable-next-line prefer-destructuring
   const siteConfig = window.siteConfig;
-  if (siteConfig['$meta:tracking$'] != null) {
-    const trackerlist = siteConfig['$meta:tracking$'];
+  if (window.siteConfig['$meta:tracking$'] != null) {
+    const trackerlist = window.siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
     let buildscript = '';
     window.cmsplus.track = {};
