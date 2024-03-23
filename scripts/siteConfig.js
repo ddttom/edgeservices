@@ -333,17 +333,23 @@ export async function loadConfiguration() {
   script.textContent = buildscript;
   document.head.appendChild(script);
 
+  if (window.siteConfig['$meta:wantdublincore$'] === undefined) {
+    window.siteConfig['$meta:wantdublincore$'] = true;
+  }
   const dcString = JSON.stringify(dc, null, '\t');
-  if (dcString.length > 2) {
-    script = document.createElement('script');
-    script.type = 'application/dc+json';
-    script.setAttribute('data-role', 'dublin core');
-    script.textContent = replaceTokens(siteConfig, dcString);
-    document.head.appendChild(script);
+  if (window.siteConfig['$meta:wantdublincore$'] === true) {
+    if (dcString.length > 2) {
+      script = document.createElement('script');
+      script.type = 'application/dc+json';
+      script.setAttribute('data-role', 'dublin core');
+      script.textContent = replaceTokens(siteConfig, dcString);
+      document.head.appendChild(script);
+    }
   }
   if (window.siteConfig['$meta:wantcontentops$'] === undefined) {
     window.siteConfig['$meta:wantcontentops$'] = true;
   }
+  let coString = '';
   if (window.siteConfig['$meta:wantcontentops$'] === true) {
     const currentDate = new Date();
     let futureDate = new Date();
@@ -370,7 +376,7 @@ export async function loadConfiguration() {
     if (!co['co:tags']) {
       co['co:tags'] = window.siteConfig['$co:defaulttags'];
     }
-    const coString = JSON.stringify(co, null, '\t');
+    coString = JSON.stringify(co, null, '\t');
     if (coString.length > 2) {
       script = document.createElement('script');
       script.type = 'application/co+json';
