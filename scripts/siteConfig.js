@@ -341,39 +341,43 @@ export async function loadConfiguration() {
     script.textContent = replaceTokens(siteConfig, dcString);
     document.head.appendChild(script);
   }
-
-  const currentDate = new Date();
-  let futureDate = new Date();
-  let futurePeriod = '';
-  if (!co['co:reviewdatetime']) {
-    futurePeriod = window.siteConfig['$co:defaultreviewperiod'];
-    futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
-    co['co:reviewdatetime'] = futureDate.toISOString();
+  if (window.siteConfig['$meta:wantcontentops$'] === undefined) {
+    window.siteConfig['$meta:wantcontentops$'] = true;
   }
-  if (!co['co:startdatetime']) {
-    co['co:startdatetime'] = currentDate.toISOString();
-  }
-  if (!co['co:publisheddatetime']) {
-    co['co:publisheddatetime'] = currentDate.toISOString();
-  }
-  if (!co['co:expirydatetime']) {
-    futurePeriod = window.siteConfig['$co:defaultexpiryperiod'];
-    futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
-    co['co:expirydatetime'] = futureDate.toISOString();
-  }
-  if (!co['co:restrictions']) {
-    co['co:restrictions'] = window.siteConfig['$co:defaultrestrictions'];
-  }
-  if (!co['co:tags']) {
-    co['co:tags'] = window.siteConfig['$co:defaulttags'];
-  }
-  const coString = JSON.stringify(co, null, '\t');
-  if (coString.length > 2) {
-    script = document.createElement('script');
-    script.type = 'application/co+json';
-    script.setAttribute('data-role', 'content ops');
-    script.textContent = replaceTokens(siteConfig, coString);
-    document.head.appendChild(script);
+  if (window.siteConfig['$meta:wantcontentops$'] === true) {
+    const currentDate = new Date();
+    let futureDate = new Date();
+    let futurePeriod = '';
+    if (!co['co:reviewdatetime']) {
+      futurePeriod = window.siteConfig['$co:defaultreviewperiod'];
+      futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
+      co['co:reviewdatetime'] = futureDate.toISOString();
+    }
+    if (!co['co:startdatetime']) {
+      co['co:startdatetime'] = currentDate.toISOString();
+    }
+    if (!co['co:publisheddatetime']) {
+      co['co:publisheddatetime'] = currentDate.toISOString();
+    }
+    if (!co['co:expirydatetime']) {
+      futurePeriod = window.siteConfig['$co:defaultexpiryperiod'];
+      futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
+      co['co:expirydatetime'] = futureDate.toISOString();
+    }
+    if (!co['co:restrictions']) {
+      co['co:restrictions'] = window.siteConfig['$co:defaultrestrictions'];
+    }
+    if (!co['co:tags']) {
+      co['co:tags'] = window.siteConfig['$co:defaulttags'];
+    }
+    const coString = JSON.stringify(co, null, '\t');
+    if (coString.length > 2) {
+      script = document.createElement('script');
+      script.type = 'application/co+json';
+      script.setAttribute('data-role', 'content ops');
+      script.textContent = replaceTokens(siteConfig, coString);
+      document.head.appendChild(script);
+    }
   }
   // **** all variables must be declared by now ******
   const jsonldString = await handleMetadataJsonLd();
@@ -396,7 +400,7 @@ export async function loadConfiguration() {
       debugPanel.style.border = '1px solid black';
 
       // Build the content of the debug panel
-      let content = '<h3>Variables, Shift-Ctrl-d to close</h3>';
+      let content = '<h3>Variables</h3>';
 
       if (jsonldString.length > 2) {
         content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
@@ -417,19 +421,15 @@ export async function loadConfiguration() {
       const matches = content.match(pattern) || [];
 
       if (matches.length > 0) {
-        content += '<h3>Unmatched Replaceable Tokens</h3>';
         // eslint-disable-next-line no-restricted-syntax, guard-for-in
         for (const match of matches) {
           const token = match.replace('$', '').replace(':', '');
-          content += `<strong>${token}:</strong> ${window.siteConfig[token]}<br>`;
+          content = `<strong>${token}:</strong> ${window.siteConfig[token]}<br>${content}`;
+          content = `<h3>Unmatched Replaceable Tokens</h3>${content}`;
         }
       }
-      // Set the content
-      debugPanel.innerHTML = content;
-
-      // Append to body
+      debugPanel.innerHTML = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
       document.body.appendChild(debugPanel);
-
       // Event listener for keyboard shortcut
       document.addEventListener('keydown', (event) => {
         if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
