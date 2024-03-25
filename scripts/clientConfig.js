@@ -9,3 +9,7 @@ export async function initialize() {
   window.cmsplus.bubbleallowed = false; // window.cmsplus.environment === 'production';
   window.metadataTracker = initTracker;
 }
+export async function loadClientDebugPanel() {
+  const content = 'Client = Digital Domain Technologies Test Site<br> Sample Tracking Data for Adobe Analytics<br>';
+  return content;
+}
