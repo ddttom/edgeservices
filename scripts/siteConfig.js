@@ -4,7 +4,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable prefer-destructuring */
 import {
-  initialize as initClientConfig
+  initialize as initClientConfig, loadClientDebugPanel,
 } from './clientConfig.js';
 
 export const siteConfig = {};
@@ -406,7 +406,7 @@ export async function loadConfiguration() {
       debugPanel.style.border = '1px solid black';
 
       // Build the content of the debug panel
-      let content = '';
+      let content = `${loadClientDebugPanel()}<br>`;
       content = `${content}<h3>Variables</h3>`;
 
       if (jsonldString.length > 2) {
