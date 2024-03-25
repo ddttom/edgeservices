@@ -408,7 +408,7 @@ export async function loadConfiguration() {
 
       // Build the content of the debug panel
       const clientDebug = await loadClientDebugPanel();
-      let content = `${clientDebug()}<br>`;
+      let content = `${clientDebug}<br>`;
       content = `${content}<h3>Variables</h3>`;
 
       if (jsonldString.length > 2) {
