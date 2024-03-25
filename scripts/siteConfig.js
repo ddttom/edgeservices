@@ -418,11 +418,6 @@ export async function loadConfiguration() {
       if (coString.length > 2) {
         content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
       }
-      content += '<h3>site configuration</h3>';
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const key in window.siteConfig) {
-        content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
-      }
       // Define the Regular Expression pattern to match $word:word$ patterns
       const pattern = /\$[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\$/g;
       const matches = content.match(pattern) || [];
@@ -434,6 +429,11 @@ export async function loadConfiguration() {
           content = `<strong>${token}:</strong> ${window.siteConfig[token]}<br>${content}`;
           content = `<h3>Unmatched Replaceable Tokens</h3>${content}`;
         }
+      }
+      content += '<h3>site configuration</h3>';
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const key in window.siteConfig) {
+        content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
       debugPanel.innerHTML = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
       document.body.appendChild(debugPanel);
