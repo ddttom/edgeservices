@@ -73,7 +73,7 @@ export function loadAnalyticsDebugPanel() {
   if (window.cmsplus.track.page) {
     content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;
   }
-  if (window.cmsplus.content) {
+  if (window.cmsplus.track.content) {
     content = `${content}<pre>${JSON.stringify(window.cmsplus.track.content, null, '\t')}</pre>`;
   }
   return content;
