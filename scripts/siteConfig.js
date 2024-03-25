@@ -13,6 +13,9 @@ export const co = {};
 
 window.cmsplus = window.cmsplus || {};
 
+let jsonldString = '';
+let coString = '';
+let dcString = '';
 // Determine the environment based on the URL
 let environment = 'unknown'; // Start with the default
 
@@ -184,6 +187,68 @@ function toggleDebugPanel() {
   const debugPanel = document.getElementById('debug-panel');
   debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
 }
+
+export function createDebugPanel() {
+  if (!window.location.search.includes('skipdebug')) {
+    if (environment === 'preview') {
+      const debugPanel = document.createElement('div');
+      debugPanel.id = 'debug-panel';
+
+      // Set initial styles for the debug panel
+      debugPanel.style.display = 'none';
+      debugPanel.style.position = 'fixed';
+      debugPanel.style.top = '0';
+      debugPanel.style.left = '0';
+      debugPanel.style.width = '50%';
+      debugPanel.style.height = '100vh';
+      debugPanel.style.overflowY = 'auto';
+      debugPanel.style.zIndex = '9998';
+      debugPanel.style.backgroundColor = 'white';
+      debugPanel.style.margin = '2em 10px';
+      debugPanel.style.border = '1px solid black';
+
+      // Build the content of the debug panel
+      const clientDebug = loadClientDebugPanel();
+      let content = `${clientDebug}<br>`;
+      content = `${content}<h3>Variables</h3>`;
+
+      if (jsonldString.length > 2) {
+        content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
+      }
+      if (dcString.length > 2) {
+        content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
+      }
+      if (coString.length > 2) {
+        content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
+      }
+      // Define the Regular Expression pattern to match $word:word$ patterns
+      const pattern = /\$[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\$/g;
+      const matches = content.match(pattern) || [];
+
+      if (matches.length > 0) {
+        // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const match of matches) {
+          const token = match.replace('$', '').replace(':', '');
+          content = `<strong>${token}:</strong> ${window.siteConfig[token]}<br>${content}`;
+          content = `<h3>Unmatched Replaceable Tokens</h3>${content}`;
+        }
+      }
+      content += '<h3>site configuration</h3>';
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const key in window.siteConfig) {
+        content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
+      }
+      debugPanel.innerHTML = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
+      document.body.appendChild(debugPanel);
+      // Event listener for keyboard shortcut
+      document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
+          toggleDebugPanel();
+        }
+      });
+    }
+  }
+}
 export async function loadConfiguration() {
   const configUrl = new URL('/config/variables.json', window.location.origin);
 
@@ -336,7 +401,7 @@ export async function loadConfiguration() {
   if (window.siteConfig['$meta:wantdublincore$'] === undefined) {
     window.siteConfig['$meta:wantdublincore$'] = true;
   }
-  const dcString = JSON.stringify(dc, null, '\t');
+  dcString = JSON.stringify(dc, null, '\t');
   if (window.siteConfig['$meta:wantdublincore$'] === true) {
     if (dcString.length > 2) {
       script = document.createElement('script');
@@ -349,7 +414,6 @@ export async function loadConfiguration() {
   if (window.siteConfig['$meta:wantcontentops$'] === undefined) {
     window.siteConfig['$meta:wantcontentops$'] = true;
   }
-  let coString = '';
   if (window.siteConfig['$meta:wantcontentops$'] === true) {
     const currentDate = new Date();
     let futureDate = new Date();
@@ -386,67 +450,7 @@ export async function loadConfiguration() {
       document.head.appendChild(script);
     }
   }
-  // **** all variables must be declared by now ******
-  const jsonldString = await handleMetadataJsonLd();
-  if (!window.location.search.includes('skipdebug')) {
-    if (environment === 'preview') {
-      const debugPanel = document.createElement('div');
-      debugPanel.id = 'debug-panel';
-
-      // Set initial styles for the debug panel
-      debugPanel.style.display = 'none';
-      debugPanel.style.position = 'fixed';
-      debugPanel.style.top = '0';
-      debugPanel.style.left = '0';
-      debugPanel.style.width = '50%';
-      debugPanel.style.height = '100vh';
-      debugPanel.style.overflowY = 'auto';
-      debugPanel.style.zIndex = '9998';
-      debugPanel.style.backgroundColor = 'white';
-      debugPanel.style.margin = '2em 10px';
-      debugPanel.style.border = '1px solid black';
-
-      // Build the content of the debug panel
-      const clientDebug = await loadClientDebugPanel();
-      let content = `${clientDebug}<br>`;
-      content = `${content}<h3>Variables</h3>`;
-
-      if (jsonldString.length > 2) {
-        content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
-      }
-      if (dcString.length > 2) {
-        content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
-      }
-      if (coString.length > 2) {
-        content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
-      }
-      // Define the Regular Expression pattern to match $word:word$ patterns
-      const pattern = /\$[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\$/g;
-      const matches = content.match(pattern) || [];
-
-      if (matches.length > 0) {
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
-        for (const match of matches) {
-          const token = match.replace('$', '').replace(':', '');
-          content = `<strong>${token}:</strong> ${window.siteConfig[token]}<br>${content}`;
-          content = `<h3>Unmatched Replaceable Tokens</h3>${content}`;
-        }
-      }
-      content += '<h3>site configuration</h3>';
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const key in window.siteConfig) {
-        content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
-      }
-      debugPanel.innerHTML = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
-      document.body.appendChild(debugPanel);
-      // Event listener for keyboard shortcut
-      document.addEventListener('keydown', (event) => {
-        if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
-          toggleDebugPanel();
-        }
-      });
-    }
-  }
+  jsonldString = await handleMetadataJsonLd();
   return window.siteConfig;
 }
 export function removeCommentBlocks() {
@@ -457,6 +461,7 @@ export function removeCommentBlocks() {
 export async function initialize() {
   await loadConfiguration();
   initClientConfig();
+  createDebugPanel();
   removeCommentBlocks();
   if (window.metadataTracker) {
     window.metadataTracker();
