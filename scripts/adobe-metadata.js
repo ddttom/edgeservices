@@ -3,6 +3,7 @@
 /* adobe specific meta data handling */
 /* NO CLIENT CODE IN HERE JUST SETUP FOR ADOBE */
 
+let buildscript = '';
 function replaceTokens(data, text) {
   let ret = text;
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
@@ -24,7 +25,6 @@ export async function handleMetadataTracking() {
   if (window.siteConfig['$meta:tracking$'] != null) {
     const trackerlist = window.siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
-    let buildscript = '';
     window.cmsplus.track = {};
     for (let i = 0; i < trackers.length; i += 1) {
       const tracker = trackers[i].trim();
@@ -67,4 +67,8 @@ window.cmsplus.track.page.previousPageName = pathname;
     script.textContent = buildscript;
     document.head.appendChild(script);
   }
+}
+export function loadClientDebugPanel() {
+  const content = `<h3>Adobe Tracking Data</h3>${buildscript}`;
+  return content;
 }

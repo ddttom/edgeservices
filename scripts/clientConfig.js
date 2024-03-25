@@ -2,7 +2,7 @@
 
 // Place any Client- Centered Code/  Configuration in here /
 
-import { initialize as initTracker } from './adobe-metadata.js';
+import { initialize as initTracker, loadClientDebugPanel as moreDebugPanel } from './adobe-metadata.js';
 
 export async function initialize() {
   window.siteConfig['$system:analyticsdelay$'] = 3000;
@@ -10,19 +10,6 @@ export async function initialize() {
   window.metadataTracker = initTracker;
 }
 export function loadClientDebugPanel() {
-  let content = 'Client = Digital Domain Technologies Test Site<br> Sample Tracking Data for Adobe Analytics<br>';
-  try {
-    if (window.cmsplus.track) {
-      if (window.cmsplus.track.page) {
-        content += window.cmsplus.track.page;
-      }
-      if (window.cmsplus.track.content) {
-        content += window.cmsplus.track.content;
-      }
-    }
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('failed to add cmsplus data to debug', e);
-  }
+  const content = `Client = Digital Domain Technologies Test Site<br>${moreDebugPanel()} `;
   return content;
 }
