@@ -377,6 +377,7 @@ export async function loadConfiguration() {
       co['co:tags'] = window.siteConfig['$co:defaulttags'];
     }
     coString = JSON.stringify(co, null, '\t');
+    coString = replaceTokens(window.siteConfig, coString);
     if (coString.length > 2) {
       script = document.createElement('script');
       script.type = 'application/co+json';
