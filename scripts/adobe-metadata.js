@@ -69,6 +69,6 @@ window.cmsplus.track.page.previousPageName = pathname;
   }
 }
 export function loadAnalyticsDebugPanel() {
-  const content = `<h3>Adobe Tracking Data</h3>${buildscript}`;
+  const content = `<h3>Adobe Tracking Data</h3>${buildscript.replaceAll('\n', '<br>\n')}`;
   return content;
 }
