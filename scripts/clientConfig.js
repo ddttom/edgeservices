@@ -2,7 +2,7 @@
 
 // Place any Client- Centered Code/  Configuration in here /
 
-import { initialize as initTracker, loadClientDebugPanel as moreDebugPanel } from './adobe-metadata.js';
+import { initialize as initTracker } from './adobe-metadata.js';
 
 export async function initialize() {
   window.siteConfig['$system:analyticsdelay$'] = 3000;
@@ -10,6 +10,6 @@ export async function initialize() {
   window.metadataTracker = initTracker;
 }
 export function loadClientDebugPanel() {
-  const content = `Client = Digital Domain Technologies Test Site<br>${moreDebugPanel()} `;
+  const content = 'Client = Digital Domain Technologies Test Site<br>';
   return content;
 }
