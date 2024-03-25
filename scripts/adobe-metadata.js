@@ -2,10 +2,7 @@
 /* eslint-disable no-await-in-loop */
 /* adobe specific meta data handling */
 /* NO CLIENT CODE IN HERE JUST SETUP FOR ADOBE */
-/**
- * Adobe specific meta data handling
- * @param {object} siteConfig - the current site configuration
- */
+
 function replaceTokens(data, text) {
   let ret = text;
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
@@ -24,7 +21,6 @@ export function initialize() {
 }
 export async function handleMetadataTracking() {
   // eslint-disable-next-line prefer-destructuring
-  const siteConfig = window.siteConfig;
   if (window.siteConfig['$meta:tracking$'] != null) {
     const trackerlist = window.siteConfig['$meta:tracking$'];
     const trackers = trackerlist.split(',');
@@ -43,7 +39,7 @@ export async function handleMetadataTracking() {
           }
           const json = await resp.json();
           let jsonString = JSON.stringify(json);
-          jsonString = replaceTokens(siteConfig, jsonString);
+          jsonString = replaceTokens(window.siteConfig, jsonString);
           window.cmsplus.track[tracker] = jsonString;
           const fraction = `\nwindow.cmsplus.track["${tracker}"] = ${jsonString};\n`;
           buildscript += fraction;

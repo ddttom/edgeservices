@@ -7,7 +7,7 @@ import {
   initialize as initClientConfig, loadClientDebugPanel,
 } from './clientConfig.js';
 
-export const siteConfig = {};
+window.siteConfig = {};
 export const dc = {};
 export const co = {};
 
@@ -99,7 +99,7 @@ async function handleMetadataJsonLd() {
       let json = await resp.json();
       json = extractJsonLd(json);
       jsonString = JSON.stringify(json, null, '\t');
-      jsonString = replaceTokens(siteConfig, jsonString);
+      jsonString = replaceTokens(window.siteConfig, jsonString);
       // Create and append a new script element with the processed JSON-LD data
       const script = document.createElement('script');
       script.type = 'application/ld+json';
@@ -342,7 +342,7 @@ export async function loadConfiguration() {
       script = document.createElement('script');
       script.type = 'application/dc+json';
       script.setAttribute('data-role', 'dublin core');
-      script.textContent = replaceTokens(siteConfig, dcString);
+      script.textContent = replaceTokens(window.siteConfig, dcString);
       document.head.appendChild(script);
     }
   }
@@ -381,7 +381,7 @@ export async function loadConfiguration() {
       script = document.createElement('script');
       script.type = 'application/co+json';
       script.setAttribute('data-role', 'content ops');
-      script.textContent = replaceTokens(siteConfig, coString);
+      script.textContent = replaceTokens(window.siteConfig, coString);
       document.head.appendChild(script);
     }
   }
@@ -420,7 +420,7 @@ export async function loadConfiguration() {
       }
       content += '<h3>site configuration</h3>';
       // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const key in siteConfig) {
+      for (const key in window.siteConfig) {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
       // Define the Regular Expression pattern to match $word:word$ patterns
@@ -445,8 +445,7 @@ export async function loadConfiguration() {
       });
     }
   }
-  window.siteConfig = siteConfig;
-  return siteConfig;
+  return window.siteConfig;
 }
 export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
