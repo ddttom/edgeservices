@@ -69,6 +69,12 @@ window.cmsplus.track.page.previousPageName = pathname;
   }
 }
 export function loadAnalyticsDebugPanel() {
-  const content = `<h3>Adobe Tracking Data</h3>${buildscript.replaceAll('\n', '<br>\n')}`;
+  let content = '<h3>Adobe Tracking Data</h3>';
+  if (window.cmsplus.track.page) {
+    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;
+  }
+  if (window.cmsplus.content) {
+    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.content, null, '\t')}</pre>`;
+  }
   return content;
 }
