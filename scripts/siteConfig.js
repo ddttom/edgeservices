@@ -461,12 +461,11 @@ export function removeCommentBlocks() {
 export async function initialize() {
   await loadConfiguration();
   initClientConfig();
-  createDebugPanel();
   removeCommentBlocks();
   if (window.metadataTracker) {
     window.metadataTracker();
   }
-
+  createDebugPanel();
   if (window.cmsplus.environment !== 'final') {
     if (window.siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
@@ -491,7 +490,6 @@ export async function initialize() {
       'twitter:image',
       'referrer',
       'viewport',
-      'title',
       'og:title',
       'og:description',
       'og:image',
