@@ -16,9 +16,9 @@ function replaceTokens(data, text) {
   }
   return ret;
 }
-export function initialize() {
+export async function initialize() {
   // eslint-disable-next-line no-use-before-define
-  handleMetadataTracking();
+  await handleMetadataTracking();
 }
 export async function handleMetadataTracking() {
   // eslint-disable-next-line prefer-destructuring

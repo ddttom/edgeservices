@@ -465,7 +465,7 @@ export async function initialize() {
   initClientConfig();
   removeCommentBlocks();
   if (window.metadataTracker) {
-    window.metadataTracker();
+    await window.metadataTracker();
   }
   createDebugPanel();
   if (window.cmsplus.environment !== 'final') {
