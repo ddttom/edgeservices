@@ -1,5 +1,5 @@
 import { sampleRUM } from './aem.js';
-import { initialize as initLaunch } from './launch.js';
+// import { initialize as initLaunch } from './launch.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
@@ -21,7 +21,9 @@ links.forEach((link) => {
 });
 
 if (window.cmsplus.analyticsdelay > 0) {
-  initLaunch(); // only client code in here
+  const { default: initialize } = await import('./launch.js');
+  initialize();
+  //initLaunch(); // only client code in here
 }
 // Add button="role" to every blink with button class
 const buttonRole = document.querySelectorAll('.button');
