@@ -263,7 +263,7 @@ export async function readVariables(configUrl) {
       window.siteConfig[entry.Item] = entry.Value;
     }
   } catch (error) {
-    console.error(`unable to read config: ${error}`);
+    console.error(`unable to read config: ${error.message}`);
   }
 }
 
@@ -375,7 +375,7 @@ export async function loadConfiguration() {
     });
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(`Configuration load error: ${error.message}`);
+    console.error(`Configuration construction error: ${error.message}`);
     throw error;
   }
 
