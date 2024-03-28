@@ -98,7 +98,7 @@ async function handleMetadataJsonLd() {
     }
     try {
       const resp = await fetch(jsonDataUrl);
-      if (resp.ok) {
+      if (!resp.ok) {
         throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
       }
       let json = await resp.json();
