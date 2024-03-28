@@ -26,8 +26,8 @@ function sampleRUM(checkpoint, data = {}) {
   const defer = (fnname) => {
     sampleRUM[fnname] = sampleRUM[fnname] || ((...args) => sampleRUM.defer.push({ fnname, args }));
   };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
+  sampleRUM.drain = sampleRUM.drain ||
+    ((dfnname, fn) => {
       sampleRUM[dfnname] = fn;
       sampleRUM.defer
         .filter(({ fnname }) => dfnname === fnname)
@@ -143,7 +143,7 @@ function setup() {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      // console.log(error);
     }
   }
 }
@@ -371,19 +371,19 @@ function decorateButtons(element) {
           up.classList.add('button-container');
         }
         if (
-          up.childNodes.length === 1
-          && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
+          up.childNodes.length === 1 &&
+          up.tagName === 'STRONG' &&
+          twoup.childNodes.length === 1 &&
+          twoup.tagName === 'P'
         ) {
           a.className = 'button primary';
           twoup.classList.add('button-container');
         }
         if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
+          up.childNodes.length === 1 &&
+          up.tagName === 'EM' &&
+          twoup.childNodes.length === 1 &&
+          twoup.tagName === 'P'
         ) {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
@@ -512,9 +512,7 @@ function updateSectionsStatus(main) {
     const section = sections[i];
     const status = section.dataset.sectionStatus;
     if (status !== 'loaded') {
-      const loadingBlock = section.querySelector(
-        '.block[data-block-status="initialized"], .block[data-block-status="loading"]',
-      );
+      const loadingBlock = section.querySelector('.block[data-block-status="initialized"], .block[data-block-status="loading"]');
       if (loadingBlock) {
         section.dataset.sectionStatus = 'loading';
         break;
@@ -569,17 +567,15 @@ async function loadBlock(block) {
     try {
       const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`);
       const decorationComplete = new Promise((resolve) => {
-        (async () => {
+        (async() => {
           try {
-            const mod = await import(
-              `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`
-            );
+            const mod = await import(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`);
             if (mod.default) {
               await mod.default(block);
             }
           } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(`failed to load module for ${blockName}`, error);
+            // console.log(`failed to load module for ${blockName}`, error);
           }
           resolve();
         })();
@@ -587,7 +583,7 @@ async function loadBlock(block) {
       await Promise.all([cssLoaded, decorationComplete]);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(`failed to load block ${blockName}`, error);
+      // console.log(`failed to load block ${blockName}`, error);
     }
     block.dataset.blockStatus = 'loaded';
   }
@@ -714,5 +710,5 @@ export {
   toCamelCase,
   toClassName,
   updateSectionsStatus,
-  waitForLCP,
+  waitForLCP
 };
