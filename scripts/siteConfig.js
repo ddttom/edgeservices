@@ -254,10 +254,16 @@ export function createDebugPanel() {
 export async function readVariables(configUrl) {
   try {
     const response = await fetch(configUrl);
-    const jsonData = await response.json();
-    // eslint-disable-next-line no-restricted-syntax
-    for (const entry of jsonData.data) {
-      window.siteConfig[entry.Item] = entry.Value;
+    if (!response.ok) {
+      console.error(`Failed to fetch config: ${response.status} ${response.statusText}`);
+    } 
+    else 
+    {
+      const jsonData = await response.json();
+      // eslint-disable-next-line no-restricted-syntax
+      for (const entry of jsonData.data) {
+        window.siteConfig[entry.Item] = entry.Value;
+      }
     }
   } catch (error) {
     console.error(`unable to read config: ${error.message}`);
