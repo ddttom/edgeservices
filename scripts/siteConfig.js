@@ -268,9 +268,9 @@ export async function readVariables(configUrl) {
 }
 
 export async function loadConfiguration() {
-  await readVariables(new URL('/config/variables.json', window.location.origin));
-  await readVariables(new URL(`/config/variables.${environment}.json`, window.location.origin));
-  await readVariables(new URL(`/config/variables.${locality}.json`, window.location.origin));
+  await readVariables(new URL('/config/variables0.json', window.location.origin));
+  await readVariables(new URL(`/config/variables-${environment}.json`, window.location.origin));
+  await readVariables(new URL(`/config/variables-${locality}.json`, window.location.origin));
 
   try {
     const now = new Date().toISOString();
