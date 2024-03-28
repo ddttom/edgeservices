@@ -21,7 +21,8 @@ links.forEach((link) => {
 });
 
 if (window.cmsplus.analyticsdelay > 0) {
-  const { default: initialize } = await import('./launch.js');
+  const module = await import('./launch.js');
+  initialize = module.default;
   initialize();
   //initLaunch(); // only client code in here
 }
