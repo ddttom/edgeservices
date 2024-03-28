@@ -251,9 +251,7 @@ export function createDebugPanel() {
     }
   }
 }
-export async function loadConfiguration() {
-  const configUrl = new URL('/config/variables.json', window.location.origin);
-
+export async function readVariables(configUrl) {
   try {
     const response = await fetch(configUrl);
     if (!response.ok) {
@@ -264,6 +262,17 @@ export async function loadConfiguration() {
     for (const entry of jsonData.data) {
       window.siteConfig[entry.Item] = entry.Value;
     }
+  } catch (error) {
+    console.error(`unable to read config: ${error}`);
+  }
+}
+
+export async function loadConfiguration() {
+  await readVariables(new URL('/config/variables.json', window.location.origin));
+  await readVariables(new URL(`/config/variables.${environment}.json`, window.location.origin));
+  await readVariables(new URL(`/config/variables.${locality}.json`, window.location.origin));
+
+  try {
     const now = new Date().toISOString();
     let href = '';
     const canonicalLink = document.querySelector('link[rel="canonical"]');
@@ -392,8 +401,8 @@ export async function loadConfiguration() {
   // make the required globals
   let buildscript = '\nwindow.cmsplus = window.cmsplus || {};\n';
   const delay = window.siteConfig['$meta:analyticsdelay$'] === undefined ? 3000 : window.siteConfig['$meta:analyticsdelay$'];
-  const bubbleapikey = window.siteConfig['$system:bubbleapikey$'] === undefined ? '' : window.siteConfig['$system:bubbleapikey$'];
-  buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${bubbleapikey}";\n`;
+  const helpapikey = window.siteConfig['$system:helpapikey$'] === undefined ? '' : window.siteConfig['$system:helpapikey$'];
+  buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${helpapikey}";\n`;
   buildscript += `window.cmsplus.environment = "${window.cmsplus.environment}";\n`;
   let script = document.createElement('script');
   script.type = 'text/javascript';
