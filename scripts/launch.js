@@ -25,8 +25,7 @@ import { loadScript } from './aem.js';
 // AB Tasty
 // <script type="text/javascript" src="https://try.abtasty.com/54d41c1c745275ad6d723c2122a0693d.js"></script>
 
-// eslint-disable-next-line import/prefer-default-export
-export async function initialize() {
+export default async function initialize() {
   //  Comwrap Specific
   const attrs = {
     id: 'Cookiebot',
