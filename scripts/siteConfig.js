@@ -98,7 +98,7 @@ async function handleMetadataJsonLd() {
     }
     try {
       const resp = await fetch(jsonDataUrl);
-      if (!resp.ok) {
+      if (resp.ok) {
         throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
       }
       let json = await resp.json();
@@ -254,9 +254,6 @@ export function createDebugPanel() {
 export async function readVariables(configUrl) {
   try {
     const response = await fetch(configUrl);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch config: ${response.status} ${response.statusText}`);
-    }
     const jsonData = await response.json();
     // eslint-disable-next-line no-restricted-syntax
     for (const entry of jsonData.data) {
