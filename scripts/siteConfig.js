@@ -450,7 +450,7 @@ export async function loadConfiguration() {
   window.siteConfig['$system:language$'] = lang;
   document.querySelector('html').setAttribute('lang', lang);
   if (lang === 'ar') {
-    document.querySelector('html').setAttribute('dir', 'rtl');
+  document.querySelector('html').setAttribute('dir', 'rtl');
   }
 
   co['co:language'] = lang;
