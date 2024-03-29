@@ -7,7 +7,21 @@ import {
   initialize as initClientConfig,
 } from './clientConfig.js';
 
+let errors = [];
 
+window.onerror = function(message, source, lineno, colno, error) {
+  const errorDetails = {
+    message: message,
+    source: source,
+    line: lineno,
+    column: colno,
+    error: error
+  };
+  errors.push(errorDetails);
+
+  // Return true to prevent the default error handling
+  return true;
+};
 window.siteConfig = {};
 export const dc = {};
 export const co = {};
@@ -241,7 +255,11 @@ export function createDebugPanel() {
       for (const key in window.siteConfig) {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
-      debugPanel.innerHTML = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
+      let errlist = "Errors encountered during processing<br>";
+      errors.forEach(function(error) {
+        errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`
+      });
+      debugPanel.innerHTML = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${errlist}<br>${content}`;
       document.body.appendChild(debugPanel);
       // Event listener for keyboard shortcut
       document.addEventListener('keydown', (event) => {
