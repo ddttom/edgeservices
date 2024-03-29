@@ -209,8 +209,9 @@ export function createDebugPanel() {
       debugPanel.style.border = '1px solid black';
 
       // Build the content of the debug panel
-      let clientDebug = window.siteConfig['$system:projectname'] + '<br>';
-      clientDebug = clientDebug + window.cmsplus.callbackdebug();
+      let clientDebug = window.siteConfig['$system:projectname$'] ? window.siteConfig['$system:projectname$'] : 'No name given';
+      
+      clientDebug = clientDebug + '<br>'+ window.cmsplus.callbackdebug();
       let content = `${clientDebug}<br>`;
       content = `${content}<h3>Variables</h3>`;
 
