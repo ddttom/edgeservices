@@ -255,11 +255,15 @@ export function createDebugPanel() {
       for (const key in window.siteConfig) {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
-      let errlist = "Errors encountered during processing<br>";
-      errors.forEach(function(error) {
+      content += '<h2>Debug Panel, Shift-Ctrl-d to close</h2>';
+      if (errors.length > 0) {
+        let errlist = "Errors encountered during processing<br>";
+        errors.forEach(function(error) {
         errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`
       });
-      debugPanel.innerHTML = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${errlist}<br>${content}`;
+      content = content + errlist +'<br>';
+    }
+      debugPanel.innerHTML = content;
       document.body.appendChild(debugPanel);
       // Event listener for keyboard shortcut
       document.addEventListener('keydown', (event) => {
