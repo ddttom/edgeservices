@@ -255,7 +255,7 @@ export function createDebugPanel() {
       for (const key in window.siteConfig) {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
-      content += '<h2>Debug Panel, Shift-Ctrl-d to close</h2>';
+      content = '<h2>Debug Panel, Shift-Ctrl-d to close</h2>' + content;
       if (errors.length > 0) {
         let errlist = "Errors encountered during processing<br>";
         errors.forEach(function(error) {
