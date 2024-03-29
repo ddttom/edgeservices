@@ -22,6 +22,28 @@ window.onerror = function(message, source, lineno, colno, error) {
   // Return true to prevent the default error handling
   return true;
 };
+
+let consoleMessages = [];
+
+// Override console methods
+const originalConsoleLog = console.log;
+const originalConsoleWarn = console.warn;
+const originalConsoleError = console.error;
+
+console.log = function(...args) {
+  consoleMessages.push({ level: 'log', message: args });
+  originalConsoleLog.apply(console, args);
+};
+
+console.warn = function(...args) {
+  consoleMessages.push({ level: 'warn', message: args });
+  originalConsoleWarn.apply(console, args);
+};
+
+console.error = function(...args) {
+  consoleMessages.push({ level: 'error', message: args });
+  originalConsoleError.apply(console, args);
+};
 window.siteConfig = {};
 export const dc = {};
 export const co = {};
@@ -256,13 +278,22 @@ export function createDebugPanel() {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
       content = '<h2>Debug Panel, Shift-Ctrl-d to close</h2>' + content;
+     
+      let cmess='';
+      if (consoleMessages.length > 0 ) {
+        cmess='Console Messages<br>'
+        consoleMessages.forEach(function(entry) {
+        cmess = cmess + `Level: ${entry.level} Message: ${entry.message}<br>`;
+      });
+    }
+    let errlist = '';
       if (errors.length > 0) {
-        let errlist = "Errors encountered during processing<br>";
+        errlist = "Errors encountered during processing<br>";
         errors.forEach(function(error) {
         errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`
       });
-      content = content + errlist +'<br>';
     }
+    content = content + errlist +'<br>';
       debugPanel.innerHTML = content;
       document.body.appendChild(debugPanel);
       // Event listener for keyboard shortcut
