@@ -67,14 +67,14 @@ window.cmsplus.track.page.previousPageName = pathname;
     script.textContent = buildscript;
     document.head.appendChild(script);
   }
-}
-export function loadAnalyticsDebugPanel() {
-  let content = '<h3>Adobe Tracking Data</h3>';
-  if (window.cmsplus.track.page) {
-    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;
+  window.cmsplus.callbackdebug = loadAnalyticsDebugPanel;
+} 
+function loadAnalyticsDebugPanel() {
+  let content;
+  if (window.cmsplus.track.page && window.cmsplus.track.content) {
+    content = '<h3>Adobe Tracking Data</h3>';
   }
-  if (window.cmsplus.track.content) {
-    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.content, null, '\t')}</pre>`;
-  }
+  content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;
+  content = `${content}<pre>${JSON.stringify(window.cmsplus.track.content, null, '\t')}</pre>`;
   return content;
 }
