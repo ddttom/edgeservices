@@ -4,7 +4,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable prefer-destructuring */
 import {
-  initialize as initClientConfig, loadClientDebugPanel,
+  initialize as initClientConfig,
 } from './clientConfig.js';
 
 
