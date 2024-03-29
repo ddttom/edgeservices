@@ -309,8 +309,6 @@ export async function loadConfiguration() {
     window.siteConfig['$page:readspeed$'] = (Math.ceil(wordCount / 140) + 1).toString();
     window.siteConfig['$page:title$'] = document.title;
     window.siteConfig['$page:canonical$'] = href;
-
-    window.siteConfig['$system:platformVersion$'] = 'AI Optiflow 1.0.0';
     window.siteConfig['$system:date$'] = now;
     window.siteConfig['$system:isodate$'] = now;
     window.siteConfig['$system:time$'] = new Date().toLocaleTimeString();
