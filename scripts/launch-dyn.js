@@ -66,7 +66,7 @@ export default async function initialize() {
   try {
     if (window.cmsplus.track) {
       if (window.cmsplus.track.page) {
-        window.adobeDataLayer.push(window.cmsplus.track.page);
+         window.adobeDataLayer.push(window.cmsplus.track.page);
       }
       if (window.cmsplus.track.content) {
         window.adobeDataLayer.push(window.cmsplus.track.content);
