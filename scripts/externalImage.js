@@ -1,7 +1,9 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable comma-dangle */
 // External image handling
 import {
   createOptimizedPicture as libCreateOptimizedPicture
+// eslint-disable-next-line import/extensions
 } from './aem.js';
 
 /**

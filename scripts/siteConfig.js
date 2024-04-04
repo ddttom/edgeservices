@@ -5,11 +5,12 @@
 /* eslint-disable prefer-destructuring */
 import {
   initialize as initClientConfig,
+// eslint-disable-next-line import/extensions
 } from './clientConfig.js';
 
 const errors = [];
 
-window.onerror = function(message, source, lineno, colno, error) {
+window.onerror = (message, source, lineno, colno, error) => {
   const errorDetails = {
     message,
     source,
@@ -30,17 +31,17 @@ const originalConsoleLog = console.log;
 const originalConsoleWarn = console.warn;
 const originalConsoleError = console.error;
 
-console.log = function(...args) {
+console.log = (...args) => {
   consoleMessages.push({ level: 'log', message: args });
   originalConsoleLog.apply(console, args);
 };
 
-console.warn = function(...args) {
+console.warn = (...args) => {
   consoleMessages.push({ level: 'warn', message: args });
   originalConsoleWarn.apply(console, args);
 };
 
-console.error = function(...args) {
+console.error = (...args) => {
   consoleMessages.push({ level: 'error', message: args });
   originalConsoleError.apply(console, args);
 };
@@ -247,7 +248,7 @@ export function createDebugPanel() {
       // Build the content of the debug panel
       let clientDebug = window.siteConfig['$system:projectname$'] ? window.siteConfig['$system:projectname$'] : 'No name given';
 
-      clientDebug = clientDebug + '<br>' + window.cmsplus.callbackdebug();
+      clientDebug = `${clientDebug}<br>${window.cmsplus.callbackdebug()}`;
       let content = `${clientDebug}<br>`;
       content = `${content}<h3>Variables</h3>`;
 
@@ -277,23 +278,23 @@ export function createDebugPanel() {
       for (const key in window.siteConfig) {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
-      content = '<h2>Debug Panel, Shift-Ctrl-d to close</h2>' + content;
+      content = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
 
       let cmess = '';
       if (consoleMessages.length > 0) {
         cmess = 'Console Messages<br>';
-        consoleMessages.forEach(function(entry) {
-          cmess = cmess + `Level: ${entry.level} Message: ${entry.message}<br>`;
+        consoleMessages.forEach((entry) => {
+          cmess = `${cmess}Level: ${entry.level} Message: ${entry.message}<br>`;
         });
       }
       let errlist = '';
       if (errors.length > 0) {
         errlist = 'Errors encountered during processing<br>';
-        errors.forEach(function(error) {
+        errors.forEach((error) => {
           errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`;
         });
       }
-      content = content + errlist + '<br>';
+      content = `${content + errlist}<br>`;
       debugPanel.innerHTML = content;
       document.body.appendChild(debugPanel);
       // Event listener for keyboard shortcut

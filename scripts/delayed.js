@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import { sampleRUM } from './aem.js';
 // import { initialize as initLaunch } from './launch.js';
 
@@ -22,6 +23,7 @@ links.forEach((link) => {
 
 if (window.cmsplus.analyticsdelay > 0) {
   let initialize;
+  // eslint-disable-next-line import/extensions
   const module = await import('./launch-dyn.js');
   // eslint-disable-next-line prefer-const
   initialize = module.default;

@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 import {
@@ -144,6 +145,7 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
   // eslint-disable-next-line import/no-cycle
   if (setDelayed) {
+    // eslint-disable-next-line import/extensions
     window.setTimeout(() => import('./delayed.js'), window.cmsplus.analyticsdelay);
   }
 }
