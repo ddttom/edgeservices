@@ -23,9 +23,10 @@ links.forEach((link) => {
 if (window.cmsplus.analyticsdelay > 0) {
   let initialize;
   const module = await import('./launch-dyn.js');
+  // eslint-disable-next-line prefer-const
   initialize = module.default;
   initialize();
-  //initLaunch(); // only client code in here
+  // initLaunch(); // only client code in here
 }
 // Add button="role" to every blink with button class
 const buttonRole = document.querySelectorAll('.button');

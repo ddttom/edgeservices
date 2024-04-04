@@ -1,3 +1,18 @@
 {
-  "extends": ["stylelint-config-standard"]
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "declaration-block-no-redundant-longhand-properties": null,
+    "no-duplicate-selectors": null,
+    "no-descending-specificity": null,
+    "color-function-notation": "modern",
+    "alpha-value-notation": "percentage",
+    "comment-empty-line-before": ["always", {
+      "except": ["first-nested"],
+      "ignore": ["stylelint-commands", "after-comment"]
+    }],
+    "declaration-empty-line-before": null,
+    "custom-property-empty-line-before": null,
+    "rule-empty-line-before": null,
+    "property-no-vendor-prefix": null
+  }
 }

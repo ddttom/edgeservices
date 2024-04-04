@@ -28,16 +28,16 @@ export async function handleMetadataTracking() {
     window.cmsplus.track = {};
     for (let i = 0; i < trackers.length; i += 1) {
       const tracker = trackers[i].trim();
-      if ( ['page', 'content'].includes(tracker)){
+      if (['page', 'content'].includes(tracker)) {
         let trackerUrl = tracker;
-          if (trackerUrl) {
-            trackerUrl = `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`;
-            try {
+        if (trackerUrl) {
+          trackerUrl = `${window.location.origin}/config/tracking/datalayer${trackerUrl}view.json`;
+          try {
             // eslint-disable-next-line no-await-in-loop
-             const resp = await fetch(trackerUrl);
-             if (!resp.ok) {
-               throw new Error(`Failed to fetch ${trackerUrl} content: ${resp.status}`);
-             }
+            const resp = await fetch(trackerUrl);
+            if (!resp.ok) {
+              throw new Error(`Failed to fetch ${trackerUrl} content: ${resp.status}`);
+            }
             const json = await resp.json();
             let jsonString = JSON.stringify(json);
             jsonString = replaceTokens(window.siteConfig, jsonString);
@@ -66,28 +66,28 @@ try {
 }
 window.cmsplus.track.page.previousPageName = pathname;
 `;
+              }
             }
-          }
-           } catch (error) {
+          } catch (error) {
           // eslint-disable-next-line no-console
-          console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
+            console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
           }
         }
       } else {
         console.log(`Unknown tracker type: ${tracker}`);
       }
     }
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.textContent = buildscript;
-      document.head.appendChild(script);
-    }
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.textContent = buildscript;
+    document.head.appendChild(script);
+  }
   window.cmsplus.callbackdebug = loadAnalyticsDebugPanel;
-} 
+}
 function loadAnalyticsDebugPanel() {
   let content = '';
   if (window.cmsplus.track.page || window.cmsplus.track.content) {
-    content = '<h3>Adobe Tracking Data</h3>';
+      content = '<h3>Adobe Tracking Data</h3>';
   }
   if (window.cmsplus.track.page) {
     content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;

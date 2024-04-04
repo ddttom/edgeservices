@@ -7,15 +7,15 @@ import {
   initialize as initClientConfig,
 } from './clientConfig.js';
 
-let errors = [];
+const errors = [];
 
 window.onerror = function(message, source, lineno, colno, error) {
   const errorDetails = {
-    message: message,
-    source: source,
+    message,
+    source,
     line: lineno,
     column: colno,
-    error: error
+    error
   };
   errors.push(errorDetails);
 
@@ -23,7 +23,7 @@ window.onerror = function(message, source, lineno, colno, error) {
   return true;
 };
 
-let consoleMessages = [];
+const consoleMessages = [];
 
 // Override console methods
 const originalConsoleLog = console.log;
@@ -246,8 +246,8 @@ export function createDebugPanel() {
 
       // Build the content of the debug panel
       let clientDebug = window.siteConfig['$system:projectname$'] ? window.siteConfig['$system:projectname$'] : 'No name given';
-      
-      clientDebug = clientDebug + '<br>'+ window.cmsplus.callbackdebug();
+
+      clientDebug = clientDebug + '<br>' + window.cmsplus.callbackdebug();
       let content = `${clientDebug}<br>`;
       content = `${content}<h3>Variables</h3>`;
 
@@ -278,22 +278,22 @@ export function createDebugPanel() {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
       content = '<h2>Debug Panel, Shift-Ctrl-d to close</h2>' + content;
-     
-      let cmess='';
-      if (consoleMessages.length > 0 ) {
-        cmess='Console Messages<br>'
+
+      let cmess = '';
+      if (consoleMessages.length > 0) {
+        cmess = 'Console Messages<br>';
         consoleMessages.forEach(function(entry) {
-        cmess = cmess + `Level: ${entry.level} Message: ${entry.message}<br>`;
-      });
-    }
-    let errlist = '';
+          cmess = cmess + `Level: ${entry.level} Message: ${entry.message}<br>`;
+        });
+      }
+      let errlist = '';
       if (errors.length > 0) {
-        errlist = "Errors encountered during processing<br>";
+        errlist = 'Errors encountered during processing<br>';
         errors.forEach(function(error) {
-        errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`
-      });
-    }
-    content = content + errlist +'<br>';
+          errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`;
+        });
+      }
+      content = content + errlist + '<br>';
       debugPanel.innerHTML = content;
       document.body.appendChild(debugPanel);
       // Event listener for keyboard shortcut
@@ -310,9 +310,7 @@ export async function readVariables(configUrl) {
     const response = await fetch(configUrl);
     if (!response.ok) {
       console.error(`Failed to fetch config: ${response.status} ${response.statusText}`);
-    } 
-    else 
-    {
+    } else {
       const jsonData = await response.json();
       // eslint-disable-next-line no-restricted-syntax
       for (const entry of jsonData.data) {
@@ -450,7 +448,7 @@ export async function loadConfiguration() {
   window.siteConfig['$system:language$'] = lang;
   document.querySelector('html').setAttribute('lang', lang);
   if (lang === 'ar') {
-  document.querySelector('html').setAttribute('dir', 'rtl');
+    document.querySelector('html').setAttribute('dir', 'rtl');
   }
 
   co['co:language'] = lang;
