@@ -85,7 +85,7 @@ window.cmsplus.track.page.previousPageName = pathname;
   window.cmsplus.callbackdebug = loadAnalyticsDebugPanel;
 } 
 function loadAnalyticsDebugPanel() {
-  let content;
+  let content = '';
   if (window.cmsplus.track.page || window.cmsplus.track.content) {
     content = '<h3>Adobe Tracking Data</h3>';
   }
