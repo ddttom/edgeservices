@@ -41,11 +41,14 @@ export async function handleMetadataTracking() {
             const json = await resp.json();
             let jsonString = JSON.stringify(json);
             jsonString = replaceTokens(window.siteConfig, jsonString);
-            window.cmsplus.track[tracker] = jsonString;
-            const fraction = `\nwindow.cmsplus.track["${tracker}"] = ${jsonString};\n`;
-            buildscript += fraction;
-            if (tracker === 'page') {
-              buildscript += `
+            if (jsonString.contains('$meta:')) {
+              console.log(`Found $meta: in ${trackerUrl}, aborting tracker`);
+            } else {
+              window.cmsplus.track[tracker] = jsonString;
+              const fraction = `\nwindow.cmsplus.track["${tracker}"] = ${jsonString};\n`;
+              buildscript += fraction;
+              if (tracker === 'page') {
+                buildscript += `
 window.cmsplus.track.page.pageQueryString = "";
 if (window.location.search) {
   window.cmsplus.track.page.pageQueryString = window.location.search;
@@ -63,6 +66,7 @@ try {
 }
 window.cmsplus.track.page.previousPageName = pathname;
 `;
+            }
           }
            } catch (error) {
           // eslint-disable-next-line no-console
