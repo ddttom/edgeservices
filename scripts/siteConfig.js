@@ -151,7 +151,7 @@ async function handleMetadataJsonLd() {
       document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
     } catch (error) {
     // no schema.org for your content, just use the content as is
-      console.error('Error processing JSON-LD metadata:', error);
+      console.log('Error processing JSON-LD metadata:', error);
     }
   }
   return jsonString;
@@ -310,7 +310,7 @@ export async function readVariables(configUrl) {
   try {
     const response = await fetch(configUrl);
     if (!response.ok) {
-      console.error(`Failed to fetch config: ${response.status} ${response.statusText}`);
+      console.log(`Failed to fetch config: ${response.status} ${response.statusText}`);
     } else {
       const jsonData = await response.json();
       // eslint-disable-next-line no-restricted-syntax
@@ -319,7 +319,7 @@ export async function readVariables(configUrl) {
       }
     }
   } catch (error) {
-    console.error(`unable to read config: ${error.message}`);
+    console.log(`unable to read config: ${error.message}`);
   }
 }
 
@@ -381,6 +381,7 @@ export async function loadConfiguration() {
     const capitalizedMonth = firstLetter + restOfWord;
     window.siteConfig['$system:monthinfull$'] = capitalizedMonth;
     window.siteConfig['$system:monthinshort$'] = capitalizedMonth.slice(0, 3);
+    window.siteConfig['$meta:wantcontentops$'] = false;
 
     window.siteConfig['$system:dateinenglish$'] = `${capitalizedMonth} ${window.siteConfig['$system:day$']}, ${window.siteConfig['$system:year$']}`;
 
@@ -409,6 +410,7 @@ export async function loadConfiguration() {
       }
       if (key.startsWith('co-')) {
         co[key.replace('co-', 'co:').replaceAll(' ', '')] = value;
+        window.siteConfig['$meta:wantcontentops$'] = true;
       }
       if (key && value) {
         let prefix = '';
@@ -432,7 +434,7 @@ export async function loadConfiguration() {
     });
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(`Configuration construction error: ${error.message}`);
+    console.log(`Configuration construction error: ${error.message}`);
     throw error;
   }
 
@@ -480,7 +482,7 @@ export async function loadConfiguration() {
     }
   }
   if (window.siteConfig['$meta:wantcontentops$'] === undefined) {
-    window.siteConfig['$meta:wantcontentops$'] = true;
+    window.siteConfig['$meta:wantcontentops$'] = false;
   }
   if (window.siteConfig['$meta:wantcontentops$'] === true) {
     const currentDate = new Date();
