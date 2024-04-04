@@ -69,6 +69,8 @@ window.cmsplus.track.page.previousPageName = pathname;
           console.error(`Failed to load ${trackerUrl} content: ${error.message}`);
           }
         }
+      } else {
+        console.log(`Unknown tracker type: ${tracker}`);
       }
     }
       const script = document.createElement('script');
