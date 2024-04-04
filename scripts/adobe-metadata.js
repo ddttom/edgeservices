@@ -41,7 +41,7 @@ export async function handleMetadataTracking() {
             const json = await resp.json();
             let jsonString = JSON.stringify(json);
             jsonString = replaceTokens(window.siteConfig, jsonString);
-            if (jsonString.contains('$meta:')) {
+            if (jsonString.Contains('$meta:')) {
               console.log(`Found $meta: in ${trackerUrl}, aborting tracker`);
             } else {
               window.cmsplus.track[tracker] = jsonString;
