@@ -13,11 +13,14 @@ export default async function decorate(block) {
   const element = document.querySelector('.dynamic-container');
 
   // Get the value of the 'data-maxreturn' attribute, or system value, or use the default value of 8
-  const maxReturn = element.getAttribute('data-maxreturn')
+  let maxReturn = element.getAttribute('data-maxreturn')
   || window.siteConfig?.['$meta:maxreturn$']
   || window.siteConfig?.['$system:maxreturn$']
   || '8';
 
+  if (maxReturn === '-1') {
+    maxReturn = 1000;
+  }
   const content = await ffetch('/query-index.json').all();
 
   let targetNames = ['blog']; // Initialize targetNames with 'blog' as the default
