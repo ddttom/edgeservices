@@ -13,12 +13,14 @@ export default async function decorate(block) {
 
   let targetNames = ['blog']; // Initialize targetNames with 'blog' as the default
 
+  if (!window.location.pathname.endsWith('/')) {
   // Extract path segments excluding the domain
-  const pathSegments = window.location.pathname.split('/').filter((segment) => segment.length > 0);
+    const pathSegments = window.location.pathname.split('/').filter((segment) => segment.length > 0);
 
-  // Use the pathname as target if there's more than one segment
-  if (pathSegments.length > 1) {
-    targetNames = [window.location.pathname];
+    // Use the pathname as target if there's more than one segment
+    if (pathSegments.length > 1) {
+      targetNames = [window.location.pathname];
+    }
   }
 
   // Use additional class names as targets, excluding specific class names
