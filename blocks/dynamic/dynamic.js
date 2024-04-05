@@ -22,11 +22,14 @@ export default async function decorate(block) {
   }
 
   // Use additional class names as targets, excluding specific class names
-  if (block.className.split(' ').length > 1) {
-    targetNames = block.className.split(' ')
-      .filter((cn) => cn && cn !== 'block' && cn !== 'dynamic');
+  let bnames = block.className.replace(' block', '');
+  if (bnames.startsWith('dynamic')) {
+    bnames = bnames.replace('dynamic', '');
   }
-
+  bnames = bnames.trim();
+  if (bnames.split(' ').length > 1) {
+    targetNames = bnames.split(' ');
+  }
   // Filter content to exclude paths containing '/template'
   const filteredContent = content.filter((card) => !card.path.includes('/template')
       && targetNames.some((target) => card.path.includes(`/${target}/`)),
