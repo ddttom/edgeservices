@@ -9,6 +9,12 @@ import {
 import ffetch from '../../scripts/ffetch.js';
 
 export default async function decorate(block) {
+// Select the element by its class
+  const element = document.querySelector('.dynamic-container');
+
+  // Get the value of the 'data-maxreturn' attribute, or use the default value of 6
+  const maxReturn = element.getAttribute('data-maxreturn') || '6';
+
   const content = await ffetch('/query-index.json').all();
 
   let targetNames = ['blog']; // Initialize targetNames with 'blog' as the default
@@ -45,10 +51,12 @@ export default async function decorate(block) {
     return dateB - dateA;
   });
 
-  // Append sorted and filtered content to the block
+  const maxReturnNumber = parseInt(maxReturn, 10);
+
+  // Append sorted and filtered content to the block, obeying limits
   block.append(
     ul(
-      ...sortedContent.map((card) => li(
+      ...sortedContent.slice(0, maxReturnNumber).map((card) => li(
         div({ class: 'cards-card-image' },
           createOptimizedPicture(card.image, card.title, false, [{ width: '750' }]),
         ),
