@@ -12,8 +12,11 @@ export default async function decorate(block) {
 // Select the element by its class
   const element = document.querySelector('.dynamic-container');
 
-  // Get the value of the 'data-maxreturn' attribute, or use the default value of 6
-  const maxReturn = element.getAttribute('data-maxreturn') || '6';
+  // Get the value of the 'data-maxreturn' attribute, or system value, or use the default value of 8
+  const maxReturn = element.getAttribute('data-maxreturn')
+  || window.siteConfig?.['$meta:maxreturn$']
+  || window.siteConfig?.['$system:maxreturn$']
+  || '8';
 
   const content = await ffetch('/query-index.json').all();
 
