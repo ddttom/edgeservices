@@ -9,7 +9,7 @@ import {
 import ffetch from '../../scripts/ffetch.js';
 
 export default async function decorate(block) {
-  const content = await ffetch('/query-index.json').then((res) => res.json());
+  const content = await ffetch('/query-index.json').all();
 
   let targetNames = ['blog']; // Initialize targetNames with 'blog' as the default
 
