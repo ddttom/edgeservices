@@ -11,7 +11,7 @@ import ffetch from '../../scripts/ffetch.js';
 export default async function decorate(block) {
   // You can find ffetch and other cool stuff in the Franklin block party: https://www.hlx.live/developer/block-collection#block-party
   // Or directly at: https://github.com/Buuhuu/ffetch
-  const content = await ffetch('/cards-content.json').all();
+  const content = await ffetch('/query-index.json').all();
 
   block.append(
     ul(

@@ -2,7 +2,6 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
-/* eslint-disable prefer-destructuring */
 import {
   initialize as initClientConfig,
 // eslint-disable-next-line import/extensions
@@ -356,6 +355,7 @@ export async function loadConfiguration() {
     window.siteConfig['$page:location$'] = winloc;
     window.siteConfig['$page:url$'] = href;
     window.siteConfig['$page:name$'] = pname;
+    // eslint-disable-next-line prefer-destructuring
     window.siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
     window.siteConfig['$page:wordcount$'] = wordCount;
     window.siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
