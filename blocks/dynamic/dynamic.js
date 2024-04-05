@@ -12,10 +12,11 @@ export default async function decorate(block) {
   // You can find ffetch and other cool stuff in the Franklin block party: https://www.hlx.live/developer/block-collection#block-party
   // Or directly at: https://github.com/Buuhuu/ffetch
   const content = await ffetch('/query-index.json').all();
+  const filteredContent = content.filter((card) => card.path.includes('/blog/'));
 
   block.append(
     ul(
-      ...content.map((card) => (
+      ...filteredContent.map((card) => (
         li(
           div({ class: 'cards-card-image' },
             createOptimizedPicture(card.image, card.title, false, [{ width: '750' }]),
@@ -24,8 +25,8 @@ export default async function decorate(block) {
             p(
               strong(card.title),
             ),
-            p(card.body),
-            button({ class: 'primary', onclick: () => { alert('Very inquisitive! :)'); } }, 'Read More'),
+            p(card.description),
+            button({ class: 'primary', onclick: () => { alert('Very inquisitive! :)'); } }, 'More'),
           ),
         )
       )),
