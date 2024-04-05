@@ -32,9 +32,10 @@ export default async function decorate(block) {
   if (bnames.split(' ').length > 1) {
     targetNames = bnames.split(' ');
   }
-  // Filter content to exclude paths containing '/template'
+  // Filter content to exclude paths containing '/template' and the current page path
   const filteredContent = content.filter((card) => !card.path.includes('/template')
-      && targetNames.some((target) => card.path.includes(`/${target}/`)),
+  && card.path !== window.location.pathname // Dynamically exclude the current page path
+  && targetNames.some((target) => card.path.includes(`/${target}/`)),
   );
 
   // Sort the filtered content by 'lastModified' in descending order
