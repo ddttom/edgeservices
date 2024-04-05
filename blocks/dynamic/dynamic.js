@@ -16,9 +16,9 @@ export default async function decorate(block) {
   // Extract path segments excluding the domain
   const pathSegments = window.location.pathname.split('/').filter((segment) => segment.length > 0);
 
-  // Use the path segments as targets if there's more than one segment
+  // Use the pathname as target if there's more than one segment
   if (pathSegments.length > 1) {
-    targetNames = pathSegments.slice(1);
+    targetNames = [window.location.pathname];
   }
 
   // Use additional class names as targets, excluding specific class names
