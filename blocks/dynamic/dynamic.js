@@ -53,9 +53,9 @@ export default async function decorate(block) {
   );
 
   // Sort the filtered content by 'lastModified' in descending order
-  const sortedContent = filteredContent.sort((adate, b) => {
+  const sortedContent = filteredContent.sort((adate, bdate) => {
     const dateA = new Date(adate.lastModified);
-    const dateB = new Date(b.lastModified);
+    const dateB = new Date(bdate.lastModified);
     return dateB - dateA;
   });
 
