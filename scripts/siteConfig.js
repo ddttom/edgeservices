@@ -49,7 +49,7 @@ export const dc = {};
 export const co = {};
 
 window.cmsplus = window.cmsplus || {};
-
+window.cmsplus.siteDelay = true;
 let jsonldString = '';
 let coString = '';
 let dcString = '';

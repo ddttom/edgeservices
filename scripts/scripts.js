@@ -13,7 +13,7 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS
+  loadCSS,
 } from './aem.js';
 
 import {
@@ -27,7 +27,6 @@ import {
 initSiteConfig();
 initExternalImage();
 
-const setDelayed = true; // do (true) or not do (false) final load.
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 /**
@@ -40,9 +39,7 @@ function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', {
-      elems: [picture, h1],
-    }));
+    section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
   }
 }
@@ -118,9 +115,7 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadBlocks(main);
 
-  const {
-    hash,
-  } = window.location;
+  const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
@@ -142,10 +137,8 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // load anything that can be postponed to the latest here
-  // eslint-disable-next-line import/no-cycle
-  if (setDelayed) {
-    // eslint-disable-next-line import/extensions
+  if (window.cmsplus.setDelay === true) {
+    // eslint-disable-next-line import/no-cycle
     window.setTimeout(() => import('./delayed.js'), window.cmsplus.analyticsdelay);
   }
 }
@@ -157,7 +150,6 @@ async function loadPage() {
     document.body.querySelector('header').remove();
     document.body.querySelector('footer').remove();
   }
-
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
