@@ -40,5 +40,5 @@
         "Value": "$company:email$"
       }
     ],
-    ":type": "sheet"
+    ":type": "sheet by me"
   }
