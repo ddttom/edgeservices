@@ -60,7 +60,7 @@ async function loadFonts() {
 }
 
 function autolinkModals(element) {
-  element.addEventListener('click', async (e) => {
+  element.addEventListener('click', async(e) => {
     const origin = e.target.closest('a');
 
     if (origin && origin.href && origin.href.includes('/modals/')) {
