@@ -1,10 +1,8 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable comma-dangle */
 // External image handling
 import {
   createOptimizedPicture as libCreateOptimizedPicture
-// eslint-disable-next-line import/extensions
-} from './aem.js';
+} from './aem';
 
 /**
  * Gets the extension of a URL.
@@ -69,6 +67,7 @@ export function appendQueryParams(url, params) {
   params.forEach((value, key) => {
     searchParams.set(key, value);
   });
+  // eslint-disable-next-line no-param-reassign
   url.search = searchParams.toString();
   return url.toString();
 }

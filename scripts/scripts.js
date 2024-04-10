@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 import {
@@ -13,15 +14,15 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS
-} from './aem';
+} from './aem.js';
 
 import {
   initialize as initSiteConfig
-} from './siteConfig';
+} from './siteConfig.js';
 
 import {
   initialize as initExternalImage
-} from './externalImage';
+} from './externalImage.js';
 
 initSiteConfig();
 initExternalImage();

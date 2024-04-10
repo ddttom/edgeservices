@@ -3,10 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    'eslint:recommended',
-    'airbnb-base', // Integrate Airbnb style guide
-  ],
+  extends: 'airbnb-base',
   overrides: [
     {
       env: {
@@ -25,6 +22,5 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    // Define your custom rules or override Airbnb rules here
   },
 };
