@@ -1,6 +1,7 @@
+/* eslint-disable import/extensions */
 // This is the last chance, things in here are not allowed to change the display of the DOM.
 // Quick and dirty for Comwrap -- make configurable
-import { loadScript } from './aem';
+import { loadScript } from './aem.js';
 // for comwrap
 // Cookie Consent (Cookiebot)
 // <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="747c7864-bf4d-4b8f-9e92-69d5eb6be267" data-blockingmode="auto" type="text/javascript"></script>

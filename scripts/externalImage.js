@@ -1,8 +1,9 @@
+/* eslint-disable import/extensions */
 /* eslint-disable comma-dangle */
 // External image handling
 import {
   createOptimizedPicture as libCreateOptimizedPicture
-} from './aem';
+} from './aem.js';
 
 /**
  * Gets the extension of a URL.

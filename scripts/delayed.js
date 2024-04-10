@@ -1,5 +1,6 @@
-import { sampleRUM } from './aem';
-// import { initialize as initLaunch } from './launch';
+/* eslint-disable import/extensions */
+import { sampleRUM } from './aem.js';
+// import { initialize as initLaunch } from './launch.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');

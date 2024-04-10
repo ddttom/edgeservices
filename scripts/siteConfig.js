@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-console */
 /* eslint-disable comma-dangle */
 /* eslint-disable max-len */
@@ -5,7 +6,7 @@
 /* eslint-disable prefer-destructuring */
 import {
   initialize as initClientConfig,
-} from './clientConfig';
+} from './clientConfig.js';
 
 const errors = [];
 
