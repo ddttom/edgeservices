@@ -2,10 +2,10 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
+/* eslint-disable prefer-destructuring */
 import {
   initialize as initClientConfig,
-// eslint-disable-next-line import/extensions
-} from './clientConfig.js';
+} from './clientConfig';
 
 const errors = [];
 
@@ -49,7 +49,7 @@ export const dc = {};
 export const co = {};
 
 window.cmsplus = window.cmsplus || {};
-window.cmsplus.siteDelay = true;
+
 let jsonldString = '';
 let coString = '';
 let dcString = '';
@@ -150,7 +150,7 @@ async function handleMetadataJsonLd() {
       document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
     } catch (error) {
     // no schema.org for your content, just use the content as is
-      console.log('Error processing JSON-LD metadata:', error);
+      console.error('Error processing JSON-LD metadata:', error);
     }
   }
   return jsonString;
@@ -283,7 +283,7 @@ export function createDebugPanel() {
       if (consoleMessages.length > 0) {
         cmess = 'Console Messages<br>';
         consoleMessages.forEach((entry) => {
-          cmess = `${cmess}Level: ${entry.level} Message: ${entry.message}<br>`;
+          cmess = `${cmess} Level: ${entry.level} Message: ${entry.message}<br>`;
         });
       }
       let errlist = '';
@@ -309,7 +309,7 @@ export async function readVariables(configUrl) {
   try {
     const response = await fetch(configUrl);
     if (!response.ok) {
-      console.log(`Failed to fetch config: ${response.status} ${response.statusText}`);
+      console.error(`Failed to fetch config: ${response.status} ${response.statusText}`);
     } else {
       const jsonData = await response.json();
       // eslint-disable-next-line no-restricted-syntax
@@ -318,8 +318,55 @@ export async function readVariables(configUrl) {
       }
     }
   } catch (error) {
-    console.log(`unable to read config: ${error.message}`);
+    console.error(`unable to read config: ${error.message}`);
   }
+}
+async function cleanDom() {
+// ---- Remove title from link with images ----- //
+// Find all <a> tags in the document
+  const links = document.querySelectorAll('a');
+  const containsVisualElements = (link) => link.querySelectorAll('img') || link.querySelector('picture') || link.querySelector('i[class^="icon"], i[class*=" icon"], i[class^="fa"], i[class*=" fa"]');
+
+  links.forEach((link) => {
+    if (containsVisualElements(link)) {
+    // If a title attribute exists, remove it
+      if (link.hasAttribute('title')) {
+        link.removeAttribute('title');
+      }
+    }
+  });
+
+  if (window.cmsplus.analyticsdelay > 0) {
+    let initializeme;
+    // eslint-disable-next-line import/extensions
+    const module = await import('./launch-dyn.js');
+    // eslint-disable-next-line prefer-const
+    initializeme = module.default;
+    initializeme();
+  }
+  // Add button="role" to every blink with button class
+  const buttonRole = document.querySelectorAll('.button');
+  buttonRole.forEach((button) => {
+    button.setAttribute('role', 'button');
+  });
+
+  // Add target blank to all external website linked on the website
+  // Get the current site's domain
+  const siteDomain = window.location.hostname;
+  const currentPage = window.location.href;
+
+  links.forEach((link) => {
+    const linkDomain = new URL(link.href).hostname;
+    if (linkDomain !== siteDomain && !link.href.startsWith('/') && !link.href.startsWith('#')) {
+      link.setAttribute('target', '_blank');
+    }
+  });
+
+  links.forEach((link) => {
+    if (link.href === currentPage) {
+      link.classList.add('current');
+    }
+  });
 }
 
 export async function loadConfiguration() {
@@ -355,7 +402,6 @@ export async function loadConfiguration() {
     window.siteConfig['$page:location$'] = winloc;
     window.siteConfig['$page:url$'] = href;
     window.siteConfig['$page:name$'] = pname;
-    // eslint-disable-next-line prefer-destructuring
     window.siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
     window.siteConfig['$page:wordcount$'] = wordCount;
     window.siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
@@ -381,7 +427,6 @@ export async function loadConfiguration() {
     const capitalizedMonth = firstLetter + restOfWord;
     window.siteConfig['$system:monthinfull$'] = capitalizedMonth;
     window.siteConfig['$system:monthinshort$'] = capitalizedMonth.slice(0, 3);
-    window.siteConfig['$meta:wantcontentops$'] = false;
 
     window.siteConfig['$system:dateinenglish$'] = `${capitalizedMonth} ${window.siteConfig['$system:day$']}, ${window.siteConfig['$system:year$']}`;
 
@@ -410,7 +455,6 @@ export async function loadConfiguration() {
       }
       if (key.startsWith('co-')) {
         co[key.replace('co-', 'co:').replaceAll(' ', '')] = value;
-        window.siteConfig['$meta:wantcontentops$'] = true;
       }
       if (key && value) {
         let prefix = '';
@@ -434,7 +478,7 @@ export async function loadConfiguration() {
     });
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log(`Configuration construction error: ${error.message}`);
+    console.error(`Configuration construction error: ${error.message}`);
     throw error;
   }
 
@@ -482,7 +526,7 @@ export async function loadConfiguration() {
     }
   }
   if (window.siteConfig['$meta:wantcontentops$'] === undefined) {
-    window.siteConfig['$meta:wantcontentops$'] = false;
+    window.siteConfig['$meta:wantcontentops$'] = true;
   }
   if (window.siteConfig['$meta:wantcontentops$'] === true) {
     const currentDate = new Date();
@@ -532,6 +576,7 @@ export async function initialize() {
   await loadConfiguration();
   initClientConfig();
   removeCommentBlocks();
+  cleanDom();
   if (window.metadataTracker) {
     await window.metadataTracker();
   }
