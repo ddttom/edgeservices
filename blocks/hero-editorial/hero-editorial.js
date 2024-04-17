@@ -15,4 +15,22 @@ export default async function decorate(block) {
   if (block) {
     console.log(block);
   }
+  const firstPicture = document.querySelector('.hero-editorial-container picture:first-of-type');
+  const secondPicture = document.querySelector('.hero-editorial-container picture:nth-of-type(2)');
+
+  if (firstPicture && secondPicture) {
+    // Select the second source element from the second picture element
+    const secondSource = secondPicture.querySelector('source:nth-of-type(2)');
+
+    if (secondSource) {
+      const newSource = secondSource.cloneNode(true);
+      const firstPictureSecondSource = firstPicture.querySelector('source:nth-of-type(2)');
+      if (firstPictureSecondSource) {
+        firstPicture.replaceChild(newSource, firstPictureSecondSource);
+      } else {
+        firstPicture.appendChild(newSource);
+      }
+      secondPicture.remove();
+    }
+  }
 }
