@@ -15,22 +15,28 @@ export default async function decorate(block) {
   if (block) {
     console.log(block);
   }
-  const firstPicture = document.querySelector('.hero-editorial-container picture:first-of-type');
-  const secondPicture = document.querySelector('.hero-editorial-container picture:nth-of-type(2)');
+  const firstPicture = document.querySelector('.hero-editorial > div:first-of-type picture');
+  const thirdDivPicture = document.querySelector('.hero-editorial > div:nth-of-type(3) picture');
 
-  if (firstPicture && secondPicture) {
-    // Select the second source element from the second picture element
-    const secondSource = secondPicture.querySelector('source:nth-of-type(2)');
+  if (firstPicture && thirdDivPicture) {
+  // Select the second source element from the picture element in the third div
+    const thirdDivSecondSource = thirdDivPicture.querySelector('source:nth-of-type(2)');
 
-    if (secondSource) {
-      const newSource = secondSource.cloneNode(true);
+    if (thirdDivSecondSource) {
+      const newSource = thirdDivSecondSource.cloneNode(true);
       const firstPictureSecondSource = firstPicture.querySelector('source:nth-of-type(2)');
+
       if (firstPictureSecondSource) {
         firstPicture.replaceChild(newSource, firstPictureSecondSource);
       } else {
         firstPicture.appendChild(newSource);
       }
-      secondPicture.remove();
+
+      thirdDivPicture.remove();
+    } else {
+      console.log('Second source element not found in the picture element of the third div.');
     }
+  } else {
+    console.log('First picture element or picture element in the third div not found.');
   }
 }
