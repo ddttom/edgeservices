@@ -5,14 +5,16 @@ let buildscript = '';
 
 function loadAnalyticsDebugPanel() {
   let content = '';
-  if (window.cmsplus.track.page || window.cmsplus.track.content) {
-    content = '<h3>Adobe Tracking Data</h3>';
-  }
-  if (window.cmsplus.track.page) {
-    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;
-  }
-  if (window.cmsplus.track.content) {
-    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.content, null, '\t')}</pre>`;
+  if (window.siteConfig['$system:hasTracking$'] === 'y') {
+    if (window.cmsplus.track.page || window.cmsplus.track.content) {
+      content = '<h3>Adobe Tracking Data</h3>';
+    }
+    if (window.cmsplus.track.page) {
+      content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;
+    }
+    if (window.cmsplus.track.content) {
+      content = `${content}<pre>${JSON.stringify(window.cmsplus.track.content, null, '\t')}</pre>`;
+    }
   }
   return content;
 }
@@ -34,7 +36,9 @@ export async function initialize() {
   await handleMetadataTracking();
 }
 export async function handleMetadataTracking() {
+  window.siteConfig['$system:hasTracking$'] = 'n';
   const tracking = window.siteConfig?.['$meta:tracking$'] ?? '';
+  window.siteConfig['$system:hasTracking$'] = 'y';
   if (tracking) {
     const trackerlist = tracking;
     const trackers = trackerlist.split(',');
