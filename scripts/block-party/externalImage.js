@@ -3,7 +3,7 @@
 // External image handling
 import {
   createOptimizedPicture as libCreateOptimizedPicture
-} from './aem.js';
+} from '../aem.js';
 
 /**
  * Gets the extension of a URL.
