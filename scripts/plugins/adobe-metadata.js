@@ -38,8 +38,8 @@ export async function initialize() {
 export async function handleMetadataTracking() {
   window.siteConfig['$system:hasTracking$'] = 'n';
   const tracking = window.siteConfig?.['$meta:tracking$'] ?? '';
-  window.siteConfig['$system:hasTracking$'] = 'y';
   if (tracking) {
+    window.siteConfig['$system:hasTracking$'] = 'y';
     const trackerlist = tracking;
     const trackers = trackerlist.split(',');
     window.cmsplus.track = {};
