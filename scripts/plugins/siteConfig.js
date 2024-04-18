@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* site configuration module */
+
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
 await import('./clientConfig.js');
@@ -371,6 +372,7 @@ export async function loadConfiguration() {
   if (['local', 'dev', 'prod', 'stage'].includes(locality)) {
     await readVariables(new URL(`/config/variables-${locality}.json`, window.location.origin));
   }
+  await readVariables(new URL(`/config/constant.json', window.location.origin));
   try {
     const now = new Date().toISOString();
     let href = '';
@@ -565,20 +567,24 @@ export async function loadConfiguration() {
 export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
 }
+function sanitize(url) {
+  url = url.trim();
+  if (!url.endsWith('/')) {
+    url = `${url}/`;
+  }
+}
 
 function makeLinksRelative() {
-  const domains = [
-    'https://main--edgeservices--ddttom.hlx.page/',
-    'https://main--edgeservices--ddttom.hlx.live/',
-    'https://comwrap.uk/'
-  ];
-
+  const domains = [];
+  domains.push(sanitize(window.location.origin));
+  const finalUrl = window.siteConfig['$system:url$'];
+  if (finalUrl) {
+    domains.push(sanitize(finalUrl));
+  }
   const links = document.getElementsByTagName('a');
-
   for (let i = 0; i < links.length; i += 1) {
     const link = links[i];
     const href = link.getAttribute('href');
-
     if (href) {
       for (let j = 0; j < domains.length; j += 1) {
         const domain = domains[j];
@@ -591,7 +597,6 @@ function makeLinksRelative() {
     }
   }
 }
-
 // `initialize` function to kick things off
 export async function initialize() {
   await loadConfiguration();
