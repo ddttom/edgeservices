@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 // This is the last chance, things in here are not allowed to change the display of the DOM.
 // Quick and dirty for Comwrap -- make configurable
 import { loadScript } from '../aem.js';
@@ -39,3 +38,4 @@ export default async function initialize() {
     console.log('failed to add cmsplus data to adobeDataLayer', e);
   }
 }
+initialize();

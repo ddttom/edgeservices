@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable comma-dangle */
-/* eslint-disable no-unused-vars */
 import {
   sampleRUM,
   buildBlock,
@@ -16,18 +13,11 @@ import {
   loadCSS
 } from './aem.js';
 
-import {
-  initialize as initSiteConfig
-} from './siteConfig.js';
-
-import {
-  initialize as initExternalImage
-} from './externalImage.js';
-
-initSiteConfig();
-initExternalImage();
+await import('./plugins/siteConfig.js');
+await import('./plugins/externalImage.js');
 
 const setDelayed = true; // do (true) or not do (false) final load.
+
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 /**
@@ -59,6 +49,7 @@ async function loadFonts() {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 function autolinkModals(element) {
   element.addEventListener('click', async(e) => {
     const origin = e.target.closest('a');

@@ -1,14 +1,16 @@
-/* eslint-disable import/extensions */
 /* eslint-disable no-console */
-/* eslint-disable comma-dangle */
-/* eslint-disable max-len */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable prefer-destructuring */
-import {
-  initialize as initClientConfig,
-} from './clientConfig.js';
+/* site configuration module */
+
+await import('./clientConfig.js');
+window.siteConfig = window.siteConfig || {};
+window.cmsplus = window.cmsplus || {};
+
+window.cmsplus.loadDelayed = function loadDelayed() {
+  window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
+};
 
 const errors = [];
+const consoleMessages = [];
 
 window.onerror = (message, source, lineno, colno, error) => {
   const errorDetails = {
@@ -23,8 +25,6 @@ window.onerror = (message, source, lineno, colno, error) => {
   // Return true to prevent the default error handling
   return true;
 };
-
-const consoleMessages = [];
 
 // Override console methods
 const originalConsoleLog = console.log;
@@ -45,11 +45,9 @@ console.error = (...args) => {
   consoleMessages.push({ level: 'error', message: args });
   originalConsoleError.apply(console, args);
 };
-window.siteConfig = {};
+
 export const dc = {};
 export const co = {};
-
-window.cmsplus = window.cmsplus || {};
 
 let jsonldString = '';
 let coString = '';
@@ -338,12 +336,7 @@ async function cleanDom() {
   });
 
   if (window.cmsplus.analyticsdelay > 0) {
-    let initializeme;
-    // eslint-disable-next-line import/extensions
-    const module = await import('./launch-dyn.js');
-    // eslint-disable-next-line prefer-const
-    initializeme = module.default;
-    initializeme();
+    await import('./launch-dyn.js');
   }
   // Add button="role" to every blink with button class
   const buttonRole = document.querySelectorAll('.button');
@@ -403,6 +396,7 @@ export async function loadConfiguration() {
     window.siteConfig['$page:location$'] = winloc;
     window.siteConfig['$page:url$'] = href;
     window.siteConfig['$page:name$'] = pname;
+    // eslint-disable-next-line prefer-destructuring
     window.siteConfig['$page:path$'] = (`${winloc}?`).split('?')[0];
     window.siteConfig['$page:wordcount$'] = wordCount;
     window.siteConfig['$page:linkcount$'] = document.querySelectorAll('a').length;
@@ -575,7 +569,6 @@ export function removeCommentBlocks() {
 // `initialize` function to kick things off
 export async function initialize() {
   await loadConfiguration();
-  initClientConfig();
   removeCommentBlocks();
   cleanDom();
   if (window.metadataTracker) {
@@ -624,3 +617,4 @@ export async function initialize() {
     });
   }
 }
+initialize();

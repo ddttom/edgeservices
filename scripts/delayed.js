@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { sampleRUM } from '../aem.js';
+import { sampleRUM } from './aem.js';
 // import { initialize as initLaunch } from './launch.js';
 
 // Core Web Vitals RUM collection
@@ -16,3 +16,6 @@ if (((window.cmsplus.bubble) || '').trim().length > 0) {
   // eslint-disable-next-line no-undef
   loadScript('https://chat.dante-ai.com/dante-embed.js');
 }
+function initialize() {
+}
+initialize();

@@ -1,6 +1,4 @@
-/* eslint-disable import/extensions */
-/* eslint-disable comma-dangle */
-// External image handling
+// External image handling, part of block-party; but modified by tom to be a plugin for Helix++
 import {
   createOptimizedPicture as libCreateOptimizedPicture
 } from '../aem.js';
@@ -166,3 +164,4 @@ export function initialize() {
   decorateExternalImages(document.querySelector('main'), '//External Image//');
   decorateExternalImages(document.querySelector('main'));
 }
+initialize();
