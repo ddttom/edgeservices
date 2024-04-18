@@ -55,11 +55,12 @@ let dcString = '';
 let environment = 'unknown'; // Start with the default
 
 // Use simple string checks for each environment
+environment = 'final';
 if (window.location.href.includes('.html')) {
   environment = 'final';
-} else if (window.location.href.includes('.page')) {
+} else if (window.location.href.includes('hlx.page')) {
   environment = 'preview';
-} else if (window.location.href.includes('.live')) {
+} else if (window.location.href.includes('hlx.live')) {
   environment = 'live';
 }
 let locality = 'unknown'; // Start with the default
