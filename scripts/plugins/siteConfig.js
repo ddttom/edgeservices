@@ -566,11 +566,38 @@ export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
 }
 
+function makeLinksRelative() {
+  const domains = [
+    'https://main--edgeservices--ddttom.hlx.page/',
+    'https://main--edgeservices--ddttom.hlx.live/',
+    'https://comwrap.uk/'
+  ];
+
+  const links = document.getElementsByTagName('a');
+
+  for (let i = 0; i < links.length; i += 1) {
+    const link = links[i];
+    const href = link.getAttribute('href');
+
+    if (href) {
+      for (let j = 0; j < domains.length; j += 1) {
+        const domain = domains[j];
+        if (href.startsWith(domain)) {
+          const relativePath = href.slice(domain.length);
+          link.setAttribute('href', relativePath);
+          break;
+        }
+      }
+    }
+  }
+}
+
 // `initialize` function to kick things off
 export async function initialize() {
   await loadConfiguration();
   removeCommentBlocks();
   cleanDom();
+  makeLinksRelative();
   if (window.metadataTracker) {
     await window.metadataTracker();
   }
@@ -617,4 +644,5 @@ export async function initialize() {
     });
   }
 }
+
 initialize();
