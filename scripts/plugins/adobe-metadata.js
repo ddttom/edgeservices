@@ -34,7 +34,7 @@ export async function initialize() {
   await handleMetadataTracking();
 }
 export async function handleMetadataTracking() {
-  const tracking = window.siteConfig['$meta:tracking$'] || '';
+  const tracking = window.siteConfig?.['$meta:tracking$'] ?? '';
   if (tracking) {
     const trackerlist = tracking;
     const trackers = trackerlist.split(',');
