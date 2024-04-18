@@ -372,7 +372,7 @@ export async function loadConfiguration() {
   if (['local', 'dev', 'prod', 'stage'].includes(locality)) {
     await readVariables(new URL(`/config/variables-${locality}.json`, window.location.origin));
   }
-  await readVariables(new URL(`/config/constant.json', window.location.origin));
+  await readVariables(new URL('/config/constant.json', window.location.origin));
   try {
     const now = new Date().toISOString();
     let href = '';

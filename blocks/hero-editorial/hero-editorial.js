@@ -1,10 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable comma-dangle */
-/* eslint-disable operator-linebreak */
-/* eslint-disable function-paren-newline */
-/* eslint-disable import/extensions */
-/* eslint-disable no-alert */
-
 export default async function decorate(block) {
 // Select the element by its class
   const element = document.querySelector('.hero-editorial-container');
@@ -13,6 +6,7 @@ export default async function decorate(block) {
     element.classList.add('hero');
   }
   if (block) {
+    // eslint-disable-next-line no-console
     console.log(block);
   }
   const firstPicture = document.querySelector('.hero-editorial > div:first-of-type picture');
@@ -33,10 +27,6 @@ export default async function decorate(block) {
       }
 
       secondPicture.remove();
-    } else {
-      console.log('Second source element not found in the second picture element.');
     }
-  } else {
-    console.log('First picture element or second picture element not found.');
   }
 }

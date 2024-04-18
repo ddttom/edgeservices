@@ -5,8 +5,8 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import {
   button, div, li, p, strong, ul,
-} from '../../scripts/dom-helpers.js';
-import ffetch from '../../scripts/ffetch.js';
+} from '../../scripts/block-party/dom-helpers.js';
+import ffetch from '../../scripts/block-party/ffetch.js';
 
 export default async function decorate(block) {
   // You can find ffetch and other cool stuff in the Franklin block party: https://www.hlx.live/developer/block-collection#block-party

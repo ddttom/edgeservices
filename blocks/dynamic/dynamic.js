@@ -7,8 +7,8 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import {
   a, div, li, p, strong, ul
-} from '../../scripts/dom-helpers.js';
-import ffetch from '../../scripts/ffetch.js';
+} from '../../scripts/block-party/dom-helpers.js';
+import ffetch from '../../scripts/block-party/ffetch.js';
 
 export default async function decorate(block) {
 // Select the element by its class
