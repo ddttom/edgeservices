@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* site configuration module */
-
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
 await import('./clientConfig.js');
