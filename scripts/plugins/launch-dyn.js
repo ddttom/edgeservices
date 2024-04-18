@@ -13,29 +13,30 @@ import { loadScript } from '../aem.js';
 
 export default async function initialize() {
   //  Comwrap Specific
+  if (window.siteConfig['$system:allowtracking$'] === 'y') {
+    const attrs = {
+      id: 'Cookiebot',
+      'data-cbid': '747c7864-bf4d-4b8f-9e92-69d5eb6be267',
+      'data-blockingmode': 'auto',
+    };
+    await loadScript('https://consent.cookiebot.com/uc.js', attrs);
+    await loadScript('https://assets.adobedtm.com/d4e187856f02/84a8f19b48f1/launch-9fc11833104d.min.js', {});
+    loadScript('https://try.abtasty.com/54d41c1c745275ad6d723c2122a0693d.js', {});
 
-  const attrs = {
-    id: 'Cookiebot',
-    'data-cbid': '747c7864-bf4d-4b8f-9e92-69d5eb6be267',
-    'data-blockingmode': 'auto',
-  };
-  await loadScript('https://consent.cookiebot.com/uc.js', attrs);
-  await loadScript('https://assets.adobedtm.com/d4e187856f02/84a8f19b48f1/launch-9fc11833104d.min.js', {});
-  loadScript('https://try.abtasty.com/54d41c1c745275ad6d723c2122a0693d.js', {});
-
-  window.adobeDataLayer = window.adobeDataLayer || [];
-  try {
-    if (window.cmsplus.track) {
-      if (window.cmsplus.track.page) {
-        window.adobeDataLayer.push(window.cmsplus.track.page);
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    try {
+      if (window.cmsplus.track) {
+        if (window.cmsplus.track.page) {
+          window.adobeDataLayer.push(window.cmsplus.track.page);
+        }
+        if (window.cmsplus.track.content) {
+          window.adobeDataLayer.push(window.cmsplus.track.content);
+        }
       }
-      if (window.cmsplus.track.content) {
-        window.adobeDataLayer.push(window.cmsplus.track.content);
-      }
-    }
-  } catch (e) {
+    } catch (e) {
     // eslint-disable-next-line no-console
-    console.log('failed to add cmsplus data to adobeDataLayer', e);
+      console.log('failed to add cmsplus data to adobeDataLayer', e);
+    }
   }
 }
 initialize();
