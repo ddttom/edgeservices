@@ -568,10 +568,11 @@ export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
 }
 function sanitize(url) {
-  url = url.trim();
-  if (!url.endsWith('/')) {
-    url = `${url}/`;
+  let ret = url.trim();
+  if (!ret.endsWith('/')) {
+    ret = `${ret}/`;
   }
+  return ret;
 }
 
 function makeLinksRelative() {
