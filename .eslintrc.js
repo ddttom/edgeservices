@@ -22,5 +22,9 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'comma-dangle': ['off'],
+    'space-before-function-paren': ['off'],
+    'no-param-reassign': ['off'],
+    'operator-linebreak': ['off'],
   },
 };
