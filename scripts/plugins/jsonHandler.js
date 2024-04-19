@@ -185,5 +185,4 @@ export function createJSON() {
       document.head.appendChild(script);
     }
   }
-  handleMetadataJsonLd();
 }

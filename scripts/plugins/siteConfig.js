@@ -11,7 +11,7 @@ import {
 import {
   constructGlobal
 } from './variables.js';
-import { createJSON } from './jsonHandler.js';
+import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
 
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
@@ -31,6 +31,7 @@ export async function initialize() {
   constructGlobal();
   createTitle();
   createJSON();
+  handleMetadataJsonLd();
   if (window.cmsplus.analyticsdelay > 0) {
     await import('./launch-dyn.js');
   }
