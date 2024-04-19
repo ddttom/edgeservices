@@ -30,7 +30,7 @@ window.cmsplus.loadDelayed = function loadDelayed() {
 export async function initialize() {
   await constructGlobal();
   await createTitle();
-  createJSON();
+  await createJSON();
   await handleMetadataJsonLd();
   if (window.cmsplus.analyticsdelay > 0) {
     await import('./launch-dyn.js');
