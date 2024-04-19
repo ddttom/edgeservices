@@ -107,5 +107,4 @@ window.cmsplus.track.page.previousPageName = pathname;
     window.cmsplus.callbackdebug = loadAnalyticsDebugPanel;
   }
 }
-window.cmsplus.callbackdebug = function none() {};
 initialize();

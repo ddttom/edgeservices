@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 /* site configuration module */
 
+import { createDebugPanel } from './debugPanel.js';
+
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
 await import('./clientConfig.js');
@@ -9,8 +11,8 @@ window.cmsplus.loadDelayed = function loadDelayed() {
   window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
 };
 
-const errors = [];
-const consoleMessages = [];
+window.cmsplus.errors = [];
+window.cmsplus.consoleMessages = [];
 
 window.onerror = (message, source, lineno, colno, error) => {
   const errorDetails = {
@@ -20,7 +22,7 @@ window.onerror = (message, source, lineno, colno, error) => {
     column: colno,
     error
   };
-  errors.push(errorDetails);
+  window.cmsplus.errors.push(errorDetails);
 
   // Return true to prevent the default error handling
   return true;
@@ -32,51 +34,45 @@ const originalConsoleWarn = console.warn;
 const originalConsoleError = console.error;
 
 console.log = (...args) => {
-  consoleMessages.push({ level: 'log', message: args });
+  window.cmsplus.consoleMessages.push({ level: 'log', message: args });
   originalConsoleLog.apply(console, args);
 };
 
 console.warn = (...args) => {
-  consoleMessages.push({ level: 'warn', message: args });
+  window.cmsplus.consoleMessages.push({ level: 'warn', message: args });
   originalConsoleWarn.apply(console, args);
 };
 
 console.error = (...args) => {
-  consoleMessages.push({ level: 'error', message: args });
+  window.cmsplus.consoleMessages.push({ level: 'error', message: args });
   originalConsoleError.apply(console, args);
 };
 
 export const dc = {};
 export const co = {};
 
-let jsonldString = '';
-let coString = '';
-let dcString = '';
 // Determine the environment based on the URL
-let environment = 'unknown'; // Start with the default
+window.cmsplus.environment = 'unknown'; // Start with the default
 
 // Use simple string checks for each environment
-environment = 'final';
+window.cmsplus.environment = 'final';
 if (window.location.href.includes('.html')) {
-  environment = 'final';
+  window.cmsplus.environment = 'final';
 } else if (window.location.href.includes('hlx.page')) {
-  environment = 'preview';
+  window.cmsplus.environment = 'preview';
 } else if (window.location.href.includes('hlx.live')) {
-  environment = 'live';
+  window.cmsplus.environment = 'live';
 }
-let locality = 'unknown'; // Start with the default
+window.cmsplus.locality = 'unknown'; // Start with the default
 if (window.location.href.includes('localhost')) {
-  locality = 'local';
+  window.cmsplus.locality = 'local';
 } else if (window.location.href.includes('stage')) {
-  locality = 'stage';
+  window.cmsplus.locality = 'stage';
 } else if (window.location.href.includes('prod')) {
-  locality = 'prod';
+  window.cmsplus.locality = 'prod';
 } else if (window.location.href.includes('dev')) {
-  locality = 'dev';
+  window.cmsplus.locality = 'dev';
 }
-
-window.cmsplus.environment = environment;
-window.cmsplus.locality = locality;
 function replaceTokens(data, text) {
   let ret = text;
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
@@ -220,91 +216,6 @@ function convertToISODate(input) {
   // Return original input if all parsing attempts fail
   return input;
 }
-function toggleDebugPanel() {
-  const debugPanel = document.getElementById('debug-panel');
-  debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
-}
-
-export function createDebugPanel() {
-  if (!window.location.search.includes('skipdebug')) {
-    if (environment === 'preview') {
-      const debugPanel = document.createElement('div');
-      debugPanel.id = 'debug-panel';
-
-      // Set initial styles for the debug panel
-      debugPanel.style.display = 'none';
-      debugPanel.style.position = 'fixed';
-      debugPanel.style.top = '0';
-      debugPanel.style.left = '0';
-      debugPanel.style.width = '50%';
-      debugPanel.style.height = '100vh';
-      debugPanel.style.overflowY = 'auto';
-      debugPanel.style.zIndex = '9998';
-      debugPanel.style.backgroundColor = 'white';
-      debugPanel.style.margin = '2em 10px';
-      debugPanel.style.border = '1px solid black';
-
-      // Build the content of the debug panel
-      let clientDebug = window.siteConfig['$system:projectname$'] ? window.siteConfig['$system:projectname$'] : 'No name given';
-
-      clientDebug = `${clientDebug}<br>${window.cmsplus.callbackdebug()}`;
-      let content = `${clientDebug}<br>`;
-      content = `${content}<h3>Variables</h3>`;
-
-      if (jsonldString.length > 2) {
-        content += `<p><strong>JSON-LD:</strong> <pre>${jsonldString}</pre></p>`;
-      }
-      if (dcString.length > 2) {
-        content += `<p><strong>Dublin Core:</strong> <pre>${dcString}</pre></p>`;
-      }
-      if (coString.length > 2) {
-        content += `<p><strong>Content Ops:</strong> <pre>${coString}</pre></p>`;
-      }
-      // Define the Regular Expression pattern to match $word:word$ patterns
-      const pattern = /\$[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\$/g;
-      const matches = content.match(pattern) || [];
-
-      if (matches.length > 0) {
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
-        for (const match of matches) {
-          const token = match.replace('$', '').replace(':', '');
-          content = `<strong>${token}:</strong> ${window.siteConfig[token]}<br>${content}`;
-          content = `<h3>Unmatched Replaceable Tokens</h3>${content}`;
-        }
-      }
-      content += '<h3>site configuration</h3>';
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const key in window.siteConfig) {
-        content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
-      }
-      content = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
-
-      let cmess = '';
-      if (consoleMessages.length > 0) {
-        cmess = 'Console Messages<br>';
-        consoleMessages.forEach((entry) => {
-          cmess = `${cmess} Level: ${entry.level} Message: ${entry.message}<br>`;
-        });
-      }
-      let errlist = '';
-      if (errors.length > 0) {
-        errlist = 'Errors encountered during processing<br>';
-        errors.forEach((error) => {
-          errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`;
-        });
-      }
-      content = `${content + errlist}<br>`;
-      debugPanel.innerHTML = content;
-      document.body.appendChild(debugPanel);
-      // Event listener for keyboard shortcut
-      document.addEventListener('keydown', (event) => {
-        if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
-          toggleDebugPanel();
-        }
-      });
-    }
-  }
-}
 export async function readVariables(configUrl) {
   try {
     const response = await fetch(configUrl);
@@ -366,11 +277,11 @@ async function cleanDom() {
 
 export async function loadConfiguration() {
   await readVariables(new URL('/config/variables.json', window.location.origin));
-  if (['final', 'preview', 'live'].includes(environment)) {
-    await readVariables(new URL(`/config/variables-${environment}.json`, window.location.origin));
+  if (['final', 'preview', 'live'].includes(window.cmsplus.environment)) {
+    await readVariables(new URL(`/config/variables-${window.cmsplus.environment}.json`, window.location.origin));
   }
-  if (['local', 'dev', 'prod', 'stage'].includes(locality)) {
-    await readVariables(new URL(`/config/variables-${locality}.json`, window.location.origin));
+  if (['local', 'dev', 'prod', 'stage'].includes(window.cmsplus.locality)) {
+    await readVariables(new URL(`/config/variables-${window.cmsplus.locality}.json`, window.location.origin));
   }
   await readVariables(new URL('/config/constants.json', window.location.origin));
   try {
@@ -512,7 +423,7 @@ export async function loadConfiguration() {
   if (window.siteConfig['$meta:wantdublincore$'] === undefined) {
     window.siteConfig['$meta:wantdublincore$'] = true;
   }
-  dcString = JSON.stringify(dc, null, '\t');
+  const dcString = JSON.stringify(dc, null, '\t');
   if (window.siteConfig['$meta:wantdublincore$'] === true) {
     if (dcString.length > 2) {
       script = document.createElement('script');
@@ -551,7 +462,7 @@ export async function loadConfiguration() {
     if (!co['co:tags']) {
       co['co:tags'] = window.siteConfig['$co:defaulttags'];
     }
-    coString = JSON.stringify(co, null, '\t');
+    let coString = JSON.stringify(co, null, '\t');
     coString = replaceTokens(window.siteConfig, coString);
     if (coString.length > 2) {
       script = document.createElement('script');
@@ -561,8 +472,8 @@ export async function loadConfiguration() {
       document.head.appendChild(script);
     }
   }
-  jsonldString = await handleMetadataJsonLd();
-  return window.siteConfig;
+  const json = await handleMetadataJsonLd();
+  return json;
 }
 export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
@@ -607,8 +518,10 @@ export async function initialize() {
   if (window.metadataTracker) {
     await window.metadataTracker();
   }
-  createDebugPanel();
   if (window.cmsplus.environment !== 'final') {
+    if (window.cmsplus.environment === 'preview') {
+      window.cmsplus?.callbackCreateDebug?.();
+    }
     if (window.siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
       if (window.siteConfig['$system:addbyline$'] === 'true') {
