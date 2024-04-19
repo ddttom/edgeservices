@@ -4,6 +4,6 @@
 import { initialize as initTracker } from './adobe-metadata.js';
 
 export async function initialize() {
-  window.metadataTracker = initTracker;
+  window.cmsplus.callbackMetadataTracker = initTracker;
 }
 initialize();
