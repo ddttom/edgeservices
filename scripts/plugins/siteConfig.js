@@ -28,23 +28,23 @@ window.cmsplus.loadDelayed = function loadDelayed() {
 };
 
 export async function initialize() {
-  constructGlobal();
-  createTitle();
+  await constructGlobal();
+  await createTitle();
   createJSON();
-  handleMetadataJsonLd();
+  await handleMetadataJsonLd();
   if (window.cmsplus.analyticsdelay > 0) {
     await import('./launch-dyn.js');
   }
-  removeCommentBlocks();
-  makeLinksRelative();
-  cleanDom();
+  await removeCommentBlocks();
+  await makeLinksRelative();
+  await cleanDom();
 
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
     window.cmsplus?.callbackCreateDebug?.();
   }
-  addByLine();
-  removeMeta();
+  await addByLine();
+  await removeMeta();
 }
 // Determine the environment and locality based on the URL
 const getEnvironment = () => {
