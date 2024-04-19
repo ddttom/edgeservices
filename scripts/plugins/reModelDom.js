@@ -12,6 +12,30 @@ function findTitleElement() {
   }
   return null; // No suitable title found
 }
+export default async function possibleMobileFix(container) {
+  // Select the element by its class
+
+  const firstPicture = document.querySelector(`.${container} > div:first-of-type picture`);
+  const secondPicture = document.querySelector(`.${container} > div:first-of-type > div:nth-of-type(2) picture`);
+
+  if (firstPicture && secondPicture) {
+    // Select the second source element from the second picture element
+    const secondSource = secondPicture.querySelector('source:nth-of-type(2)');
+
+    if (secondSource) {
+      const newSource = secondSource.cloneNode(true);
+      const firstPictureSecondSource = firstPicture.querySelector('source:nth-of-type(2)');
+
+      if (firstPictureSecondSource) {
+        firstPicture.replaceChild(newSource, firstPictureSecondSource);
+      } else {
+        firstPicture.appendChild(newSource);
+      }
+
+      secondPicture.remove();
+    }
+  }
+}
 
 export function createTitle() {
   const metaTitle = document.querySelector('meta[name="title"]');
@@ -64,6 +88,7 @@ export async function cleanDom() {
       link.classList.add('current');
     }
   });
+  possibleMobileFix('hero');
 }
 export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
