@@ -1,12 +1,9 @@
 /* eslint-disable no-console */
 /* site configuration module */
-
-import { createDebugPanel } from './debugPanel.js';
-
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
 await import('./clientConfig.js');
-
+await import('./debugPanel.js');
 window.cmsplus.loadDelayed = function loadDelayed() {
   window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
 };
