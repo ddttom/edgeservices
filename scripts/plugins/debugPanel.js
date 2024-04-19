@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 function toggleDebugPanel() {
   const debugPanel = document.getElementById('debug-panel');
   debugPanel.style.display = debugPanel.style.display === 'block' ? 'none' : 'block';
@@ -5,6 +6,9 @@ function toggleDebugPanel() {
 let jsonLdString;
 let dcString;
 let coString;
+
+window.cmsplus.errors = [];
+window.cmsplus.consoleMessages = [];
 
 export function createDebugPanel() {
   if (!window.location.search.includes('skipdebug')) {
@@ -90,4 +94,39 @@ export function initialize(jsonLdStringInit, dcStringInit, coStringInit) {
   coString = coStringInit;
 }
 window.cmsplus.callbackCreateDebug = createDebugPanel;
+
+window.onerror = (message, source, lineno, colno, error) => {
+  const errorDetails = {
+    message,
+    source,
+    line: lineno,
+    column: colno,
+    error
+  };
+  window.cmsplus.errors.push(errorDetails);
+
+  // Return true to prevent the default error handling
+  return true;
+};
+
+// Override console methods
+const originalConsoleLog = console.log;
+const originalConsoleWarn = console.warn;
+const originalConsoleError = console.error;
+
+console.log = (...args) => {
+  window.cmsplus.consoleMessages.push({ level: 'log', message: args });
+  originalConsoleLog.apply(console, args);
+};
+
+console.warn = (...args) => {
+  window.cmsplus.consoleMessages.push({ level: 'warn', message: args });
+  originalConsoleWarn.apply(console, args);
+};
+
+console.error = (...args) => {
+  window.cmsplus.consoleMessages.push({ level: 'error', message: args });
+  originalConsoleError.apply(console, args);
+};
+
 initialize('', '', '');

@@ -3,76 +3,18 @@
 
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
-await import('./clientConfig.js');
+
 if (window.cmsplus.environment === 'preview') {
   await import('./debugPanel.js');
 }
+await import('./clientConfig.js');
+
+// all configuration completed, make any further callbacks from here
+
 window.cmsplus.loadDelayed = function loadDelayed() {
   window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
 };
 
-window.cmsplus.errors = [];
-window.cmsplus.consoleMessages = [];
-
-window.onerror = (message, source, lineno, colno, error) => {
-  const errorDetails = {
-    message,
-    source,
-    line: lineno,
-    column: colno,
-    error
-  };
-  window.cmsplus.errors.push(errorDetails);
-
-  // Return true to prevent the default error handling
-  return true;
-};
-
-// Override console methods
-const originalConsoleLog = console.log;
-const originalConsoleWarn = console.warn;
-const originalConsoleError = console.error;
-
-console.log = (...args) => {
-  window.cmsplus.consoleMessages.push({ level: 'log', message: args });
-  originalConsoleLog.apply(console, args);
-};
-
-console.warn = (...args) => {
-  window.cmsplus.consoleMessages.push({ level: 'warn', message: args });
-  originalConsoleWarn.apply(console, args);
-};
-
-console.error = (...args) => {
-  window.cmsplus.consoleMessages.push({ level: 'error', message: args });
-  originalConsoleError.apply(console, args);
-};
-
-export const dc = {};
-export const co = {};
-
-// Determine the environment based on the URL
-window.cmsplus.environment = 'unknown'; // Start with the default
-
-// Use simple string checks for each environment
-window.cmsplus.environment = 'final';
-if (window.location.href.includes('.html')) {
-  window.cmsplus.environment = 'final';
-} else if (window.location.href.includes('hlx.page')) {
-  window.cmsplus.environment = 'preview';
-} else if (window.location.href.includes('hlx.live')) {
-  window.cmsplus.environment = 'live';
-}
-window.cmsplus.locality = 'unknown'; // Start with the default
-if (window.location.href.includes('localhost')) {
-  window.cmsplus.locality = 'local';
-} else if (window.location.href.includes('stage')) {
-  window.cmsplus.locality = 'stage';
-} else if (window.location.href.includes('prod')) {
-  window.cmsplus.locality = 'prod';
-} else if (window.location.href.includes('dev')) {
-  window.cmsplus.locality = 'dev';
-}
 function replaceTokens(data, text) {
   let ret = text;
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
@@ -276,6 +218,8 @@ async function cleanDom() {
 }
 
 export async function loadConfiguration() {
+  const dc = {};
+  const co = {};
   await readVariables(new URL('/config/variables.json', window.location.origin));
   if (['final', 'preview', 'live'].includes(window.cmsplus.environment)) {
     await readVariables(new URL(`/config/variables-${window.cmsplus.environment}.json`, window.location.origin));
@@ -562,5 +506,33 @@ export async function initialize() {
     });
   }
 }
+// Determine the environment and locality based on the URL
+const getEnvironment = () => {
+  if (window.location.href.includes('.html')) {
+    return 'final';
+  } if (window.location.href.includes('hlx.page')) {
+    return 'preview';
+  } if (window.location.href.includes('hlx.live')) {
+    return 'live';
+  }
+  return 'unknown';
+};
 
+const getLocality = () => {
+  if (window.location.href.includes('localhost')) {
+    return 'local';
+  } if (window.location.href.includes('stage')) {
+    return 'stage';
+  } if (window.location.href.includes('prod')) {
+    return 'prod';
+  } if (window.location.href.includes('dev')) {
+    return 'dev';
+  }
+  return 'unknown';
+};
+
+window.cmsplus = {
+  environment: getEnvironment(),
+  locality: getLocality(),
+};
 initialize();
