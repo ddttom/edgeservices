@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
 /* site configuration module */
+
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
 await import('./clientConfig.js');
-await import('./debugPanel.js');
+if (window.cmsplus.environment === 'preview') {
+  await import('./debugPanel.js');
+}
 window.cmsplus.loadDelayed = function loadDelayed() {
   window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
 };
@@ -516,9 +519,8 @@ export async function initialize() {
     await window.metadataTracker();
   }
   if (window.cmsplus.environment !== 'final') {
-    if (window.cmsplus.environment === 'preview') {
-      window.cmsplus?.callbackCreateDebug?.();
-    }
+    window.cmsplus?.callbackCreateDebug?.();
+
     if (window.siteConfig['$system:addbyline$'] === 'true') {
       const firstH1 = document.querySelector('h1');
       if (window.siteConfig['$system:addbyline$'] === 'true') {
