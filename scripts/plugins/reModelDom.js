@@ -257,7 +257,7 @@ export async function cleanDOM() {
     // Append the paragraph to the hero item
     heroItem.appendChild(currentTestDataPar);
   }
-  if (window.cmsplus.siteConfig['$system:lighthouseurl'] !== '') {
+  if ((window.cmsplus?.siteConfig?.['$system:lighthouseurl'] ?? '') !== '') {
     run();
   }
   // hide header and footer when coming soon class is present
