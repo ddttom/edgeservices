@@ -1,0 +1,176 @@
+body.modal-open {
+    overflow: hidden;
+  }
+  
+  .modal dialog {
+    --dialog-border-radius: 10px;
+  
+    padding: 0;
+    overscroll-behavior: none;
+    background-color: var(--color-nocturnal-blue);
+    background-image: url('');
+    border: 0;
+    border-radius: var(--dialog-border-radius);
+    width: 100vw;
+  }
+  
+  .modal dialog .modal-content {
+    overflow-y: auto;
+    overscroll-behavior: none;
+    max-height: calc(100dvh - 60px);
+  }
+  
+  @media (width >= 600px) {
+    .modal dialog {
+      width: 96vw;
+      margin-inline: auto;
+      max-width: 1200px;
+    }
+  
+    .modal dialog .modal-content {
+      max-height: calc(100vh - 200px);
+    }
+  }
+  
+  .modal dialog::backdrop {
+    background-color: rgb(0 0 0 / 50%);
+  }
+  
+  .modal .close-button {
+    position: absolute;
+    z-index: 1;
+    top: 0.5rem;
+    right: 0.2rem;
+    width: 40px;
+    height: 40px;
+    max-height: 54px;
+    border-radius: 50%;
+    background-color: unset;
+    text-overflow: clip;
+    margin: 0;
+    border: none;
+  }
+
+  .modal .close-button img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .modal .close-button img{
+    filter: brightness(0) saturate(100%) invert(99%) sepia(1%) saturate(3%) hue-rotate(343deg) brightness(70%) contrast(101%);
+  }
+
+  .modal dialog .section {
+    padding: 0;
+  }
+
+  .modal-content .modal-hero {
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 2rem;
+  }
+
+  @media (width >= 900px) {
+    .modal-content .modal-hero {
+     margin: auto 0 0;
+    }
+  }
+
+
+  .modal-content .hero-page {
+    height: auto;
+  }
+
+  @media (width >= 900px) {
+    .modal-content .hero-page {
+      height: 665px;
+      height: calc(100dvh - 500px);
+    }
+  }
+
+.modal-content .modal-hero::before {
+    position: relative;
+}
+
+.modal-content .modal-hero>div>div::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    bottom: 2rem;
+    left: 0;
+    height: 300px;
+    width: 100%;
+    background: 
+      linear-gradient(0deg, 
+      rgb(33 42 53 / 100%) 40%, 
+      rgb(33 42 53 / 80%) 60%,
+      rgb(33 42 53 / 40%) 80%, 
+      rgb(33 42 53 / 0%) 100%);
+}
+
+.modal-content .modal-hero div {   
+    text-align: center;
+}
+
+.modal-content .modal-hero div > * {
+    color: var(--color-white);
+    margin-bottom: 0;
+}
+
+.modal-content .modal-hero div > h2,
+.modal-content .modal-hero div > p:last-child,
+.modal-content .modal-hero div > h3 {
+  position: relative;
+  z-index: 4;
+}
+
+
+.modal-content .modal-hero div > h2 {
+    margin-bottom: var(--spacing-xxxxs);
+    font-size: var(--heading-font-size-m);
+}
+
+.modal-content .modal-hero div > h3 {
+    margin-bottom: var(--spacing-xxxxs);
+    font-size: var(--heading-font-size-s);
+}
+
+.modal-content .modal-hero div > p {
+  margin-bottom: var(--spacing-xxxxs);
+  font-size: var(--heading-font-size-s);
+}
+
+.modal-content .hero-image::before {
+    display: none;
+}
+
+.modal-content .current-date {
+    min-height: 30px
+}
+
+.modal-content .section {
+    background: transparent;
+}
+
+@media (width >= 900px) {
+  .modal-content .modal-hero>div>div::before {
+    height: 500px;
+  }
+
+  .modal-content .modal-hero div > h2,
+  .modal-content .modal-hero div > h3 {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .modal-content .modal-hero div > h2 {
+    font-size: var(--heading-font-size-xl);
+  }
+  .modal-content .modal-hero div > h3 {
+    font-size: var(--heading-font-size-l);
+  }
+
+  .modal-content .modal-hero div > p {
+    font-size: var(--heading-font-size-s);
+  }
+}
+

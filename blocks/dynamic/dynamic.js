@@ -1,14 +1,12 @@
-/* eslint-disable comma-dangle */
-/* eslint-disable operator-linebreak */
 /* eslint-disable function-paren-newline */
 /* eslint-disable import/extensions */
 /* eslint-disable no-alert */
 
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import {
-  a, div, li, p, strong, ul
-} from '../../scripts/block-party/dom-helpers.js';
-import ffetch from '../../scripts/block-party/ffetch.js';
+  a, div, li, p, h3, span, ul
+} from '../../scripts/dom-helpers.js';
+import ffetch from '../../scripts/ffetch.js';
 
 export default async function decorate(block) {
 // Select the element by its class
@@ -47,15 +45,15 @@ export default async function decorate(block) {
     targetNames = bnames.split(' ');
   }
   // Filter content to exclude paths containing '/template' and the current page path
-  const filteredContent = content.filter((card) => !card.path.includes('/template') &&
+  const filteredContent = content.filter((card) => !card.path.includes('/template') && !card.path.includes('/test') &&
   card.path !== window.location.pathname && // Dynamically exclude the current page path
   targetNames.some((target) => card.path.includes(`/${target}/`)),
   );
 
   // Sort the filtered content by 'lastModified' in descending order
-  const sortedContent = filteredContent.sort((adate, bdate) => {
+  const sortedContent = filteredContent.sort((adate, b) => {
     const dateA = new Date(adate.lastModified);
-    const dateB = new Date(bdate.lastModified);
+    const dateB = new Date(b.lastModified);
     return dateB - dateA;
   });
 
@@ -65,15 +63,16 @@ export default async function decorate(block) {
   block.append(
     ul(
       ...sortedContent.slice(0, maxReturnNumber).map((card) => li(
-        div({ class: 'cards-card-image' },
-          createOptimizedPicture(card.image, card.title, false, [{ width: '750' }]),
+        div({ class: 'card-image' },
+          a({ href: card.path }, // Link wrapping the image
+            createOptimizedPicture(card.image, card.headline, false, [{ width: '750' }]),
+          ),
         ),
         div({ class: 'cards-card-body' },
-          p(strong(card.title)),
+          span({ class: 'card-tag' }, card.service),
+          span({ class: 'card-tag alt' }, card.resource),
+          h3((card.headline)),
           p(card.description),
-          a({
-            class: 'primary', href: card.path, role: 'button', tabindex: '0',
-          }, 'Read More'),
         ),
       )),
     ),

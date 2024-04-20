@@ -1,8 +1,3 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-inner-declarations */
-/* eslint-disable no-shadow */
-/* eslint-disable max-len */
-/* eslint-disable no-console */
 /* Carousel core block */
 import { fetchPlaceholders } from '../../scripts/aem.js';
 

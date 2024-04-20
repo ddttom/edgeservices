@@ -207,7 +207,8 @@ header .nav-sections {
 
 header nav[aria-expanded='true'] .nav-sections {
   box-shadow: 0 0 0 100vmax var(--color-nocturnal-blue);
-  clip-path: inset(0 -100vmax);
+  -webkit-clip-path: inset(0 -100vmax);
+          clip-path: inset(0 -100vmax);
   transform: translateY(0);
   background-color: var(--color-nocturnal-blue);
   z-index: 0;
@@ -303,6 +304,16 @@ header nav .nav-sections .default-content-wrapper > ul > li > ul > li:first-chil
     display: none;
 }
 
+header nav .nav-sections ul > li > ul > li a:any-link:hover, header nav .nav-sections ul > li > ul > li a:any-link:focus {
+  color: var(--color-heart-red);
+  text-decoration: none;
+}
+
+header nav .nav-sections ul > li > ul > li a:any-link:hover, header nav .nav-sections ul > li > ul > li a:any-link:focus {
+  color: var(--color-heart-red);
+  text-decoration: none;
+}
+
 header nav .nav-sections ul > li > ul > li a:any-link:hover,
 header nav .nav-sections ul > li > ul > li a:any-link:focus {
   color: var(--color-heart-red);
@@ -328,7 +339,6 @@ header nav .nav-tools div {
   font-size: 0;
   display: flex;
   align-items: center;
-  width: 40px;
   height: 30px;
 }
 
@@ -340,19 +350,21 @@ header nav .nav-tools div {
   width: 35px;
   height: 40px;
   background-color: white;
-  mask-image: url("/icons/speedtest.svg");
-  mask-repeat: no-repeat;
-  mask-position: center center;
+  -webkit-mask-image: url("/icons/speedtest.svg");
+          mask-image: url("/icons/speedtest.svg");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center center;
+          mask-position: center center;
 }
 
 .nav-tools .button-container:last-child .button:focus-visible::before,
 .nav-tools .button-container:last-child .button:focus::before,
 .nav-tools .button-container:last-child .button:hover::before {
-  background-color: var(--color-heart-red)
+  background-color: var(--color-heart-red-dark)
 }
 
 .nav-tools .button-container:first-child .button {
-  width: 35px;
   background-color: transparent;
   height: 30px;
   display: flex;
@@ -367,18 +379,21 @@ header nav .nav-tools div {
   display: block;
   width: 35px;
   height: 40px;
-  background-color: transparent;
-  background-image: url('/icons/cw-chat-wht.svg');
-  background-size: 30px;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background-color: var(--color-white);
+  -webkit-mask-image: url('/icons/cw-chat-wht.svg');
+          mask-image: url('/icons/cw-chat-wht.svg');
+  -webkit-mask-size: 30px;
+          mask-size: 30px;
+  -webkit-mask-position: center center;
+          mask-position: center center;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
 }
 
 .nav-tools .button-container:first-child .button:focus-visible::before,
 .nav-tools .button-container:first-child .button:hover::before,
 .nav-tools .button-container:first-child .button:focus::before {
-  background-image: url('/icons/cw-chat-red.svg');
-  background-color: transparent;
+  background-color: var(--color-heart-red-dark);
 }
 
 /* Header Desktop styles */
@@ -550,12 +565,10 @@ header nav .nav-tools div {
     justify-content: right;
     align-items: center;
     font-size: var(--body-font-size-s);
-    font-family: var(--font-family-heading);
-    background-color: var(--color-heart-red);
+    font-family: var(--font-family-semibold);
+    background-color: var(--color-heart-red-dark);
     background-position: 10px center;
     background-size: 25px;
-    width: 115px;
-    min-width: auto;
     padding: var(--spacing-xs) var(--spacing-xxs);
     text-indent: 0;
   }
@@ -575,19 +588,18 @@ header nav .nav-tools div {
 
   .nav-tools .button-container:first-child .button::before {
     height: 35px;
-    background-size: 25px;
-    background-color: transparent;
-  }
-
-  .nav-tools .button-container:last-child .button {
-    width: 130px;
+    -webkit-mask-size: 25px;
+            mask-size: 25px;
+    background-color: var(--color-white);
   }
 
   .nav-tools .button-container:last-child .button::before {
     font-size: var(--body-font-size-s);
-    mask-size: 30px 30px;
+    -webkit-mask-size: 30px 30px;
+            mask-size: 30px 30px;
     height: 25px;
-    mask-position: center left;
+    -webkit-mask-position: center left;
+            mask-position: center left;
   }
 
   .nav-tools .button-container:last-child .button:hover::before,
@@ -598,13 +610,10 @@ header nav .nav-tools div {
 
   .nav-tools .button-container:first-child .button:hover::before,
   .nav-tools .button-container:first-child .button:focus::before {
-    background-image: url('/icons/cw-chat-blk.svg');
-    background-repeat: no-repeat;
-    background-color: transparent;
-    color: var(--color-nocturnal-blue);
+    background-color: var(--color-black);
   }
 
   .nav-tools .button-container .button {
-    background-color: var(--color-heart-red);
+    background-color: var(--color-heart-red-dark);
   }
 }

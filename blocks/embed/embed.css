@@ -8,6 +8,8 @@ main .embed {
 main .embed > div {
   display: flex;
   justify-content: center;
+  min-height: 900px;
+  height: 100%;
 }
 
 main .embed.embed-twitter .twitter-tweet-rendered {
@@ -62,4 +64,10 @@ main .embed .embed-placeholder-play button::before {
   border-left: 6px solid;
   top: 4px;
   left: 7px;
+}
+
+@media (width >= 900px) {
+  main .embed > div {
+    min-height: 800px;
+  }
 }

@@ -52,6 +52,7 @@ function toggleAllNavSections(sections, expanded = false) {
  * @param {Element} navSections The nav sections within the container element
  * @param {*} forceExpanded Optional param to force nav expand behavior when not null
  */
+
 function toggleMenu(nav, navSections, forceExpanded = null) {
   const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
   const button = nav.querySelector('.nav-hamburger button');
@@ -71,6 +72,9 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
         drop.setAttribute('role', 'button');
         drop.setAttribute('tabindex', 0);
         drop.addEventListener('focus', focusNavSection);
+        if (drop.tagName === 'LI') {
+          drop.removeAttribute('role');
+        }
       }
     });
   } else {
@@ -119,6 +123,14 @@ export default async function decorate(block) {
 
   // Activate aria-expanded false true on click
   const navSections = nav.querySelector('.nav-sections');
+  const isDesktop = window.matchMedia('(min-width: 900px)');
+
+  function closeNavOnClick(event) {
+    if (!nav.contains(event.target)) {
+      toggleAllNavSections(navSections);
+    }
+  }
+
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
       if (navSection.querySelector('ul')) {
@@ -139,6 +151,8 @@ export default async function decorate(block) {
       }
     });
   }
+
+  document.body.addEventListener('click', closeNavOnClick);
 
   // hamburger for mobile
   const hamburger = document.createElement('div');
@@ -166,15 +180,4 @@ export default async function decorate(block) {
   const headerWrapper = document.querySelector('.header'); // Header bg
   const headerBg = headerWrapper.firstElementChild;
   headerBg.classList.add('header-bg');
-
-  // Add target blank to all external website linked on the website
-  // Get the current site's domain
-  const siteDomain = window.location.hostname;
-  const links = document.querySelectorAll('a[href]');
-  links.forEach(link => {
-    const linkDomain = new URL(link.href).hostname;
-    if (linkDomain !== siteDomain && !link.href.startsWith('/') && !link.href.startsWith('#')) {
-      link.setAttribute('target', '_blank');
-    }
-  });
 }

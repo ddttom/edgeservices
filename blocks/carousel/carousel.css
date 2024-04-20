@@ -114,17 +114,17 @@
   height: 50px;
   background: transparent;
   cursor: pointer;
-  border: 1px solid var(--color-nocturnal-blue);
+  border: none;
 }
 
 .carousel .carousel-navigation-buttons button:is(:hover, :focus, :focus-visible) {
-  background: var(--color-cloudy-sky);
+  background: none;
 }
 
 .carousel .carousel-navigation-buttons button::after {
   display: block;
   content: '';
-  border: 3px white solid;
+  border: 1px white solid;
   border-bottom: 0;
   border-left: 0;
   position: absolute;
@@ -132,9 +132,13 @@
   left: calc(50% + 3px);
   transform: translate(-50%, -50%) rotate(-135deg);
   border-color: var(--color-nocturnal-blue);
-  width: 12px;
-  height: 12px;
-  border-width: 2px;
+  width: 25px;
+  height: 25px;
+  border-width: 1px;
+}
+
+.carousel .carousel-navigation-buttons button:hover::after {
+  border-color: var(--color-black);
 }
 
 .carousel .carousel-navigation-buttons button.slide-next::after {
@@ -179,11 +183,13 @@ main .testimonial-section {
   min-height: auto;
 }
 
-.testimonial-carousel  .carousel-slide h4{
+.testimonial-carousel  .carousel-slide h3 {
   margin-bottom: var(--spacing-xxs);
+  font-family: var(--font-family-regular);
 }
 
-.testimonial-carousel  .carousel-slide h5 {
+.testimonial-carousel  .carousel-slide h4 {
+  font-size: var(--heading-font-size-s);
   font-family: var(--font-family-extralight);
   margin-bottom: 0;
 }

@@ -3,6 +3,7 @@
 
 This JavaScript code is part Tom Cranstoun derived variations of Helix CMS, with diagrams here <https://main--allaboutv2--ddttom.hlx.live/extra/dynamic>
 
+
 It defines an asynchronous function named `decorate` that dynamically manipulates web content based on certain conditions. The function is designed to work within a specific block of a webpage, enhancing it with dynamic content fetched from a JSON file.
 
 The file is /query-index.json which is auto-populated by Helix whenever pages are published or deleted
@@ -17,6 +18,8 @@ one can use section metadata attribute "maxReturn" to set the maximum number of 
 if no section metadata the code looks for page metadata maxReturn
 if not found it then looks for "$system:maxreturn$"
 and finally it uses 8 if they do not exist.  
+
+You can pull in the headline, description, 'service' tag, 'resource' tag and url path from the query-index to the card. This will display relevant information about the article and allow a link to the page from the card.
 
 Here's a detailed breakdown:
 

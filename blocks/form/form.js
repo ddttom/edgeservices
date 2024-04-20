@@ -1,3 +1,4 @@
+/* Form core block */
 function createSelect(fd) {
   const select = document.createElement('select');
   select.id = fd.Field;
@@ -52,7 +53,7 @@ function createButton(fd) {
   button.textContent = fd.Label;
   button.classList.add('button');
   if (fd.Type === 'submit') {
-    button.addEventListener('click', async (event) => {
+    button.addEventListener('click', async(event) => {
       const form = button.closest('form');
       if (fd.Placeholder) form.dataset.action = fd.Placeholder;
       if (form.checkValidity()) {
@@ -107,7 +108,10 @@ function createLabel(fd) {
 function applyRules(form, rules) {
   const payload = constructPayload(form);
   rules.forEach((field) => {
-    const { type, condition: { key, operator, value } } = field.rule;
+    const {
+      type,
+      condition: { key, operator, value },
+    } = field.rule;
     if (type === 'visible') {
       if (operator === 'eq') {
         if (payload[key] === value) {
@@ -145,30 +149,30 @@ export async function createForm(formURL) {
     fieldWrapper.className = fieldId;
     fieldWrapper.classList.add('field-wrapper');
     switch (fd.Type) {
-      case 'select':
-        fieldWrapper.append(createLabel(fd));
-        fieldWrapper.append(createSelect(fd));
-        break;
-      case 'heading':
-        fieldWrapper.append(createHeading(fd, 'h3'));
-        break;
-      case 'legal':
-        fieldWrapper.append(createHeading(fd, 'p'));
-        break;
-      case 'checkbox':
-        fieldWrapper.append(createInput(fd));
-        fieldWrapper.append(createLabel(fd));
-        break;
-      case 'text-area':
-        fieldWrapper.append(createLabel(fd));
-        fieldWrapper.append(createTextArea(fd));
-        break;
-      case 'submit':
-        fieldWrapper.append(createButton(fd));
-        break;
-      default:
-        fieldWrapper.append(createLabel(fd));
-        fieldWrapper.append(createInput(fd));
+    case 'select':
+      fieldWrapper.append(createLabel(fd));
+      fieldWrapper.append(createSelect(fd));
+      break;
+    case 'heading':
+      fieldWrapper.append(createHeading(fd, 'h3'));
+      break;
+    case 'legal':
+      fieldWrapper.append(createHeading(fd, 'p'));
+      break;
+    case 'checkbox':
+      fieldWrapper.append(createInput(fd));
+      fieldWrapper.append(createLabel(fd));
+      break;
+    case 'text-area':
+      fieldWrapper.append(createLabel(fd));
+      fieldWrapper.append(createTextArea(fd));
+      break;
+    case 'submit':
+      fieldWrapper.append(createButton(fd));
+      break;
+    default:
+      fieldWrapper.append(createLabel(fd));
+      fieldWrapper.append(createInput(fd));
     }
 
     if (fd.Rules) {
@@ -185,7 +189,7 @@ export async function createForm(formURL) {
   form.addEventListener('change', () => applyRules(form, rules));
   applyRules(form, rules);
   fill(form);
-  return (form);
+  return form;
 }
 
 export default async function decorate(block) {

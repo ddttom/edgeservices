@@ -1,3 +1,4 @@
+/* Form core block */
 main .form {
   background-color: var(--color-white);
   padding: var(--spacing-s);
@@ -48,7 +49,7 @@ main .form label {
 }
 
 main .form label.required::after {
-  content: "*";
+  content: '*';
   color: var(--color-black);
   padding-left: var(--spacing-xxxs);
 }
@@ -115,11 +116,11 @@ main .form button {
   font-family: var(--body-font-family);
 }
 
-@media screen and (min-width: 900px) {
+@media (width >= 900px) {
   main .form {
     padding: var(--spacing-ml);
   }
-  
+
   main .form .field-wrapper {
     display: flex;
   }

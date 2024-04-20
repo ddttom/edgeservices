@@ -1,31 +1,58 @@
-.section .list-wrapper {
-    padding: 0 1rem;
-    max-width: 77pc;
-    margin-inline: auto;
+/* Page navigation list links by Szymon */
+main .list-container {
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
-.list-wrapper h2 {
-    text-align: center;
+.list-container.section {
+    padding-top: 0;
 }
 
-.list-wrapper ul {
-    list-style: none;
-    padding: 0;
+.list-container ul {
+    padding: var(--spacing-l) 0;
     margin: 0;
-}
-.list-wrapper ul li {
-    position: relative;
-    padding-left: 2.25rem;
-    margin-bottom: 1.5rem;
+    list-style: none;
+    gap: var(--spacing-s);
+    display: flex;
+    flex-direction: column;
 }
 
-.list-wrapper ul li:after {
-    content: "";
-    width: 0.62rem;
-    height: 0.62rem;
-    border-radius: 50%;
-    background-color: #e20613;
-    position: absolute;
-    left: 0;
-    top: 0.5rem;
+.list-container li {
+    margin-bottom: 0;
+}
+
+.list-container a {
+    text-transform: uppercase;
+    color: var(--color-black);
+}
+
+.list-container a.current,
+.list-container a:hover,
+.list-container a:focus,
+.list-container a:focus-visible {
+    text-decoration: none;
+    color: var(--color-black);
+    border-bottom: 2px solid var(--color-black);
+    text-shadow: 0 0 1px var(--color-black);
+}
+
+.list-container.bg-dark a {
+    color: var(--color-white);
+}
+
+.list-container.bg-dark a.current,
+.list-container.bg-dark a:hover,
+.list-container.bg-dark a:focus,
+.list-container.bg-dark a:focus-visible {
+    text-decoration: none;
+    color: var(--color-white);
+    border-bottom: 2px solid var(--color-white);
+    text-shadow: 0 0 1px var(--color-white);
+}
+
+@media (width >= 900px) {
+    .list-container ul {
+        gap: var(--spacing-m);
+        flex-direction: row;
+    }
 }
