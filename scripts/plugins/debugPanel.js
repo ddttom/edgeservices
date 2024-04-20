@@ -59,8 +59,7 @@ export function createDebugPanel() {
     content += '<h3>site configuration</h3>';
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const key in window.siteConfig) {
-      // show nom hidden
-      if (!key.indexOf(':.')) {
+      if (key.indexOf(':.')!== 0) {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
     }

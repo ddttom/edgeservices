@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
   if (h1) return h1;
@@ -53,7 +51,10 @@ export function createTitle() {
   }
 }
 
-export async function cleanDOM() {
+export async function tidyDOM() {
+if (document.querySelector('coming-soon')) { 
+  DocumentFragment.body.classList.add('hide');
+}
   // ---- Remove title from link with images ----- //
   // Find all <a> tags in the document
   const links = document.querySelectorAll('a');
@@ -116,9 +117,9 @@ export async function cleanDOM() {
   // Script fetching Lighthouse result via API
   function setUpQuery(category) {
     const api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-    const apiKey = `${window.siteConfig['$system:.lighthouseapikey']}`;
+    const apiKey = `${window.siteConfig['$system:.lighthousekey$']}`;
     const parameters = {
-      url: encodeURIComponent(`${window.siteConfig['$system:lighthouseurl']}`),
+      url: encodeURIComponent(`${window.cmsplus.siteConfig['$system:lighthouseurl']}`),
       key: apiKey, // Include the API key in the parameters.
       category,
       strategy: 'DESKTOP'
@@ -133,13 +134,12 @@ export async function cleanDOM() {
   function wrapper(category, results) {
     const url = setUpQuery(category);
     return fetch(url)
-      .then((response) => response.json())
-      .then((json) => {
+      .then(response => response.json())
+      .then(json => {
         // Push the category and analysisUTCTimestamp to results array
         results.push({ category, data: json.lighthouseResult.categories });
       })
-    // eslint-disable-next-line no-console
-      .catch((error) => console.error('Error fetching PageSpeed Insights:', error));
+      .catch(error => console.error('Error fetching PageSpeed Insights:', error));
   }
 
   async function run() {
@@ -151,12 +151,12 @@ export async function cleanDOM() {
     ];
     const promises = [];
     const results = [];
-    categories.forEach((category) => {
+    categories.forEach(category => {
       promises.push(wrapper(category, results)); // Pass current timestamp
     });
     await Promise.all(promises);
 
-    results.forEach((item) => {
+    results.forEach(item => {
       const categoryObject = item.data;
       for (const category in categoryObject) {
         const details = categoryObject[category];
@@ -202,8 +202,8 @@ export async function cleanDOM() {
 
     function initializeObserver() {
       const body = document.querySelector('body');
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
+      const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
           if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
             const modalOpen = body.classList.contains('modal-open');
             if (modalOpen) {
@@ -257,24 +257,19 @@ export async function cleanDOM() {
     // Append the paragraph to the hero item
     heroItem.appendChild(currentTestDataPar);
   }
+  possibleMobileFix('hero');
   if ((window.cmsplus?.siteConfig?.['$system:lighthouseurl'] ?? '') !== '') {
     run();
   }
-  // hide header and footer when coming soon class is present
-  if (document.querySelector('.coming-soon')) {
-    document.body.classList.add('hide');
-  }
-  possibleMobileFix('hero');
+
 }
-/*
-export async function cleanDom() {
+/* 
+export async function cleanDOM() {
+
   // ---- Remove title from link with images ----- //
   // Find all <a> tags in the document
   const links = document.querySelectorAll('a');
-  const containsVisualElements =
-  (link) => link.querySelectorAll('img') ||
-  link.querySelector('picture') ||
-  link.querySelector('i[class^="icon"], i[class*=" icon"], i[class^="fa"], i[class*=" fa"]');
+  const containsVisualElements = (link) => link.querySelectorAll('img') || link.querySelector('picture') || link.querySelector('i[class^="icon"], i[class*=" icon"], i[class^="fa"], i[class*=" fa"]');
 
   links.forEach((link) => {
     if (containsVisualElements(link)) {

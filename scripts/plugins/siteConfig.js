@@ -2,7 +2,7 @@
 /* site configuration module */
 import {
   createTitle,
-  cleanDOM,
+  cleanDom,
   makeLinksRelative,
   removeCommentBlocks,
   addByLine,
@@ -37,7 +37,7 @@ export async function initialize() {
   }
   await removeCommentBlocks();
   await makeLinksRelative();
-  await cleanDOM();
+  await cleanDom();
 
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
