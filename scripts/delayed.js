@@ -6,7 +6,7 @@ sampleRUM('cwv');
 
 // add more delayed functionality here
 // any client with dante ai chatbot will need to enable this, in clientConfig
-window.cmsplus.callbackDanteChat();
+await window.cmsplus.callbackDanteChat();
 function initialize() {
 }
 initialize();
