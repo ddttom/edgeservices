@@ -123,7 +123,7 @@ export function createJSON() {
   co['co:author'] = window.siteConfig['$meta:author$'];
 
   // make the required globals
-  let buildscript = '\nwindow.cmsplus = window.cmsplus || {};\n';
+  let buildscript = '';
   const delay = window.siteConfig['$meta:analyticsdelay$'] === undefined ? 3000 : window.siteConfig['$meta:analyticsdelay$'];
   const helpapikey = window.siteConfig['$system:.helpapikey$'] === undefined ? '' : window.siteConfig['$system:.helpapikey$'];
   buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.helpapi = "${helpapikey}";\n`;

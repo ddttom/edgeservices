@@ -17,9 +17,37 @@ import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
 function noAction() {
 }
 
-window.siteConfig = window.siteConfig || {};
-window.cmsplus = window.cmsplus || {};
+// Determine the environment and locality based on the URL
+const getEnvironment = () => {
+  if (window.location.href.includes('.html')) {
+    return 'final';
+  } if (window.location.href.includes('hlx.page')) {
+    return 'preview';
+  } if (window.location.href.includes('hlx.live')) {
+    return 'live';
+  }
+  return 'unknown';
+};
 
+const getLocality = () => {
+  if (window.location.href.includes('localhost')) {
+    return 'local';
+  } if (window.location.href.includes('stage')) {
+    return 'stage';
+  } if (window.location.href.includes('prod')) {
+    return 'prod';
+  } if (window.location.href.includes('dev')) {
+    return 'dev';
+  }
+  return 'unknown';
+};
+
+window.siteConfig = {};
+
+window.cmsplus = {
+  environment: getEnvironment(),
+  locality: getLocality(),
+};
 window.cmsplus.callbackPreDelayedChain = [];
 window.cmsplus.callbackDelayedChain = [];
 
@@ -56,33 +84,4 @@ export async function initialize() {
   await addByLine();
   await removeMeta();
 }
-// Determine the environment and locality based on the URL
-const getEnvironment = () => {
-  if (window.location.href.includes('.html')) {
-    return 'final';
-  } if (window.location.href.includes('hlx.page')) {
-    return 'preview';
-  } if (window.location.href.includes('hlx.live')) {
-    return 'live';
-  }
-  return 'unknown';
-};
-
-const getLocality = () => {
-  if (window.location.href.includes('localhost')) {
-    return 'local';
-  } if (window.location.href.includes('stage')) {
-    return 'stage';
-  } if (window.location.href.includes('prod')) {
-    return 'prod';
-  } if (window.location.href.includes('dev')) {
-    return 'dev';
-  }
-  return 'unknown';
-};
-
-window.cmsplus = {
-  environment: getEnvironment(),
-  locality: getLocality(),
-};
 initialize();
