@@ -30,6 +30,7 @@ module.exports = {
     'import/extensions': 'off',
     'no-console': 'off',
     'no-param-reassign': 'off',
-    'operator-linebreak': 'off'
+    'operator-linebreak': 'off',
+    'space-before-function-paren': 'off'
   },
 };

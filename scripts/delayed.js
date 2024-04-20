@@ -7,8 +7,8 @@ import { sampleRUM } from './aem.js';
 sampleRUM('cwv');
 
 // add more delayed functionality here
-// If you need any delayed stuff client-side add it to the callbackChain - see clientConfig.js
-for (const callback of window.cmsplus.callbackChain) {
+// If you need any delayed stuff client-side add it to the callbackDelayedChain- see clientConfig.js
+for (const callback of window.cmsplus.callbackDelayedChain) {
   await callback();
 }
 function initialize() {
