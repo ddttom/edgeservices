@@ -125,7 +125,7 @@ export function createJSON() {
   // make the required globals
   let buildscript = '\nwindow.cmsplus = window.cmsplus || {};\n';
   const delay = window.siteConfig['$meta:analyticsdelay$'] === undefined ? 3000 : window.siteConfig['$meta:analyticsdelay$'];
-  const helpapikey = window.siteConfig['$system:helpapikey$'] === undefined ? '' : window.siteConfig['$system:helpapikey$'];
+  const helpapikey = window.siteConfig['$system:.helpapikey$'] === undefined ? '' : window.siteConfig['$system:.helpapikey$'];
   buildscript += `window.cmsplus.analyticsdelay = ${delay};\nwindow.cmsplus.bubble = "${helpapikey}";\n`;
   buildscript += `window.cmsplus.environment = "${window.cmsplus.environment}";\n`;
   let script = document.createElement('script');

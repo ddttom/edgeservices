@@ -116,10 +116,9 @@ export async function cleanDOM() {
   // Script fetching Lighthouse result via API
   function setUpQuery(category) {
     const api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-    let apiKey = 'AIzaSyCWkFAeza4Y';
-    apiKey += 'zouZT2pn_lKZ-Xfc8A9yhiw'; // Replace YOUR_API_KEY with your actual API key.
+    const apiKey = `${window.siteConfig['$system:.lighthouseapikey']}`;
     const parameters = {
-      url: encodeURIComponent('https://comwrap.uk'),
+      url: encodeURIComponent(`${window.siteConfig['$system:lighthouseurl']}`),
       key: apiKey, // Include the API key in the parameters.
       category,
       strategy: 'DESKTOP'

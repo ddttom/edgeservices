@@ -59,7 +59,10 @@ export function createDebugPanel() {
     content += '<h3>site configuration</h3>';
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const key in window.siteConfig) {
-      content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
+      // show nom hidden
+      if (!key.indexOf(':.')) {
+        content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
+      }
     }
     content = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
 
