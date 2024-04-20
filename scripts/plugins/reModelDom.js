@@ -257,8 +257,9 @@ export async function cleanDOM() {
     // Append the paragraph to the hero item
     heroItem.appendChild(currentTestDataPar);
   }
-
-  run();
+  if (window.cmsplus.siteConfig['$system:lighthouseurl'] !== '') {
+    run();
+  }
   // hide header and footer when coming soon class is present
   if (document.querySelector('.coming-soon')) {
     document.body.classList.add('hide');
