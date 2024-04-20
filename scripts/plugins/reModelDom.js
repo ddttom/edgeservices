@@ -53,6 +53,10 @@ export function createTitle() {
   }
 }
 export async function cleanDOM() {
+  // hide header and footer when coming soon class found
+  if (document.querySelector('.coming-soon')) {
+    document.body.classList.add('hide');
+  }
   // ---- Remove title from link with images ----- //
   // Find all <a> tags in the document
   const links = document.querySelectorAll('a');
@@ -111,34 +115,35 @@ export async function cleanDOM() {
     img.setAttribute('width', imgWidth);
     img.setAttribute('height', imgHeight);
   });
-
-  // Script fetching Lighthouse result via API
-  function setUpQuery(category) {
-    const api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-    const apiKey = 'AIzaSyCWkFAeza4YzouZT2pn_lKZ-Xfc8A9yhiw';
-    const parameters = {
-      url: encodeURIComponent('https://comwrap.uk'),
-      key: apiKey, // Include the API key in the parameters.
-      category,
-      strategy: 'DESKTOP'
-    };
-    let query = `${api}?`;
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const key in parameters) { // Correctly declare key with let
-      query += `${key}=${parameters[key]}&`;
-    }
-    return query.slice(0, -1); // Remove the trailing '&' from the query string
+}
+// Script fetching Lighthouse result via API
+function setUpQuery(category) {
+  const api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
+  const apiKey = 'AIzaSyCWkFAeza4YzouZT2pn_lKZ-Xfc8A9yhiw';
+  const parameters = {
+    url: encodeURIComponent('https://comwrap.uk'),
+    key: apiKey, // Include the API key in the parameters.
+    category,
+    strategy: 'DESKTOP'
+  };
+  let query = `${api}?`;
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const key in parameters) { // Correctly declare key with let
+    query += `${key}=${parameters[key]}&`;
   }
+  return query.slice(0, -1); // Remove the trailing '&' from the query string
+}
 
-  function wrapper(category, results) {
-    const url = setUpQuery(category);
-    return fetch(url)
-      .then((response) => response.json())
-      .then((json) => {
-        // Push the category and analysisUTCTimestamp to results array
-        results.push({ category, data: json.lighthouseResult.categories });
-      })
-      .catch((error) => console.error('Error fetching PageSpeed Insights:', error));
+function wrapper(category, results) {
+  const url = setUpQuery(category);
+  return fetch(url)
+    .then((response) => response.json())
+    .then((json) => {
+      // Push the category and analysisUTCTimestamp to results array
+      results.push({ category, data: json.lighthouseResult.categories });
+    })
+    // eslint-disable-next-line no-console
+    .catch((error) => console.error('Error fetching PageSpeed Insights:', error));
 
   async function run() {
     const categories = [
@@ -255,7 +260,6 @@ export async function cleanDOM() {
     // Append the paragraph to the hero item
     heroItem.appendChild(currentTestDataPar);
   }
-
   run();
 }
 
