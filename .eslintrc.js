@@ -31,6 +31,7 @@ module.exports = {
     'no-console': 'off',
     'no-param-reassign': 'off',
     'operator-linebreak': 'off',
-    'space-before-function-paren': 'off'
+    'space-before-function-paren': 'off',
+    'no-plusplus': 'off'
   },
 };
