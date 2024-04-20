@@ -12,7 +12,7 @@ function enableDanteChat() {
 export async function initialize() {
   window.cmsplus.callbackMetadataTracker = initTracker;
   if (((window.cmsplus.helpapi) || '').length > 0) {
-    window.cmsplus.callbackDanteChat = enableDanteChat;
+    window.cmsplus.callbackChain.push(enableDanteChat);
   }
 }
 initialize();

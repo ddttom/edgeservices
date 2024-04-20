@@ -12,10 +12,13 @@ import {
   constructGlobal
 } from './variables.js';
 import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
+function noAction() {
+}
 
 window.siteConfig = window.siteConfig || {};
 window.cmsplus = window.cmsplus || {};
-
+window.cmsplus.callbackChain = [];
+window.cmsplus.callbackChain.push(noAction); // set up nop.
 if (window.cmsplus.environment === 'preview') {
   await import('./debugPanel.js');
 }

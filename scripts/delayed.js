@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import { sampleRUM } from './aem.js';
 // import { initialize as initLaunch } from './launch.js';
 
@@ -5,8 +7,10 @@ import { sampleRUM } from './aem.js';
 sampleRUM('cwv');
 
 // add more delayed functionality here
-// any client with dante ai chatbot will need to enable this, in clientConfig
-await window.cmsplus.callbackDanteChat();
+// If you need any delayed stuff client-side add it to the callbackChain - see clientConfig.js
+for (const callback of window.cmsplus.callbackChain) {
+  await callback();
+}
 function initialize() {
 }
 initialize();
