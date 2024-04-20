@@ -104,7 +104,7 @@ window.cmsplus.track.page.previousPageName = pathname;
       script.textContent = buildscript;
       document.head.appendChild(script);
     }
-    window.cmsplus.callbackdebug = loadAnalyticsDebugPanel;
+    window.cmsplus.callbackDebug = loadAnalyticsDebugPanel;
   }
 }
 initialize();

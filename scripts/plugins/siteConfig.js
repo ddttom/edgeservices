@@ -1,14 +1,14 @@
-/* eslint-disable no-console */
 /* site configuration module */
 import {
   createTitle,
-  cleanDom,
+  tidyDOM,
   makeLinksRelative,
   removeCommentBlocks,
   addByLine,
   removeMeta
 } from './reModelDom.js';
 import {
+  // eslint-disable-next-line comma-dangle
   constructGlobal
 } from './variables.js';
 import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
@@ -37,7 +37,7 @@ export async function initialize() {
   }
   await removeCommentBlocks();
   await makeLinksRelative();
-  await cleanDom();
+  await tidyDOM();
 
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {

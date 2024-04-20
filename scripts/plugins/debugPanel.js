@@ -31,7 +31,7 @@ export function createDebugPanel() {
     // Build the content of the debug panel
     let clientDebug = window.siteConfig['$system:projectname$'] ? window.siteConfig['$system:projectname$'] : 'No name given';
 
-    clientDebug = `${clientDebug}<br>${window.cmsplus?.callbackdebug?.()}`;
+    clientDebug = `${clientDebug}<br>${window.cmsplus?.callbackDebug?.()}`;
     let content = `${clientDebug}<br>`;
     content = `${content}<h3>Variables</h3>`;
 
@@ -59,7 +59,7 @@ export function createDebugPanel() {
     content += '<h3>site configuration</h3>';
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const key in window.siteConfig) {
-      if (key.indexOf(':.')!== 0) {
+      if (key.indexOf(':.') !== 0) {
         content += `<strong>${key}:</strong> ${window.siteConfig[key]}<br>`;
       }
     }

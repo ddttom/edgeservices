@@ -3,7 +3,10 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: 'airbnb-base',
+  extends: [
+    'eslint:recommended',
+    'airbnb-base',
+  ],
   overrides: [
     {
       env: {
@@ -22,11 +25,11 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'comma-dangle': ['off'],
-    'space-before-function-paren': ['off'],
-    'no-param-reassign': ['off'],
-    'operator-linebreak': ['off'],
-    'import/extensions': ['off'],
-    'import/prefer-default-export': ['off'],
+    'import/prefer-default-export': 'off',
+    'comma-dangle': 'off',
+    'import/extensions': 'off',
+    'no-console': 'off',
+    'no-param-reassign': 'off',
+    'operator-linebreak': 'off'
   },
 };

@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { sampleRUM } from './aem.js';
 // import { initialize as initLaunch } from './launch.js';
 
@@ -6,16 +5,8 @@ import { sampleRUM } from './aem.js';
 sampleRUM('cwv');
 
 // add more delayed functionality here
-
-// any client with dante ai chatbot will need to add this
-
-if (((window.cmsplus.helpapi) || '').length > 0) {
-  window.danteEmbed = `https://chat.dante-ai.com/embed?${window.cmsplus.helpapi}&mode=false&bubble=true&image=null&bubbleopen=false`;
-  // eslint-disable-next-line no-undef
-  loadScript('https://chat.dante-ai.com/bubble-embed.js');
-  // eslint-disable-next-line no-undef
-  loadScript('https://chat.dante-ai.com/dante-embed.js');
-}
+// any client with dante ai chatbot will need to enable this, in clientConfig
+window.cmsplus.callbackDanteChat();
 function initialize() {
 }
 initialize();

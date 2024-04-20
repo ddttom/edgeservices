@@ -1,3 +1,5 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
   if (h1) return h1;
@@ -52,9 +54,9 @@ export function createTitle() {
 }
 
 export async function tidyDOM() {
-if (document.querySelector('coming-soon')) { 
-  DocumentFragment.body.classList.add('hide');
-}
+  if (document.querySelector('coming-soon')) {
+    DocumentFragment.body.classList.add('hide');
+  }
   // ---- Remove title from link with images ----- //
   // Find all <a> tags in the document
   const links = document.querySelectorAll('a');
@@ -134,12 +136,12 @@ if (document.querySelector('coming-soon')) {
   function wrapper(category, results) {
     const url = setUpQuery(category);
     return fetch(url)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         // Push the category and analysisUTCTimestamp to results array
         results.push({ category, data: json.lighthouseResult.categories });
       })
-      .catch(error => console.error('Error fetching PageSpeed Insights:', error));
+      .catch((error) => console.error('Error fetching PageSpeed Insights:', error));
   }
 
   async function run() {
@@ -151,12 +153,12 @@ if (document.querySelector('coming-soon')) {
     ];
     const promises = [];
     const results = [];
-    categories.forEach(category => {
+    categories.forEach((category) => {
       promises.push(wrapper(category, results)); // Pass current timestamp
     });
     await Promise.all(promises);
 
-    results.forEach(item => {
+    results.forEach((item) => {
       const categoryObject = item.data;
       for (const category in categoryObject) {
         const details = categoryObject[category];
@@ -202,8 +204,8 @@ if (document.querySelector('coming-soon')) {
 
     function initializeObserver() {
       const body = document.querySelector('body');
-      const observer = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
           if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
             const modalOpen = body.classList.contains('modal-open');
             if (modalOpen) {
@@ -261,15 +263,16 @@ if (document.querySelector('coming-soon')) {
   if ((window.cmsplus?.siteConfig?.['$system:lighthouseurl'] ?? '') !== '') {
     run();
   }
-
 }
-/* 
+/*
 export async function cleanDOM() {
 
   // ---- Remove title from link with images ----- //
   // Find all <a> tags in the document
   const links = document.querySelectorAll('a');
-  const containsVisualElements = (link) => link.querySelectorAll('img') || link.querySelector('picture') || link.querySelector('i[class^="icon"], i[class*=" icon"], i[class^="fa"], i[class*=" fa"]');
+  const containsVisualElements = (link) => link.querySelectorAll('img') ||
+   link.querySelector('picture') ||
+   link.querySelector('i[class^="icon"], i[class*=" icon"], i[class^="fa"], i[class*=" fa"]');
 
   links.forEach((link) => {
     if (containsVisualElements(link)) {
