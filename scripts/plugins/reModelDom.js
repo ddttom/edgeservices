@@ -38,7 +38,12 @@ export default async function possibleMobileFix(container) {
     }
   }
 }
-
+/**
+ * Adds a <meta> element to the <head> of the document with the given name and content.
+ * If a meta element with the given name already exists, it is not added.
+ * @param {string} name The name of the meta element.
+ * @param {string} content The content of the meta element.
+ */
 export function createTitle() {
   const metaTitle = document.querySelector('meta[name="title"]');
   if (!metaTitle) {
