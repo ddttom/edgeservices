@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 function findTitleElement() {
@@ -58,6 +59,12 @@ export function createTitle() {
   }
 }
 
+/**
+ * The `tidyDOM` function in JavaScript performs various DOM manipulations such as removing titles from
+ * links with images, adding roles to buttons, setting target blank for external links, adding classes
+ * to current visited links, adjusting SVG image dimensions, fetching Lighthouse results via API, and
+ * displaying formatted date and time in a modal box.
+ */
 export async function tidyDOM() {
   if (document.querySelector('coming-soon')) {
     DocumentFragment.body.classList.add('hide');
