@@ -110,7 +110,7 @@ export async function tidyDOM() {
     }
   });
 
-  // Add dynamic width a nd height to all SVG image
+  // Add dynamic width and height to all SVG image
   const imgSvg = document.querySelectorAll('img[src$=".svg"]');
   imgSvg.forEach((img) => {
     const imgWidth = img.clientWidth;
@@ -267,51 +267,6 @@ export async function tidyDOM() {
     run();
   }
 }
-/*
-export async function cleanDOM() {
-
-  // ---- Remove title from link with images ----- //
-  // Find all <a> tags in the document
-  const links = document.querySelectorAll('a');
-  const containsVisualElements = (link) => link.querySelectorAll('img') ||
-   link.querySelector('picture') ||
-   link.querySelector('i[class^="icon"], i[class*=" icon"], i[class^="fa"], i[class*=" fa"]');
-
-  links.forEach((link) => {
-    if (containsVisualElements(link)) {
-      // If a title attribute exists, remove it
-      if (link.hasAttribute('title')) {
-        link.removeAttribute('title');
-      }
-    }
-  });
-
-  // Add button="role" to every blink with button class
-  const buttonRole = document.querySelectorAll('.button');
-  buttonRole.forEach((button) => {
-    button.setAttribute('role', 'button');
-  });
-
-  // Add target blank to all external website linked on the website
-  // Get the current site's domain
-  const siteDomain = window.location.hostname;
-  const currentPage = window.location.href;
-
-  links.forEach((link) => {
-    const linkDomain = new URL(link.href).hostname;
-    if (linkDomain !== siteDomain && !link.href.startsWith('/') && !link.href.startsWith('#')) {
-      link.setAttribute('target', '_blank');
-    }
-  });
-
-  links.forEach((link) => {
-    if (link.href === currentPage) {
-      link.classList.add('current');
-    }
-  });
-  possibleMobileFix('hero');
-}
-*/
 export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
 }
@@ -347,17 +302,15 @@ export function makeLinksRelative() {
 }
 export function addByLine() {
   if (window.siteConfig['$system:addbyline$'] === 'true') {
-    const firstH1 = document.querySelector('h1');
-    if (window.siteConfig['$system:addbyline$'] === 'true') {
-      if (!window.siteConfig['$meta:suppressbyline$']) {
-        if (firstH1) {
-          const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-          // Append the constructed string to the h1 element's current content
-          const newElement = document.createElement('div');
-          newElement.className = 'byLine';
-          newElement.innerHTML = appendString;
-          firstH1.insertAdjacentElement('afterend', newElement);
-        }
+    if (!window.siteConfig['$meta:suppressbyline$']) {
+      const firstH1 = document.querySelector('h1');
+      if (firstH1) {
+        const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+        // Append the constructed string to the h1 element's current content
+        const newElement = document.createElement('div');
+        newElement.className = 'byLine';
+        newElement.innerHTML = appendString;
+        firstH1.insertAdjacentElement('afterend', newElement);
       }
     }
   }
