@@ -52,7 +52,7 @@ window.cmsplus.callbackPreDelayedChain = [];
 window.cmsplus.callbackDelayedChain = [];
 
 window.cmsplus.callbackDelayedChain.push(noAction); // set up nop.
-window.cmsplus.callbackPreDelayedChain.push(noAction); // set up nop.
+window.cmsplus.callbackLastChanceChain.push(noAction); // set up nop.
 
 if (window.cmsplus.environment === 'preview') {
   await import('./debugPanel.js');
@@ -66,22 +66,23 @@ window.cmsplus.loadDelayed = function loadDelayed() {
 };
 
 export async function initialize() {
+  await makeLinksRelative();
   await constructGlobal();
   await createTitle();
   await createJSON();
   await handleMetadataJsonLd();
-  if (window.cmsplus.analyticsdelay > 0) {
-    await import('./launch-dyn.js');
-  }
   await removeCommentBlocks();
-  await makeLinksRelative();
   await tidyDOM();
-
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
     window.cmsplus?.callbackCreateDebug?.();
   }
   await addByLine();
   await removeMeta();
+  // eslint-disable-next-line no-restricted-syntax
+  for (const callback of window.cmsplus.callbackLastChanceChain) {
+    // eslint-disable-next-line no-await-in-loop
+    await callback();
+  }
 }
 initialize();

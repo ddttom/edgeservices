@@ -72,15 +72,6 @@ export async function tidyDOM() {
     }
   });
 
-  if (window.cmsplus.analyticsdelay > 0) {
-    let initializeme;
-    // eslint-disable-next-line import/extensions
-    const module = await import('./launch-dyn.js');
-    // eslint-disable-next-line prefer-const
-    initializeme = module.default;
-    initializeme();
-  }
-
   // Add button="role" to every blink with button class
   const buttonRole = document.querySelectorAll('.button');
   buttonRole.forEach((button) => {
