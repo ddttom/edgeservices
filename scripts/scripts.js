@@ -10,13 +10,11 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS
+  loadCSS,
 } from './aem.js';
 
 await import('./plugins/siteConfig.js');
 await import('./plugins/externalImage.js');
-
-const setDelayed = true; // do (true) or not do (false) final load.
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -30,9 +28,7 @@ function buildHeroBlock(main) {
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', {
-      elems: [picture, h1],
-    }));
+    section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
   }
 }
@@ -48,7 +44,7 @@ async function loadFonts() {
     // do nothing
   }
 }
-
+// added for modal handling, see adobe docs
 // eslint-disable-next-line no-unused-vars
 function autolinkModals(element) {
   element.addEventListener('click', async(e) => {
@@ -120,14 +116,11 @@ async function loadEager(doc) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadBlocks(main);
-
-  const {
-    hash,
-  } = window.location;
+  autolinkModals(doc); // added for modal handling, see adobe docs
+  const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
-
-  if (!window.hlx.suppressFrame) {
+  if (!window.hlx.suppressFrame) { // added for sidekick library - see block party
     loadHeader(doc.querySelector('header'));
     loadFooter(doc.querySelector('footer'));
   }
@@ -145,15 +138,14 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // load anything that can be postponed to the latest here
   // eslint-disable-next-line import/no-cycle
-  if (setDelayed) {
-    window.setTimeout(() => import('./delayed.js'), window.cmsplus.analyticsdelay);
-  }
+  window.setTimeout(() => import('./delayed.js'), window.cmsplus.analyticsdelay); // variable timing added
+  // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {
   const urlParams = new URLSearchParams(window.location.search);
+  // added for sidekick library - see block party
   if (urlParams.get('suppressFrame') || window.location.pathname.includes('tools/sidekick')) {
     window.hlx.suppressFrame = true;
     document.body.querySelector('header').remove();
