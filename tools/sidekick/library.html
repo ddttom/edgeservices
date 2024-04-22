@@ -6,11 +6,22 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="Description" content="Franklin Sidekick Library" />
+    <meta name="Description" content="AEM Sidekick Library" />
     <meta name="robots" content="noindex" />
     <base href="/" />
 
     <style>
+      :root {
+        --sk-block-table-background-color: #03a;
+        --sk-block-table-foreground-color: #fff;
+
+        --sk-section-metadata-table-background-color: #f30;
+        --sk-section-metadata-table-foreground-color: #000;
+
+        --sk-metadata-table-background-color: #000;
+        --sk-metadata-table-foreground-color: #fff;
+      }
+
       html,
       body {
         margin: 0;
@@ -19,8 +30,10 @@
         background-color: #ededed;
         height: 100%;
       }
-      
-      helix-sidekick { display: none }
+
+      helix-sidekick {
+        display: none;
+      }
     </style>
     <title>Sidekick Library</title>
   </head>
@@ -28,17 +41,15 @@
   <body>
     <script
       type="module"
-      src="https://main--edgeservices--ddttom.hlx.live/tools/sidekick/library/content.js"
+      src="https://www.hlx.live/tools/sidekick/library/index.js"
     ></script>
     <script>
-      const library = document.createElement('sidekick-library')
+      const library = document.createElement('sidekick-library');
       library.config = {
         base: '/tools/sidekick/library.json',
-        tags: '/tools/sidekick/plugins/tags/tags.js',
-        'api-test': '/tools/sidekick/plugins/api-test/api-test.js'
-      }
+      };
 
-      document.body.prepend(library)
+      document.body.prepend(library);
     </script>
   </body>
 </html>
