@@ -9,13 +9,6 @@
     "not firefox <= 115"
   ],
   "hints": {
-    "compat-api/css": [
-      "default",
-      {
-        "ignore": [
-          "overscroll-behavior"
-        ]
-      }
-    ]
+    "compat-api/css": "off"
   }
 }
