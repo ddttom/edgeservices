@@ -41,10 +41,10 @@ export default async function enableTracking() {
 export async function initialize() {
   window.cmsplus.callbackMetadataTracker = initTracker;
   if (window.siteConfig['$system:allowtracking$'] === 'y') {
-    window.cmsplus.callbackLastChanceChain.push(enableTracking);
+    window.cmsplus.callbackPageLoadChain.push(enableTracking);
   }
   if (((window.cmsplus.helpapi) || '').length > 0) {
-    window.cmsplus.callbackDelayedChain.push(enableDanteChat);
+    window.cmsplus.callbackAfter3SecondsChain.push(enableDanteChat);
   }
 }
 initialize();

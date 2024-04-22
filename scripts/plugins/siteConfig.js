@@ -48,11 +48,11 @@ window.cmsplus = {
   environment: getEnvironment(),
   locality: getLocality(),
 };
-window.cmsplus.callbackPreDelayedChain = [];
-window.cmsplus.callbackDelayedChain = [];
+window.cmsplus.callbackPageLoadChain = [];
+window.cmsplus.callbackAfter3SecondsChain = [];
 
-window.cmsplus.callbackDelayedChain.push(noAction); // set up nop.
-window.cmsplus.callbackLastChanceChain.push(noAction); // set up nop.
+window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
+window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
 
 if (window.cmsplus.environment === 'preview') {
   await import('./debugPanel.js');
@@ -75,12 +75,12 @@ export async function initialize() {
   await tidyDOM();
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
-    window.cmsplus?.callbackCreateDebug?.();
+    window.cmsplus.callbackCreateDebug?.();
   }
   await addByLine();
   await removeMeta();
   // eslint-disable-next-line no-restricted-syntax
-  for (const callback of window.cmsplus.callbackLastChanceChain) {
+  for (const callback of window.cmsplus.callbackPageLoadChain) {
     // eslint-disable-next-line no-await-in-loop
     await callback();
   }

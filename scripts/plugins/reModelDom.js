@@ -124,7 +124,7 @@ export async function tidyDOM() {
     const api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
     const apiKey = `${window.siteConfig['$system:.lighthousekey$']}`;
     const parameters = {
-      url: encodeURIComponent(`${window.cmsplus.siteConfig['$system:lighthouseurl']}`),
+      url: encodeURIComponent(window.location.href),
       key: apiKey, // Include the API key in the parameters.
       category,
       strategy: 'DESKTOP'
@@ -263,7 +263,7 @@ export async function tidyDOM() {
     heroItem.appendChild(currentTestDataPar);
   }
   possibleMobileFix('hero');
-  if ((window.cmsplus?.siteConfig?.['$system:lighthouseurl'] ?? '') !== '') {
+  if ((window.cmsplus.siteConfig?.['$system:.lighthousekey'] ?? '') !== '') {
     run();
   }
 }
@@ -299,6 +299,8 @@ export function makeLinksRelative() {
       }
     }
   }
+}
+export function allowAnimations() {
 }
 export function addByLine() {
   if (window.siteConfig['$system:addbyline$'] === 'true') {
@@ -343,5 +345,6 @@ export function removeMeta() {
 }
 
 export function initialize() {
+  window.FileSystem.callbackAfter3SecondsChain.push(allowAnimations);
 }
 initialize();
