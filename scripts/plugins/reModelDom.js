@@ -345,6 +345,6 @@ export function removeMeta() {
 }
 
 export function initialize() {
-  window.FileSystem.callbackAfter3SecondsChain.push(allowAnimations);
+  window.cmsplus.callbackAfter3SecondsChain.push(allowAnimations);
 }
 initialize();
