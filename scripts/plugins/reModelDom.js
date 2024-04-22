@@ -66,6 +66,7 @@ export function createTitle() {
  * displaying formatted date and time in a modal box.
  */
 export async function tidyDOM() {
+  possibleMobileFix('hero');
   if (document.querySelector('coming-soon')) {
     DocumentFragment.body.classList.add('hide');
   }
@@ -262,7 +263,7 @@ export async function tidyDOM() {
     // Append the paragraph to the hero item
     heroItem.appendChild(currentTestDataPar);
   }
-  possibleMobileFix('hero');
+
   if ((window.cmsplus.siteConfig?.['$system:.lighthousekey'] ?? '') !== '') {
     run();
   }
