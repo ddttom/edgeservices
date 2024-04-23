@@ -32,6 +32,18 @@ module.exports = {
     'operator-linebreak': 'off',
     'space-before-function-paren': 'off',
     'no-plusplus': 'off',
-    'comma-dangle': ['error', 'always-multiline'],
+    'comma-dangle': ['error', {
+      arrays: 'always-multiline',
+      objects: 'always-multiline',
+      imports: 'never',
+      exports: 'always-multiline',
+      functions: 'never',
+    }],
+    'object-curly-newline': ['error', {
+      ObjectExpression: { multiline: true, consistent: true },
+      ObjectPattern: { multiline: true, consistent: true },
+      ImportDeclaration: { multiline: true, consistent: true },
+      ExportDeclaration: { multiline: true, consistent: true },
+    }],
   },
 };
