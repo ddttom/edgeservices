@@ -264,10 +264,9 @@ export async function tidyDOM() {
     heroItem.appendChild(currentTestDataPar);
   }
 
-  if ((window.cmsplus.siteConfig?.['$system:.lighthousekey'] ?? '') !== '') {
-    run();
-  }
+  run();
 }
+
 export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
 }
