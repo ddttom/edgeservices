@@ -26,12 +26,12 @@ module.exports = {
   },
   rules: {
     'import/prefer-default-export': 'off',
-    'comma-dangle': 'off',
     'import/extensions': 'off',
     'no-console': 'off',
     'no-param-reassign': 'off',
     'operator-linebreak': 'off',
     'space-before-function-paren': 'off',
-    'no-plusplus': 'off'
+    'no-plusplus': 'off',
+    'comma-dangle': ['error', 'always-multiline'],
   },
 };
