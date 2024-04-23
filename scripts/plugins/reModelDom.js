@@ -128,7 +128,7 @@ export async function tidyDOM() {
       url: encodeURIComponent(window.location.href),
       key: apiKey, // Include the API key in the parameters.
       category,
-      strategy: 'DESKTOP'
+      strategy: 'DESKTOP',
     };
     let query = `${api}?`;
     for (const key in parameters) { // Correctly declare key with let
@@ -153,7 +153,7 @@ export async function tidyDOM() {
       'ACCESSIBILITY',
       'BEST_PRACTICES',
       'PERFORMANCE',
-      'SEO'
+      'SEO',
     ];
     const promises = [];
     const results = [];
@@ -224,7 +224,7 @@ export async function tidyDOM() {
       const observerConfig = {
         attributes: true,
         attributeFilter: ['class'],
-        subtree: true
+        subtree: true,
       };
 
       observer.observe(body, observerConfig);
@@ -247,7 +247,7 @@ export async function tidyDOM() {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: true
+      hour12: true,
     };
 
     // Create a formatter for the locale 'en-US' (you can change this to match your user's locale)
@@ -333,7 +333,7 @@ export function removeMeta() {
     'og:type',
     'og:url',
     'og:site_name',
-    'keywords'
+    'keywords',
   ];
   const elements = document.querySelectorAll('meta[name]');
 

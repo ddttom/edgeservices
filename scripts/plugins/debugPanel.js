@@ -103,7 +103,7 @@ window.onerror = (message, source, lineno, colno, error) => {
     source,
     line: lineno,
     column: colno,
-    error
+    error,
   };
   window.cmsplus.errors.push(errorDetails);
 

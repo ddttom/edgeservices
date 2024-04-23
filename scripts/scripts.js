@@ -10,7 +10,7 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
+  loadCSS
 } from './aem.js';
 
 await import('./plugins/siteConfig.js');
