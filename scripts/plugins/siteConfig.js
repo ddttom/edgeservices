@@ -8,6 +8,10 @@ import {
   removeMeta
 } from './reModelDom.js';
 
+import {
+  constructGlobal
+} from './variables.js';
+
 import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
 
 function noAction() {
@@ -49,6 +53,8 @@ window.cmsplus.callbackAfter3SecondsChain = [];
 
 window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
 window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
+
+constructGlobal();
 
 if (window.cmsplus.environment === 'preview') {
   await import('./debugPanel.js');

@@ -13,11 +13,6 @@ import {
   loadCSS
 } from './aem.js';
 
-import {
-  constructGlobal
-} from './plugins/variables.js';
-
-await constructGlobal();
 await import('./plugins/siteConfig.js');
 await import('./plugins/externalImage.js');
 
