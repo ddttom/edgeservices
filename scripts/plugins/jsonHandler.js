@@ -154,8 +154,14 @@ export function createJSON() {
     let futureDate = new Date();
     let futurePeriod = '';
     if (!co['co:reviewdatetime']) {
-      futurePeriod = window.siteConfig['$co:defaultreviewperiod'];
+      // Extract the default review period from the site configuration.
+      const futurePeriodString = window.siteConfig['$co:defaultreviewperiod'];
+      futurePeriod = parseInt(futurePeriodString, 10);
+      if (Number.isNaN(futurePeriod)) {
+        futurePeriod = 365; // Default to 1 year.
+      }
       futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
+      // Convert the future date to an ISO string and assign it to the review datetime.
       co['co:reviewdatetime'] = futureDate.toISOString();
     }
     if (!co['co:startdatetime']) {
@@ -165,7 +171,11 @@ export function createJSON() {
       co['co:publisheddatetime'] = currentDate.toISOString();
     }
     if (!co['co:expirydatetime']) {
-      futurePeriod = window.siteConfig['$co:defaultexpiryperiod'];
+      const futurePeriodString = window.siteConfig['$co:defaultexpiryperiod'];
+      futurePeriod = parseInt(futurePeriodString, 10);
+      if (Number.isNaN(futurePeriod)) {
+        futurePeriod = 365; // Default to 1 year.
+      }
       futureDate = new Date(currentDate.getTime() + futurePeriod * 24 * 60 * 60 * 1000);
       co['co:expirydatetime'] = futureDate.toISOString();
     }
