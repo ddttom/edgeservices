@@ -7,10 +7,6 @@ import {
   addByLine,
   removeMeta
 } from './reModelDom.js';
-import {
-  // eslint-disable-next-line comma-dangle
-  constructGlobal
-} from './variables.js';
 
 import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
 
@@ -67,7 +63,6 @@ window.cmsplus.loadDelayed = function loadDelayed() {
 
 export async function initialize() {
   await makeLinksRelative();
-  await constructGlobal();
   await createTitle();
   await createJSON();
   await handleMetadataJsonLd();
