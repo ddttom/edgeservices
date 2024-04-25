@@ -53,7 +53,7 @@ window.cmsplus.callbackAfter3SecondsChain = [];
 
 window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
 window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
-
+constructGlobal();
 if (window.cmsplus.environment === 'preview') {
   await import('./debugPanel.js');
 }
@@ -67,7 +67,7 @@ window.cmsplus.loadDelayed = function loadDelayed() {
 
 export async function initialize() {
   await makeLinksRelative();
-  await constructGlobal();
+  // await constructGlobal();
   await createTitle();
   await createJSON();
   await handleMetadataJsonLd();
