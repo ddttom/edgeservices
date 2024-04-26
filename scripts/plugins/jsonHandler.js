@@ -134,7 +134,7 @@ export function createJSON() {
   document.head.appendChild(script);
 
   if (window.siteConfig['$meta:wantdublincore$'] === undefined) {
-    window.siteConfig['$meta:wantdublincore$'] = true;
+    window.siteConfig['$meta:wantdublincore$'] = false;
   }
   const dcString = JSON.stringify(dc, null, '\t');
   if (window.siteConfig['$meta:wantdublincore$'] === true) {
@@ -147,7 +147,7 @@ export function createJSON() {
     }
   }
   if (window.siteConfig['$meta:wantcontentops$'] === undefined) {
-    window.siteConfig['$meta:wantcontentops$'] = true;
+    window.siteConfig['$meta:wantcontentops$'] = false;
   }
   if (window.siteConfig['$meta:wantcontentops$'] === true) {
     const currentDate = new Date();

@@ -1,18 +1,25 @@
 /* site configuration module */
+/* NOTHING iN HERE CAN USE OR DERIVE FROM siteConfig */
+
 import {
   createTitle,
-  tidyDOM,
   makeLinksRelative,
+  tidyDOM,
   removeCommentBlocks,
   addByLine,
   removeMeta
 } from './reModelDom.js';
+
 import {
   // eslint-disable-next-line comma-dangle
   constructGlobal
 } from './variables.js';
 
 import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
+
+const config = require('./config.json');
+
+window.finalUrl = config.host;
 
 function noAction() {
 }
@@ -67,12 +74,12 @@ window.cmsplus.loadDelayed = function loadDelayed() {
 
 export async function initialize() {
   await makeLinksRelative();
-  // await constructGlobal();
+  await tidyDOM();
   await createTitle();
   await createJSON();
-  await handleMetadataJsonLd();
   await removeCommentBlocks();
-  await tidyDOM();
+  await handleMetadataJsonLd();
+
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
     window.cmsplus.callbackCreateDebug?.();
@@ -85,4 +92,5 @@ export async function initialize() {
     await callback();
   }
 }
+
 initialize();
