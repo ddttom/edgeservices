@@ -23,9 +23,7 @@ import {
 
 import { handleMetadataJsonLd } from './jsonHandler.js';
 
-import config from '../../config/config.js';
-
-window.finalUrl = config.host;
+await import('../../config/config.js');
 
 function noAction() {
 }

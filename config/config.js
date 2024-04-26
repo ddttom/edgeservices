@@ -1,3 +1,1 @@
-{
-  "host": "https://comwrap.uk/"
-}
+window.finalHost = 'https://comwrap.uk/';
