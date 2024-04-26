@@ -61,7 +61,7 @@ export async function handleMetadataJsonLd() {
     } catch (error) {
       // no schema.org for your content, just use the content as is
     // eslint-disable-next-line no-console
-      console.error('Error processing JSON-LD metadata:', error);
+      console.log('Error processing JSON-LD metadata:', error);
     }
   }
   return jsonString;
