@@ -16,6 +16,82 @@ function findTitleElement() {
   }
   return null; // No suitable title found
 }
+export function addByLine() {
+  if (window.siteConfig['$system:addbyline$'] === 'true') {
+    if (!window.siteConfig['$meta:suppressbyline$']) {
+      const firstH1 = document.querySelector('h1');
+      if (firstH1) {
+        const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+        // Append the constructed string to the h1 element's current content
+        const newElement = document.createElement('div');
+        newElement.className = 'byLine';
+        newElement.innerHTML = appendString;
+        firstH1.insertAdjacentElement('afterend', newElement);
+      }
+    }
+  }
+}
+export function removeMeta() {
+  const metadataNames = [
+    'description',
+    'twitter:card',
+    'twitter:title',
+    'twitter:description',
+    'twitter:image',
+    'referrer',
+    'viewport',
+    'og:title',
+    'og:description',
+    'og:image',
+    'og:type',
+    'og:url',
+    'og:site_name',
+    'keywords',
+  ];
+  const elements = document.querySelectorAll('meta[name]');
+
+  elements.forEach((element) => {
+    const name = element.getAttribute('name');
+    if (!metadataNames.includes(name)) {
+      element.remove();
+    }
+  });
+}
+export function removeCommentBlocks() {
+  document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
+}
+
+function makeLinksRelative() {
+  function sanitize(url) {
+    let ret = url.trim();
+    if (!ret.endsWith('/')) {
+      ret = `${ret}/`;
+    }
+    return ret;
+  }
+  const domains = [];
+  domains.push(sanitize(window.location.origin));
+  const finalUrl = window.finaLUrl;
+  if (finalUrl) {
+    domains.push(sanitize(finalUrl));
+  }
+  const links = document.getElementsByTagName('a');
+  for (let i = 0; i < links.length; i += 1) {
+    const link = links[i];
+    const href = link.getAttribute('href');
+    if (href) {
+      for (let j = 0; j < domains.length; j += 1) {
+        const domain = domains[j];
+        if (href.startsWith(domain)) {
+          const relativePath = href.slice(domain.length);
+          link.setAttribute('href', relativePath);
+          break;
+        }
+      }
+    }
+  }
+}
+
 export default async function possibleMobileFix(container) {
   // Select the element by its class
 
@@ -46,7 +122,7 @@ export default async function possibleMobileFix(container) {
  * @param {string} name The name of the meta element.
  * @param {string} content The content of the meta element.
  */
-export function createTitle() {
+function createTitle() {
   const metaTitle = document.querySelector('meta[name="title"]');
   if (!metaTitle) {
     const titleElement = findTitleElement();
@@ -60,14 +136,13 @@ export function createTitle() {
   }
 }
 
-/**
- * The `tidyDOM` function in JavaScript performs various DOM manipulations such as removing titles from
- * links with images, adding roles to buttons, setting target blank for external links, adding classes
- * to current visited links, adjusting SVG image dimensions, fetching Lighthouse results via API, and
- * displaying formatted date and time in a modal box.
- */
 export async function tidyDOM() {
   possibleMobileFix('hero');
+  makeLinksRelative();
+  addByLine();
+  createTitle();
+  removeCommentBlocks();
+  removeMeta();
   if (document.querySelector('coming-soon')) {
     DocumentFragment.body.classList.add('hide');
   }
@@ -121,85 +196,11 @@ export async function tidyDOM() {
     img.setAttribute('height', imgHeight);
   });
 }
-export function removeCommentBlocks() {
-  document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
-}
 
 export function allowAnimations() {
 }
-export function addByLine() {
-  if (window.siteConfig['$system:addbyline$'] === 'true') {
-    if (!window.siteConfig['$meta:suppressbyline$']) {
-      const firstH1 = document.querySelector('h1');
-      if (firstH1) {
-        const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-        // Append the constructed string to the h1 element's current content
-        const newElement = document.createElement('div');
-        newElement.className = 'byLine';
-        newElement.innerHTML = appendString;
-        firstH1.insertAdjacentElement('afterend', newElement);
-      }
-    }
-  }
-}
-export function removeMeta() {
-  const metadataNames = [
-    'description',
-    'twitter:card',
-    'twitter:title',
-    'twitter:description',
-    'twitter:image',
-    'referrer',
-    'viewport',
-    'og:title',
-    'og:description',
-    'og:image',
-    'og:type',
-    'og:url',
-    'og:site_name',
-    'keywords',
-  ];
-  const elements = document.querySelectorAll('meta[name]');
-
-  elements.forEach((element) => {
-    const name = element.getAttribute('name');
-    if (!metadataNames.includes(name)) {
-      element.remove();
-    }
-  });
-}
 export function create3SecondDelayFunction() {
   window.cmsplus.callbackAfter3SecondsChain.push(allowAnimations);
-}
-export function makeLinksRelative() {
-  function sanitize(url) {
-    let ret = url.trim();
-    if (!ret.endsWith('/')) {
-      ret = `${ret}/`;
-    }
-    return ret;
-  }
-  const domains = [];
-  domains.push(sanitize(window.location.origin));
-  const finalUrl = window.finaLUrl;
-  if (finalUrl) {
-    domains.push(sanitize(finalUrl));
-  }
-  const links = document.getElementsByTagName('a');
-  for (let i = 0; i < links.length; i += 1) {
-    const link = links[i];
-    const href = link.getAttribute('href');
-    if (href) {
-      for (let j = 0; j < domains.length; j += 1) {
-        const domain = domains[j];
-        if (href.startsWith(domain)) {
-          const relativePath = href.slice(domain.length);
-          link.setAttribute('href', relativePath);
-          break;
-        }
-      }
-    }
-  }
 }
 
 export function initialize() {
