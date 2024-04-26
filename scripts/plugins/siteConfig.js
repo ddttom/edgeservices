@@ -23,7 +23,7 @@ import {
 
 import { handleMetadataJsonLd } from './jsonHandler.js';
 
-const config = require('../../config/config.json');
+import config from '../../config/config.json';
 
 window.finalUrl = config.host;
 
