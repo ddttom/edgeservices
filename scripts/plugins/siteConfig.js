@@ -69,8 +69,9 @@ export async function initialize() {
   window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
   window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
 
-  constructGlobal();
-  initClientConfig(); // *********   siteConfig is ready now *******
+  await constructGlobal();
+  await initClientConfig();
+  await createJSON();// *********   siteConfig is ready now *******
 
   if (window.cmsplus.environment === 'preview') {
     await import('./debugPanel.js');
@@ -83,7 +84,6 @@ export async function initialize() {
   // };
 
   await tidyDOM();
-  await createJSON();
   await handleMetadataJsonLd();
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
