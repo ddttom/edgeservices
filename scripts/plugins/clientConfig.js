@@ -24,14 +24,15 @@ export default async function enableTracking() {
 
   window.adobeDataLayer = window.adobeDataLayer || [];
   try {
-    if (window.cmsplus.track) {
-      if (window.cmsplus.track.page) {
+    if (window.cmsplus?.track) {
+      if (window.cmsplus.track?.page) {
         window.adobeDataLayer.push(window.cmsplus.track.page);
       }
-      if (window.cmsplus.track.content) {
+      if (window.cmsplus.track?.content) {
         window.adobeDataLayer.push(window.cmsplus.track.content);
       }
     }
+    console.log('Added AdobeDataLayer');
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log('failed to add cmsplus data to adobeDataLayer', e);

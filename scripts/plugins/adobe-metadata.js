@@ -5,14 +5,14 @@ let buildscript = '';
 
 function loadAnalyticsDebugPanel() {
   let content = '';
-  if (window.cmsplus.track.page || window.cmsplus.track.content) {
+  if (window.cmsplus?.track?.page || window.cmsplus?.track?.content) {
     content = '<h3>Adobe Tracking Data</h3>';
   }
   if (window.cmsplus?.track?.page) {
-    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.page, null, '\t')}</pre>`;
+    content = `${content}<pre>${JSON.stringify(window.cmsplus?.track?.page, null, '\t')}</pre>`;
   }
   if (window.cmsplus?.track?.content) {
-    content = `${content}<pre>${JSON.stringify(window.cmsplus.track.content, null, '\t')}</pre>`;
+    content = `${content}<pre>${JSON.stringify(window.cmsplus?.track?.content, null, '\t')}</pre>`;
   }
 
   return content;
