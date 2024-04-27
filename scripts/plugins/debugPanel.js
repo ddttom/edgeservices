@@ -30,7 +30,7 @@ export function createDebugPanel() {
   // Build the content of the debug panel
   let clientDebug = window.siteConfig['$system:projectname$'] ? window.siteConfig['$system:projectname$'] : 'No name given';
 
-  clientDebug = `${clientDebug}<br>${window.cmsplus?.callbackDebug?.()}`;
+  clientDebug = `${clientDebug}<br>${window.cmsplus?.callbackDebugAnalytics?.()}`;
   let content = `${clientDebug}<br>`;
   content = `${content}<h3>Variables</h3>`;
 

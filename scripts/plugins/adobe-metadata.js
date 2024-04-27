@@ -1,6 +1,8 @@
 /* adobe specific meta data handling */
 /* NO CLIENT CODE IN HERE JUST SETUP FOR ADOBE */
 
+import { replaceTokens } from './variables';
+
 function loadAnalyticsDebugPanel() {
   let content = '';
   if (window.cmsplus?.track?.page || window.cmsplus?.track?.content) {
@@ -14,19 +16,6 @@ function loadAnalyticsDebugPanel() {
   }
 
   return content;
-}
-
-function replaceTokens(data, text) {
-  let ret = text;
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
-  for (const key in data) {
-    if (Object.hasOwnProperty.call(data, key)) {
-      const item = key;
-      const value = data[item];
-      ret = ret.replaceAll(item, value);
-    }
-  }
-  return ret;
 }
 export async function initialize() {
   // eslint-disable-next-line no-use-before-define
@@ -102,6 +91,6 @@ async function handleMetadataTracking() {
       script.textContent = buildscript;
       document.head.appendChild(script);
     }
-    window.cmsplus.callbackDebug = loadAnalyticsDebugPanel;
+    window.cmsplus.callbackDebugAnalytics = loadAnalyticsDebugPanel;
   }
 }
