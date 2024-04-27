@@ -12,6 +12,3 @@ sampleRUM('cwv');
 for (const callback of window.cmsplus.callbackAfter3SecondsChain) {
   await callback();
 }
-function initialize() {
-}
-initialize();

@@ -13,8 +13,12 @@ import {
   loadCSS
 } from './aem.js';
 
-await import('./plugins/siteConfig.js');
-await import('./plugins/externalImage.js');
+import { initialize as initSiteConfig } from './plugins/siteConfig.js';
+
+import { initialize as initExternalImage } from './plugins/externalImage.js';
+
+initSiteConfig();
+initExternalImage();
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 

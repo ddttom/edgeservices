@@ -202,7 +202,3 @@ export function allowAnimations() {
 export function create3SecondDelayFunction() {
   window.cmsplus.callbackAfter3SecondsChain.push(allowAnimations);
 }
-
-export function initialize() {
-}
-initialize();

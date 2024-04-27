@@ -164,4 +164,3 @@ export function initialize() {
   decorateExternalImages(document.querySelector('main'), '//External Image//');
   decorateExternalImages(document.querySelector('main'));
 }
-initialize();
