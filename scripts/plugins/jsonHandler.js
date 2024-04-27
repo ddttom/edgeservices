@@ -18,55 +18,6 @@ export function extractJsonLd(parsedJson) {
   return parsedJson;
 }
 
-export async function handleMetadataJsonLd() {
-  let jsonString = '';
-  if (!document.querySelector('script[type="application/ld+json"]')) {
-    let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
-    if (!jsonLdMetaElement) {
-      jsonLdMetaElement = document.createElement('meta');
-      jsonLdMetaElement.setAttribute('name', 'json-ld');
-      jsonLdMetaElement.setAttribute('content', 'owner');
-      document.head.appendChild(jsonLdMetaElement);
-    }
-    const content = jsonLdMetaElement.getAttribute('content');
-    jsonLdMetaElement.remove();
-    // assume we have an url, if not we have a role -  construct url on the fly
-    let jsonDataUrl = content;
-
-    try {
-      // Attempt to parse the content as a URL
-      // eslint-disable-next-line no-new
-      new URL(content);
-    } catch (error) {
-      // Content is not a URL, construct the JSON-LD URL based on content and current domain
-      jsonDataUrl = `${window.location.origin}/config/json-ld/${content}.json`;
-    }
-    try {
-      const resp = await fetch(jsonDataUrl);
-      if (!resp.ok) {
-        throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
-      }
-      let json = await resp.json();
-      json = extractJsonLd(json);
-      jsonString = JSON.stringify(json, null, '\t');
-      jsonString = replaceTokens(window.siteConfig, jsonString);
-      // Create and append a new script element with the processed JSON-LD data
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
-      jsonLdMetaElement.setAttribute('id', 'ldMeta');
-      script.textContent = jsonString;
-      document.head.appendChild(script);
-      document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
-    } catch (error) {
-      // no schema.org for your content, just use the content as is
-    // eslint-disable-next-line no-console
-      console.log('Error processing JSON-LD metadata:', error);
-    }
-  }
-  return jsonString;
-}
-
 export function createJSON() {
   const dc = {};
   const co = {};
@@ -195,4 +146,54 @@ export function createJSON() {
       document.head.appendChild(script);
     }
   }
+}
+
+export async function handleMetadataJsonLd() {
+  let jsonString = '';
+  if (!document.querySelector('script[type="application/ld+json"]')) {
+    let jsonLdMetaElement = document.querySelector('meta[name="json-ld"]');
+    if (!jsonLdMetaElement) {
+      jsonLdMetaElement = document.createElement('meta');
+      jsonLdMetaElement.setAttribute('name', 'json-ld');
+      jsonLdMetaElement.setAttribute('content', 'owner');
+      document.head.appendChild(jsonLdMetaElement);
+    }
+    const content = jsonLdMetaElement.getAttribute('content');
+    jsonLdMetaElement.remove();
+    // assume we have an url, if not we have a role -  construct url on the fly
+    let jsonDataUrl = content;
+
+    try {
+      // Attempt to parse the content as a URL
+      // eslint-disable-next-line no-new
+      new URL(content);
+    } catch (error) {
+      // Content is not a URL, construct the JSON-LD URL based on content and current domain
+      jsonDataUrl = `${window.location.origin}/config/json-ld/${content}.json`;
+    }
+    try {
+      const resp = await fetch(jsonDataUrl);
+      if (!resp.ok) {
+        throw new Error(`Failed to fetch JSON-LD content: ${resp.status}`);
+      }
+      let json = await resp.json();
+      json = extractJsonLd(json);
+      jsonString = JSON.stringify(json, null, '\t');
+      jsonString = replaceTokens(window.siteConfig, jsonString);
+      // Create and append a new script element with the processed JSON-LD data
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-role', content.split('/').pop().split('.')[0]); // Set role based on the final URL
+      jsonLdMetaElement.setAttribute('id', 'ldMeta');
+      script.textContent = jsonString;
+      document.head.appendChild(script);
+      document.querySelectorAll('meta[name="longdescription"]').forEach((section) => section.remove());
+    } catch (error) {
+      // no schema.org for your content, just use the content as is
+    // eslint-disable-next-line no-console
+      console.log('Error processing JSON-LD metadata:', error);
+    }
+  }
+  createJSON()
+  return jsonString;
 }
