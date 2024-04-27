@@ -48,4 +48,3 @@ export async function initialize() {
     window.cmsplus.callbackAfter3SecondsChain.push(enableDanteChat);
   }
 }
-initialize();
