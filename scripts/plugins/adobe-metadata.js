@@ -1,8 +1,6 @@
 /* adobe specific meta data handling */
 /* NO CLIENT CODE IN HERE JUST SETUP FOR ADOBE */
 
-let buildscript = '';
-
 function loadAnalyticsDebugPanel() {
   let content = '';
   if (window.cmsplus?.track?.page || window.cmsplus?.track?.content) {
@@ -34,7 +32,8 @@ export async function initialize() {
   // eslint-disable-next-line no-use-before-define
   await handleMetadataTracking();
 }
-export async function handleMetadataTracking() {
+async function handleMetadataTracking() {
+  let buildscript = '';
   const allowTracking = window.siteConfig?.['$system:allowtracking$'] ?? '';
   if (allowTracking === 'y') {
     const tracking = window.siteConfig?.['$meta:tracking$'] ?? '';
