@@ -10,6 +10,13 @@
       {
         "Item":"$system:allowtracking$",
         "Value": "y"
+      },{
+        "Item":"$meta:wantdublincore$",
+        "Value": false
+      }
+      ,{
+        "Item":"$meta:wantcontentops$",
+        "Value": false
       }
     ],
     ":type": "fallback"
