@@ -17,13 +17,17 @@ import {
 } from './reModelDom.js';
 
 import {
-  // eslint-disable-next-line comma-dangle
   constructGlobal
 } from './variables.js';
 
-import { initialize as initClientConfig } from './clientConfig.js';
+import {
+  initialize as initClientConfig
+} from './clientConfig.js';
 
-import { handleMetadataJsonLd, createJSON } from './jsonHandler.js';
+import {
+  handleMetadataJsonLd,
+  createJSON
+} from './jsonHandler.js';
 
 await import('../../config/config.js');
 
@@ -66,12 +70,11 @@ export async function initialize() {
   window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
 
   constructGlobal();
+  initClientConfig(); // *********   siteConfig is ready now *******
 
   if (window.cmsplus.environment === 'preview') {
     await import('./debugPanel.js');
   }
-
-  initClientConfig(); // *********   siteConfig is ready now *******
 
   // all configuration completed, make any further callbacks from here
 
