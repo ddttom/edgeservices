@@ -6,6 +6,9 @@
       {
         "Item": "$system:myname$",
         "Value": "preview"
+      },{
+        "Item":"$system:allowtracking$",
+        "Value": "y"
       }
     ],
     ":type": "fallback"
