@@ -70,18 +70,18 @@ window.cmsplus.track.page.pageQueryString = "";
 if (window.location.search) {
   window.cmsplus.track.page.pageQueryString = window.location.search;
 }
-let pathname="none";
+let pathName="none";
 window.cmsplus.track.page.previousPageURL = document.referrer || '';
 if (window.cmsplus.track.page.previousPageURL.length > 0) {
 try {
   const url = new URL(document.referrer);
-  pathname = url.pathname.startsWith("/") ? url.pathname.substring(1) : url.pathname;
-  pathname = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  pathName = url.pathName.startsWith("/") ? url.pathName.substring(1) : url.pathName;
+  pathName = pathName.endsWith("/") ? pathName.slice(0, -1) : pathName;
   } catch (error) {
-    pathname="none";
+    pathName="none";
   }
 }
-window.cmsplus.track.page.previousPageName = pathname;
+window.cmsplus.track.page.previousPageName = pathName;
 `;
                 }
               }
