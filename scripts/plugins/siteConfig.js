@@ -21,7 +21,9 @@ import {
   constructGlobal
 } from './variables.js';
 
-import { handleMetadataJsonLd } from './jsonHandler.js';
+import { initialize as initClientConfig } from './clientConfig.js';
+
+import { handleMetadataJsonLd, createJSON } from './jsonHandler.js';
 
 await import('../../config/config.js');
 
@@ -63,12 +65,13 @@ window.cmsplus.callbackAfter3SecondsChain = [];
 window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
 window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
 
-constructGlobal(); // *********   siteConfig is ready now *******
+constructGlobal();
 
 if (window.cmsplus.environment === 'preview') {
   await import('./debugPanel.js');
 }
-await import('./clientConfig.js');
+
+initClientConfig(); // *********   siteConfig is ready now *******
 
 // all configuration completed, make any further callbacks from here
 
@@ -78,8 +81,8 @@ await import('./clientConfig.js');
 
 export async function initialize() {
   await tidyDOM();
+  await createJSON();
   await handleMetadataJsonLd();
-
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
     window.cmsplus.callbackCreateDebug?.();

@@ -194,6 +194,6 @@ export async function handleMetadataJsonLd() {
       console.log('Error processing JSON-LD metadata:', error);
     }
   }
-  createJSON()
+
   return jsonString;
 }
