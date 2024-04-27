@@ -1,7 +1,7 @@
 /* adobe specific meta data handling */
 /* NO CLIENT CODE IN HERE JUST SETUP FOR ADOBE */
 
-import { replaceTokens } from './variables';
+import { replaceTokens } from './variables.js';
 
 function loadAnalyticsDebugPanel() {
   let content = '';
