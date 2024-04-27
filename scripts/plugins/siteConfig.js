@@ -70,9 +70,8 @@ export async function initialize() {
   window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
 
   await constructGlobal();
-  await initClientConfig();
   await createJSON();// *********   siteConfig is ready now *******
-
+  await initClientConfig();
   if (window.cmsplus.environment === 'preview') {
     await import('./debugPanel.js');
   }
