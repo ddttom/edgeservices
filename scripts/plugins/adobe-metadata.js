@@ -66,22 +66,24 @@ async function handleMetadataTracking() {
                 buildscript += fraction;
                 if (tracker === 'page') {
                   buildscript += `
-window.cmsplus.track.page.pageQueryString = "";
-if (window.location.search) {
-  window.cmsplus.track.page.pageQueryString = window.location.search;
-}
-let pathName="none";
-window.cmsplus.track.page.previousPageURL = document.referrer || '';
-if (window.cmsplus.track.page.previousPageURL.length > 0) {
-try {
-  const url = new URL(document.referrer);
-  pathName = url.pathName.startsWith("/") ? url.pathName.substring(1) : url.pathName;
-  pathName = pathName.endsWith("/") ? pathName.slice(0, -1) : pathName;
-  } catch (error) {
-    pathName="none";
-  }
-}
-window.cmsplus.track.page.previousPageName = pathName;
+                  (function() {
+                    const cms = window.cmsplus.track.page;
+                    cms.pageQueryString = window.location.search || "";
+                    cms.previousPageURL = document.referrer || '';
+                    let previousPageName = "none";
+                    if (cms.previousPageURL) {
+                      try {
+                        const url = new URL(cms.previousPageURL);
+                        previousPageName = url.pathname; 
+                        previousPageName = previousPageName.startsWith("/") ? previousPageName.substring(1) : previousPageName;
+                        previousPageName = previousPageName.endsWith("/") ? previousPageName.slice(0, -1) : previousPageName;
+                      } catch (error) {
+                        console.log("Error parsing URL: ", error);
+                        previousPageName = "none";
+                      }
+                    }
+                    cms.previousPageName = previousPageName;
+                  })();
 `;
                 }
               }
