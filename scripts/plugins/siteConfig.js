@@ -23,7 +23,7 @@ import {
 } from './variables.js';
 
 import {
-  initialize as initClientConfig
+  initializeClientConfig
 } from './clientConfig.js';
 
 import {
@@ -74,7 +74,7 @@ export async function initializeSiteConfig() {
   await constructGlobal();
   swiftChangesToDOM();
   await createJSON();// *********   siteConfig is ready now *******
-  await initClientConfig();
+  await initializeClientConfig();
   if (window.cmsplus.environment === 'preview') {
     await import('./debugPanel.js');
   }

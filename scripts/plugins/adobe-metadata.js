@@ -17,7 +17,7 @@ function loadAnalyticsDebugPanel() {
 
   return content;
 }
-export async function initialize() {
+export async function initializeTracker() {
   // eslint-disable-next-line no-use-before-define
   await handleMetadataTracking();
 }

@@ -1,7 +1,7 @@
 // Place any Client- Centered Code/  Configuration in here /
 import { loadScript } from '../aem.js';
 
-import { initialize as initTracker } from './adobe-metadata.js';
+import { initializeTracker } from './adobe-metadata.js';
 
 function enableDanteChat() {
   window.danteEmbed = `https://chat.dante-ai.com/embed?${window.cmsplus.helpapi}&mode=false&bubble=true&image=null&bubbleopen=false`;
@@ -39,8 +39,8 @@ export default async function enableTracking() {
   }
 }
 
-export async function initialize() {
-  window.cmsplus.callbackMetadataTracker = initTracker;
+export async function initializeClientConfig() {
+  window.cmsplus.callbackMetadataTracker = initializeTracker;
   if (window.siteConfig['$system:allowtracking$'] === 'y') {
     window.cmsplus.callbackPageLoadChain.push(enableTracking);
   }
