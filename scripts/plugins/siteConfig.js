@@ -5,7 +5,7 @@
 
    NOTHING iN HERE CAN USE OR DERIVE FROM siteConfig
    i.e no use of siteConfig['$meta:author$'] etc
-   The stuff in here has to be supe4r fast
+   The stuff in here has to be super fast
    do not use ffetch or loading 3rd party libs
    all such things should be done in their own plugin
 
@@ -81,6 +81,7 @@ export async function initializeSiteConfig() {
 
   // all configuration completed, make any further callbacks from here
 
+  // attempt at overwriting the loadDelayed function
   // window.cmsplus.loadDelayed = function loadDelayed() {
   // window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
   // };
