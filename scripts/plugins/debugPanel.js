@@ -93,29 +93,29 @@ export default function initializeDebugPanel(jsonLdStringInit, dcStringInit, coS
   jsonLdString = jsonLdStringInit;
   dcString = dcStringInit;
   coString = coStringInit;
-}
-window.cmsplus.callbackCreateDebugPanel = createDebugPanel;
 
-window.onerror = (message, source, lineno, colno, error) => {
-  const errorDetails = {
-    message,
-    source,
-    line: lineno,
-    column: colno,
-    error,
+  window.cmsplus.callbackCreateDebugPanel = createDebugPanel;
+
+  window.onerror = (message, source, lineno, colno, error) => {
+    const errorDetails = {
+      message,
+      source,
+      line: lineno,
+      column: colno,
+      error,
+    };
+    window.cmsplus.errors.push(errorDetails);
+
+    // Return true to prevent the default error handling
+    return true;
   };
-  window.cmsplus.errors.push(errorDetails);
 
-  // Return true to prevent the default error handling
-  return true;
-};
+  // Override console methods
+  const originalConsoleLog = console.log;
 
-// Override console methods
-const originalConsoleLog = console.log;
-
-console.log = (...args) => {
-  window.cmsplus.consoleMessages.push({ level: 'log', message: args });
-  originalConsoleLog.apply(console, args);
-};
-
+  console.log = (...args) => {
+    window.cmsplus.consoleMessages.push({ level: 'log', message: args });
+    originalConsoleLog.apply(console, args);
+  };
+}
 initializeDebugPanel('', '', '');
