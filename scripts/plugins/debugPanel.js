@@ -88,11 +88,14 @@ export function createDebugPanel() {
     }
   });
 }
-
+export function debug(message) {
+  console.log(message);
+}
 export default function initializeDebugPanel(jsonLdStringInit, dcStringInit, coStringInit) {
   jsonLdString = jsonLdStringInit;
   dcString = dcStringInit;
   coString = coStringInit;
+  debug('initializeDebugPanel called');
 
   window.cmsplus.callbackCreateDebugPanel = createDebugPanel;
 
