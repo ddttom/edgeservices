@@ -6,12 +6,7 @@ function toggleDebugPanel() {
 let jsonLdString;
 let dcString;
 let coString;
-
-export function debug(message) {
-  console.log(message);
-}
 function createDebugPanel() {
-  debug('createDebug Panel called');
   const debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
 
@@ -66,7 +61,6 @@ function createDebugPanel() {
   content = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
   debugPanel.innerHTML = content;
   document.body.appendChild(debugPanel);
-  debug('content placed for debug panel');
   // Event listener for keyboard shortcut
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
