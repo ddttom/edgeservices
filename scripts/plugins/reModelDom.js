@@ -92,7 +92,7 @@ function makeLinksRelative() {
   }
 }
 
-export default async function possibleMobileFix(container) {
+export async function possibleMobileFix(container) {
   // Select the element by its class
 
   const firstPicture = document.querySelector(`.${container} > div:first-of-type picture`);
@@ -116,6 +116,16 @@ export default async function possibleMobileFix(container) {
     }
   }
 }
+function DynamicSVGWidthHeight() {
+  // Add dynamic width and height to all SVG image
+  const imgSvg = document.querySelectorAll('img[src$=".svg"]');
+  imgSvg.forEach((img) => {
+    const imgWidth = img.clientWidth;
+    const imgHeight = img.clientHeight;
+    img.setAttribute('width', imgWidth);
+    img.setAttribute('height', imgHeight);
+  });
+}
 /**
  * Adds a <meta> element to the <head> of the document with the given name and content.
  * If a meta element with the given name already exists, it is not added.
@@ -135,11 +145,16 @@ function createTitle() {
     }
   }
 }
-
-export async function tidyDOM() {
+// perform very fast changes.n before the page is shown
+export function swiftChangesToDOM() {
   possibleMobileFix('hero');
-  makeLinksRelative();
   addByLine();
+  DynamicSVGWidthHeight();
+}
+
+// tidyDOM is the slow fixes to the Dom that do not change styes or view
+export async function tidyDOM() {
+  makeLinksRelative();
   createTitle();
   removeCommentBlocks();
   removeMeta();
@@ -185,15 +200,6 @@ export async function tidyDOM() {
     if (link.href === currentPage) {
       link.classList.add('current');
     }
-  });
-
-  // Add dynamic width and height to all SVG image
-  const imgSvg = document.querySelectorAll('img[src$=".svg"]');
-  imgSvg.forEach((img) => {
-    const imgWidth = img.clientWidth;
-    const imgHeight = img.clientHeight;
-    img.setAttribute('width', imgWidth);
-    img.setAttribute('height', imgHeight);
   });
 }
 

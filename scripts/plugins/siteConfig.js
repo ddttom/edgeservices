@@ -13,7 +13,8 @@
 */
 
 import {
-  tidyDOM
+  tidyDOM,
+  swiftChangesToDOM
 } from './reModelDom.js';
 
 import {
@@ -49,9 +50,9 @@ export async function initialize() {
   const getLocality = () => {
     if (window.location.href.includes('localhost')) {
       return 'local';
-    } if (window.location.href.includes('stage')) {
+    } if (window.location.href.includes('stage') || window.location.href.includes('--ddttom')) {
       return 'stage';
-    } if (window.location.href.includes('prod')) {
+    } if (window.location.href.includes('prod') || window.location.href.includes('--ddttom')) {
       return 'prod';
     } if (window.location.href.includes('dev')) {
       return 'dev';
@@ -68,8 +69,8 @@ export async function initialize() {
 
   window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
   window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
-
   await constructGlobal();
+  swiftChangesToDOM();
   await createJSON();// *********   siteConfig is ready now *******
   await initClientConfig();
   if (window.cmsplus.environment === 'preview') {
