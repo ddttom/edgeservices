@@ -85,6 +85,7 @@ export function createDebugPanel() {
   content = `${content + errlist}<br>`;
   debugPanel.innerHTML = content;
   document.body.appendChild(debugPanel);
+  debugPanel('content placed for debug panel');
   // Event listener for keyboard shortcut
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
