@@ -89,12 +89,12 @@ export function createDebugPanel() {
   });
 }
 
-export function initialize(jsonLdStringInit, dcStringInit, coStringInit) {
+export default function initializeDebugPanel(jsonLdStringInit, dcStringInit, coStringInit) {
   jsonLdString = jsonLdStringInit;
   dcString = dcStringInit;
   coString = coStringInit;
 }
-window.cmsplus.callbackCreateDebug = createDebugPanel;
+window.cmsplus.callbackCreateDebugPanel = createDebugPanel;
 
 window.onerror = (message, source, lineno, colno, error) => {
   const errorDetails = {
@@ -118,4 +118,4 @@ console.log = (...args) => {
   originalConsoleLog.apply(console, args);
 };
 
-initialize('', '', '');
+initializeDebugPanel('', '', '');

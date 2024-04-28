@@ -35,7 +35,7 @@ await import('../../config/config.js');
 
 function noAction() {
 }
-export async function initialize() {
+export async function initializeSiteConfig() {
 // Determine the environment and locality based on the URL
   const getEnvironment = () => {
     if (window.location.href.includes('.html')) {
@@ -89,7 +89,7 @@ export async function initialize() {
   await handleMetadataJsonLd();
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
-    window.cmsplus.callbackCreateDebug?.();
+    window.cmsplus.callbackPanel?.();
   }
   // eslint-disable-next-line no-restricted-syntax
   for (const callback of window.cmsplus.callbackPageLoadChain) {
@@ -97,4 +97,4 @@ export async function initialize() {
     await callback();
   }
 }
-initialize();
+initializeSiteConfig();
