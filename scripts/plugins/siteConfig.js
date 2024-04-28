@@ -98,4 +98,3 @@ export async function initializeSiteConfig() {
     await callback();
   }
 }
-initializeSiteConfig();
