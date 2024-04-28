@@ -13,7 +13,7 @@ window.cmsplus.consoleMessages = [];
 export function debug(message) {
   console.log(message);
 }
-export function createDebugPanel() {
+function createDebugPanel() {
   debug('createDebug Panel called');
   const debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
@@ -85,7 +85,7 @@ export function createDebugPanel() {
   content = `${content + errlist}<br>`;
   debugPanel.innerHTML = content;
   document.body.appendChild(debugPanel);
-  debugPanel('content placed for debug panel');
+  debug('content placed for debug panel');
   // Event listener for keyboard shortcut
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.shiftKey && event.key === 'D') { // Ctrl + Shift + D
@@ -93,7 +93,7 @@ export function createDebugPanel() {
     }
   });
 }
-export default function initializeDebugPanel(jsonLdStringInit, dcStringInit, coStringInit) {
+export function initializeDebugPanel(jsonLdStringInit, dcStringInit, coStringInit) {
   jsonLdString = jsonLdStringInit;
   dcString = dcStringInit;
   coString = coStringInit;
