@@ -76,7 +76,7 @@ export async function initialize() {
   await createJSON();// *********   siteConfig is ready now *******
   await initClientConfig();
   if (window.cmsplus.environment === 'preview') {
-    // await import('./debugPanel.js');
+    await import('./debugPanel.js');
   }
 
   // all configuration completed, make any further callbacks from here
