@@ -14,6 +14,7 @@
 
 import {
   tidyDOM,
+  possibleMobileFix,
   swiftChangesToDOM
 } from './reModelDom.js';
 
@@ -69,6 +70,7 @@ export async function initialize() {
 
   window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
   window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
+  possibleMobileFix('hero');
   await constructGlobal();
   swiftChangesToDOM();
   await createJSON();// *********   siteConfig is ready now *******

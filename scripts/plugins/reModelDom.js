@@ -147,7 +147,6 @@ function createTitle() {
 }
 // perform very fast changes.n before the page is shown
 export function swiftChangesToDOM() {
-  possibleMobileFix('hero');
   addByLine();
   DynamicSVGWidthHeight();
 }
