@@ -10,7 +10,11 @@ let coString;
 window.cmsplus.errors = [];
 window.cmsplus.consoleMessages = [];
 
+export function debug(message) {
+  console.log(message);
+}
 export function createDebugPanel() {
+  debug('createDebug Panel called');
   const debugPanel = document.createElement('div');
   debugPanel.id = 'debug-panel';
 
@@ -87,9 +91,6 @@ export function createDebugPanel() {
       toggleDebugPanel();
     }
   });
-}
-export function debug(message) {
-  console.log(message);
 }
 export default function initializeDebugPanel(jsonLdStringInit, dcStringInit, coStringInit) {
   jsonLdString = jsonLdStringInit;
