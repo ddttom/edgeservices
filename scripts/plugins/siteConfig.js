@@ -90,7 +90,7 @@ export async function initializeSiteConfig() {
   await handleMetadataJsonLd();
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
-    window.cmsplus.callbackPanel?.();
+    window.cmsplus.callbackCreateDebugPanel?.();
   }
   // eslint-disable-next-line no-restricted-syntax
   for (const callback of window.cmsplus.callbackPageLoadChain) {
