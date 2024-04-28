@@ -7,9 +7,6 @@ let jsonLdString;
 let dcString;
 let coString;
 
-window.cmsplus.errors = [];
-window.cmsplus.consoleMessages = [];
-
 export function debug(message) {
   console.log(message);
 }
@@ -67,22 +64,6 @@ function createDebugPanel() {
     }
   }
   content = `<h2>Debug Panel, Shift-Ctrl-d to close</h2>${content}`;
-
-  let cmess = '';
-  if (window.cmsplus.consoleMessages.length > 0) {
-    cmess = 'Console Messages<br>';
-    window.cmsplus.consoleMessages.forEach((entry) => {
-      cmess = `${cmess} Level: ${entry.level} Message: ${entry.message}<br>`;
-    });
-  }
-  let errlist = '';
-  if (window.cmsplus.errors.length > 0) {
-    errlist = 'Errors encountered during processing<br>';
-    window.cmsplus.errors.forEach((error) => {
-      errlist = `Error: ${error.message} Source: ${error.source} Line: ${error.line}`;
-    });
-  }
-  content = `${content + errlist}<br>`;
   debugPanel.innerHTML = content;
   document.body.appendChild(debugPanel);
   debug('content placed for debug panel');
@@ -97,30 +78,6 @@ export function initializeDebugPanel(jsonLdStringInit, dcStringInit, coStringIni
   jsonLdString = jsonLdStringInit;
   dcString = dcStringInit;
   coString = coStringInit;
-  debug('initializeDebugPanel called');
-
   window.cmsplus.callbackCreateDebugPanel = createDebugPanel;
-
-  window.onerror = (message, source, lineno, colno, error) => {
-    const errorDetails = {
-      message,
-      source,
-      line: lineno,
-      column: colno,
-      error,
-    };
-    window.cmsplus.errors.push(errorDetails);
-
-    // Return true to prevent the default error handling
-    return true;
-  };
-
-  // Override console methods
-  const originalConsoleLog = console.log;
-
-  console.log = (...args) => {
-    window.cmsplus.consoleMessages.push({ level: 'log', message: args });
-    originalConsoleLog.apply(console, args);
-  };
 }
 initializeDebugPanel('', '', '');
