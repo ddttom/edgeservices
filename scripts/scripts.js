@@ -18,7 +18,7 @@ import {
 } from './aem.js';
 
 await import('./plugins/siteConfig.js');
-await import('./plugins/externalImage.js');
+// await import('./plugins/externalImage.js');
 
 const LCP_BLOCKS = []; // add your LCP blocks to the lis
 const AUDIENCES = {
