@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
+import { getConfigTruth } from './variables.js';
+
 function findTitleElement() {
   const h1 = document.querySelector('h1'); // Prioritize H1
   if (h1) return h1;
@@ -15,7 +17,83 @@ function findTitleElement() {
   }
   return null; // No suitable title found
 }
-export default async function possibleMobileFix(container) {
+export function addByLine() {
+  if (getConfigTruth('$system:addbyline$')) {
+    if (!window.siteConfig['$meta:suppressbyline$']) {
+      const firstH1 = document.querySelector('h1');
+      if (firstH1) {
+        const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
+        // Append the constructed string to the h1 element's current content
+        const newElement = document.createElement('div');
+        newElement.className = 'byLine';
+        newElement.innerHTML = appendString;
+        firstH1.insertAdjacentElement('afterend', newElement);
+      }
+    }
+  }
+}
+export function removeMeta() {
+  const metadataNames = [
+    'description',
+    'twitter:card',
+    'twitter:title',
+    'twitter:description',
+    'twitter:image',
+    'referrer',
+    'viewport',
+    'og:title',
+    'og:description',
+    'og:image',
+    'og:type',
+    'og:url',
+    'og:site_name',
+    'keywords',
+  ];
+  const elements = document.querySelectorAll('meta[name]');
+
+  elements.forEach((element) => {
+    const name = element.getAttribute('name');
+    if (!metadataNames.includes(name)) {
+      element.remove();
+    }
+  });
+}
+export function removeCommentBlocks() {
+  document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
+}
+
+function makeLinksRelative() {
+  function sanitize(url) {
+    let ret = url.trim();
+    if (!ret.endsWith('/')) {
+      ret = `${ret}/`;
+    }
+    return ret;
+  }
+  const domains = [];
+  domains.push(sanitize(window.location.origin));
+  const finalUrl = window.finaLUrl;
+  if (finalUrl) {
+    domains.push(sanitize(finalUrl));
+  }
+  const links = document.getElementsByTagName('a');
+  for (let i = 0; i < links.length; i += 1) {
+    const link = links[i];
+    const href = link.getAttribute('href');
+    if (href) {
+      for (let j = 0; j < domains.length; j += 1) {
+        const domain = domains[j];
+        if (href.startsWith(domain)) {
+          const relativePath = href.slice(domain.length);
+          link.setAttribute('href', relativePath);
+          break;
+        }
+      }
+    }
+  }
+}
+
+export async function possibleMobileFix(container) {
   // Select the element by its class
 
   const firstPicture = document.querySelector(`.${container} > div:first-of-type picture`);
@@ -39,13 +117,23 @@ export default async function possibleMobileFix(container) {
     }
   }
 }
+function DynamicSVGWidthHeight() {
+  // Add dynamic width and height to all SVG image
+  const imgSvg = document.querySelectorAll('img[src$=".svg"]');
+  imgSvg.forEach((img) => {
+    const imgWidth = img.clientWidth;
+    const imgHeight = img.clientHeight;
+    img.setAttribute('width', imgWidth);
+    img.setAttribute('height', imgHeight);
+  });
+}
 /**
  * Adds a <meta> element to the <head> of the document with the given name and content.
  * If a meta element with the given name already exists, it is not added.
  * @param {string} name The name of the meta element.
  * @param {string} content The content of the meta element.
  */
-export function createTitle() {
+function createTitle() {
   const metaTitle = document.querySelector('meta[name="title"]');
   if (!metaTitle) {
     const titleElement = findTitleElement();
@@ -58,15 +146,18 @@ export function createTitle() {
     }
   }
 }
+// perform very fast changes.n before the page is shown
+export function swiftChangesToDOM() {
+  addByLine();
+  DynamicSVGWidthHeight();
+}
 
-/**
- * The `tidyDOM` function in JavaScript performs various DOM manipulations such as removing titles from
- * links with images, adding roles to buttons, setting target blank for external links, adding classes
- * to current visited links, adjusting SVG image dimensions, fetching Lighthouse results via API, and
- * displaying formatted date and time in a modal box.
- */
+// tidyDOM is the slow fixes to the Dom that do not change styes or view
 export async function tidyDOM() {
-  possibleMobileFix('hero');
+  makeLinksRelative();
+  createTitle();
+  removeCommentBlocks();
+  removeMeta();
   if (document.querySelector('coming-soon')) {
     DocumentFragment.body.classList.add('hide');
   }
@@ -110,96 +201,10 @@ export async function tidyDOM() {
       link.classList.add('current');
     }
   });
+}
 
-  // Add dynamic width and height to all SVG image
-  const imgSvg = document.querySelectorAll('img[src$=".svg"]');
-  imgSvg.forEach((img) => {
-    const imgWidth = img.clientWidth;
-    const imgHeight = img.clientHeight;
-    img.setAttribute('width', imgWidth);
-    img.setAttribute('height', imgHeight);
-  });
-}
-export function removeCommentBlocks() {
-  document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
-}
-function sanitize(url) {
-  let ret = url.trim();
-  if (!ret.endsWith('/')) {
-    ret = `${ret}/`;
-  }
-  return ret;
-}
-export function makeLinksRelative() {
-  const domains = [];
-  domains.push(sanitize(window.location.origin));
-  const finalUrl = window.siteConfig['$system:url$'];
-  if (finalUrl) {
-    domains.push(sanitize(finalUrl));
-  }
-  const links = document.getElementsByTagName('a');
-  for (let i = 0; i < links.length; i += 1) {
-    const link = links[i];
-    const href = link.getAttribute('href');
-    if (href) {
-      for (let j = 0; j < domains.length; j += 1) {
-        const domain = domains[j];
-        if (href.startsWith(domain)) {
-          const relativePath = href.slice(domain.length);
-          link.setAttribute('href', relativePath);
-          break;
-        }
-      }
-    }
-  }
-}
 export function allowAnimations() {
-}
-export function addByLine() {
-  if (window.siteConfig['$system:addbyline$'] === 'true') {
-    if (!window.siteConfig['$meta:suppressbyline$']) {
-      const firstH1 = document.querySelector('h1');
-      if (firstH1) {
-        const appendString = `Published: ${window.siteConfig['$system:dateinenglish$']}; By ${window.siteConfig['$meta:author$']},  ${window.siteConfig['$page:readspeed$']} </strong>minute(s) reading.`;
-        // Append the constructed string to the h1 element's current content
-        const newElement = document.createElement('div');
-        newElement.className = 'byLine';
-        newElement.innerHTML = appendString;
-        firstH1.insertAdjacentElement('afterend', newElement);
-      }
-    }
-  }
-}
-export function removeMeta() {
-  const metadataNames = [
-    'description',
-    'twitter:card',
-    'twitter:title',
-    'twitter:description',
-    'twitter:image',
-    'referrer',
-    'viewport',
-    'og:title',
-    'og:description',
-    'og:image',
-    'og:type',
-    'og:url',
-    'og:site_name',
-    'keywords',
-  ];
-  const elements = document.querySelectorAll('meta[name]');
-
-  elements.forEach((element) => {
-    const name = element.getAttribute('name');
-    if (!metadataNames.includes(name)) {
-      element.remove();
-    }
-  });
 }
 export function create3SecondDelayFunction() {
   window.cmsplus.callbackAfter3SecondsChain.push(allowAnimations);
 }
-
-export function initialize() {
-}
-initialize();

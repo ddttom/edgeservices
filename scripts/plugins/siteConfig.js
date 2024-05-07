@@ -1,88 +1,116 @@
+/* eslint-disable no-restricted-syntax */
 /* site configuration module */
+/*
+
+   ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+   NOTHING iN HERE CAN USE OR DERIVE FROM siteConfig
+   until you are sure you know what you are doing
+   i.e no use of siteConfig['$meta:author$'] etc
+   The stuff in here has to be super fast
+   do not use ffetch or loading 3rd party libs
+   all such things should be done in their own plugin
+   after the call to createJSON is done siteConfig[...]
+   is ok
+   ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+*/
+
 import {
-  createTitle,
   tidyDOM,
-  makeLinksRelative,
-  removeCommentBlocks,
-  addByLine,
-  removeMeta
+  possibleMobileFix,
+  swiftChangesToDOM
 } from './reModelDom.js';
+
 import {
-  // eslint-disable-next-line comma-dangle
   constructGlobal
 } from './variables.js';
 
-import { createJSON, handleMetadataJsonLd } from './jsonHandler.js';
+import {
+  initializeClientConfig
+} from './clientConfig.js';
+
+import {
+  handleMetadataJsonLd,
+  createJSON
+} from './jsonHandler.js';
+
+await import('../../config/config.js');
 
 function noAction() {
 }
-
+export async function initializeSiteConfig() {
 // Determine the environment and locality based on the URL
-const getEnvironment = () => {
-  if (window.location.href.includes('.html')) {
+  const getEnvironment = () => {
+  // Define an array of environments with their identifying substrings in the URL
+    const environments = [
+      { key: '.html', value: 'final' },
+      { key: 'hlx.page', value: 'preview' },
+      { key: 'hlx.live', value: 'live' },
+    ];
+
+    for (const env of environments) {
+      if (window.location.href.includes(env.key)) {
+        return env.value;
+      }
+    }
+    // If no match is found, it defaults to 'final'
     return 'final';
-  } if (window.location.href.includes('hlx.page')) {
-    return 'preview';
-  } if (window.location.href.includes('hlx.live')) {
-    return 'live';
-  }
-  return 'unknown';
-};
+  };
 
-const getLocality = () => {
-  if (window.location.href.includes('localhost')) {
-    return 'local';
-  } if (window.location.href.includes('stage')) {
-    return 'stage';
-  } if (window.location.href.includes('prod')) {
-    return 'prod';
-  } if (window.location.href.includes('dev')) {
-    return 'dev';
-  }
-  return 'unknown';
-};
+  const getLocality = () => {
+    const environments = [
+      { key: 'localhost', value: 'local' },
+      { key: 'stage', value: 'stage' },
+      { key: 'fastly', value: 'preprod' },
+      { key: 'preprod.', value: 'preprod' },
+      { key: 'prod', value: 'prod' },
+      { key: 'dev', value: 'dev' },
+    ];
+    for (const env of environments) {
+      if (window.location.href.includes(env.key)) {
+        return env.value;
+      }
+    }
 
-window.siteConfig = {};
+    // Return 'unknown' if no environment matches
+    return 'unknown';
+  };
 
-window.cmsplus = {
-  environment: getEnvironment(),
-  locality: getLocality(),
-};
-window.cmsplus.callbackPageLoadChain = [];
-window.cmsplus.callbackAfter3SecondsChain = [];
+  window.cmsplus = {
+    environment: getEnvironment(),
+    locality: getLocality(),
+  };
+  window.cmsplus.callbackPageLoadChain = [];
+  window.cmsplus.callbackAfter3SecondsChain = [];
 
-window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
-window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
-
-if (window.cmsplus.environment === 'preview') {
-  await import('./debugPanel.js');
-}
-await import('./clientConfig.js');
-
-// all configuration completed, make any further callbacks from here
-
-window.cmsplus.loadDelayed = function loadDelayed() {
-  window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
-};
-
-export async function initialize() {
-  await makeLinksRelative();
+  window.cmsplus.callbackAfter3SecondsChain.push(noAction); // set up nop.
+  window.cmsplus.callbackPageLoadChain.push(noAction); // set up nop.
+  possibleMobileFix('hero');
   await constructGlobal();
-  await createTitle();
-  await createJSON();
-  await handleMetadataJsonLd();
-  await removeCommentBlocks();
+  swiftChangesToDOM();
+  await createJSON();// *********   siteConfig is ready now *******
+  await initializeClientConfig();
+  if (window.cmsplus.environment === 'preview') {
+    import('./debugPanel.js');
+  }
+
+  // all configuration completed, make any further callbacks from here
+
+  // attempt at overwriting the loadDelayed function
+  // window.cmsplus.loadDelayed = function loadDelayed() {
+  // window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
+  // };
+
   await tidyDOM();
+  await handleMetadataJsonLd();
   await window.cmsplus?.callbackMetadataTracker?.();
   if (window.cmsplus.environment !== 'final') {
-    window.cmsplus.callbackCreateDebug?.();
+    window.cmsplus.callbackCreateDebugPanel?.();
   }
-  await addByLine();
-  await removeMeta();
   // eslint-disable-next-line no-restricted-syntax
   for (const callback of window.cmsplus.callbackPageLoadChain) {
-    // eslint-disable-next-line no-await-in-loop
+  // eslint-disable-next-line no-await-in-loop
     await callback();
   }
 }
-initialize();

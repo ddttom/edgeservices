@@ -3,7 +3,7 @@ export async function readVariables(configUrl) {
   try {
     const response = await fetch(configUrl);
     if (!response.ok) {
-      console.error(`Failed to fetch config: ${response.status} ${response.statusText}`);
+      console.log(`Failed to fetch config: ${response.status} ${response.statusText}`);
     } else {
       const jsonData = await response.json();
       // eslint-disable-next-line no-restricted-syntax
@@ -12,7 +12,7 @@ export async function readVariables(configUrl) {
       }
     }
   } catch (error) {
-    console.error(`unable to read config: ${error.message}`);
+    console.log(`unable to read config: ${error.message}`);
   }
 }
 
@@ -28,10 +28,6 @@ export function replaceTokens(data, text) {
   }
   return ret;
 }
-export function initialize() {
-}
-initialize();
-
 export const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 export function getMonthNumber(monthName) {
@@ -84,14 +80,15 @@ export function convertToISODate(input) {
 }
 
 export async function constructGlobal() {
+  window.siteConfig = {};
+
   await readVariables(new URL('/config/variables.json', window.location.origin));
   if (['final', 'preview', 'live'].includes(window.cmsplus.environment)) {
     await readVariables(new URL(`/config/variables-${window.cmsplus.environment}.json`, window.location.origin));
   }
-  if (['local', 'dev', 'prod', 'stage'].includes(window.cmsplus.locality)) {
+  if (['local', 'dev', 'preprod', 'prod', 'stage'].includes(window.cmsplus.locality)) {
     await readVariables(new URL(`/config/variables-${window.cmsplus.locality}.json`, window.location.origin));
   }
-  await readVariables(new URL('/config/constants.json', window.location.origin));
   try {
     const now = new Date().toISOString();
     let href = '';
@@ -102,7 +99,7 @@ export async function constructGlobal() {
     const pname = new URL(window.location.href).pathname;
 
     const text = document.body.innerText; // Get the visible text content of the body
-    const wordCount = text.split(/\s+/).filter(Boolean).length; // Split by whitespace and count
+    const wordCount = text.split(/\s+/).filter(Boolean).length; // Split by whitespace
     const thismonth = new Date().getMonth();
     const winloc = window.location.href;
 
@@ -146,6 +143,16 @@ export async function constructGlobal() {
 
     window.siteConfig['$system:dateinenglish$'] = `${capitalizedMonth} ${window.siteConfig['$system:day$']}, ${window.siteConfig['$system:year$']}`;
   } catch (error) {
-    console.error('Problem constructing SiteConfig', error);
+    console.log('Problem constructing SiteConfig', error);
   }
+}
+
+export function getConfigTruth(variable) {
+  const value = window.siteConfig?.[variable];
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  const stringValue = (value || '').toLowerCase();
+  if (stringValue === 'true') return true;
+  return stringValue.startsWith('y');
 }

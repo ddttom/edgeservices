@@ -160,8 +160,7 @@ export function decorateExternalImages(ele, deliveryMarker) {
     }
   });
 }
-export function initialize() {
+export function initializeExternalImage() {
   decorateExternalImages(document.querySelector('main'), '//External Image//');
   decorateExternalImages(document.querySelector('main'));
 }
-initialize();
