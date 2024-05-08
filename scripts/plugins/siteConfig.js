@@ -99,7 +99,7 @@ export async function initializeSiteConfig() {
 
   // attempt at overwriting the loadDelayed function
   // window.cmsplus.loadDelayed = function loadDelayed() {
-  // window.setTimeout(() => import('../delayed.js'), window.cmsplus.analyticsdelay);
+  // window.setTimeout(() => import('../delayed.js'), 3000;
   // };
 
   await tidyDOM();
