@@ -3,20 +3,6 @@
 /* eslint-disable no-restricted-syntax */
 import { getConfigTruth } from './variables.js';
 
-function findTitleElement() {
-  const h1 = document.querySelector('h1'); // Prioritize H1
-  if (h1) return h1;
-
-  // Look in more specific areas (adjust selectors as needed)
-  const mainContent = document.querySelector('main') || document.querySelector('article');
-  if (mainContent) {
-    const potentialText = mainContent.firstChild;
-    if (potentialText && potentialText.nodeType === Node.TEXT_NODE) {
-      return potentialText;
-    }
-  }
-  return null; // No suitable title found
-}
 export function addByLine() {
   if (getConfigTruth('$system:addbyline$')) {
     if (!window.siteConfig['$meta:suppressbyline$']) {
@@ -62,35 +48,15 @@ export function removeCommentBlocks() {
   document.querySelectorAll('div.section-metadata.comment').forEach((section) => section.remove());
 }
 
-function makeLinksRelative() {
-  function sanitize(url) {
-    let ret = url.trim();
-    if (!ret.endsWith('/')) {
-      ret = `${ret}/`;
-    }
-    return ret;
-  }
-  const domains = [];
-  domains.push(sanitize(window.location.origin));
-  const finalUrl = window.finaLUrl;
-  if (finalUrl) {
-    domains.push(sanitize(finalUrl));
-  }
-  const links = document.getElementsByTagName('a');
-  for (let i = 0; i < links.length; i += 1) {
-    const link = links[i];
-    const href = link.getAttribute('href');
-    if (href) {
-      for (let j = 0; j < domains.length; j += 1) {
-        const domain = domains[j];
-        if (href.startsWith(domain)) {
-          const relativePath = href.slice(domain.length);
-          link.setAttribute('href', relativePath);
-          break;
-        }
-      }
-    }
-  }
+function DynamicSVGWidthHeight() {
+  // Add dynamic width and height to all SVG image
+  const imgSvg = document.querySelectorAll('img[src$=".svg"]');
+  imgSvg.forEach((img) => {
+    const imgWidth = img.clientWidth;
+    const imgHeight = img.clientHeight;
+    img.setAttribute('width', imgWidth);
+    img.setAttribute('height', imgHeight);
+  });
 }
 
 export async function possibleMobileFix(container) {
@@ -117,35 +83,6 @@ export async function possibleMobileFix(container) {
     }
   }
 }
-function DynamicSVGWidthHeight() {
-  // Add dynamic width and height to all SVG image
-  const imgSvg = document.querySelectorAll('img[src$=".svg"]');
-  imgSvg.forEach((img) => {
-    const imgWidth = img.clientWidth;
-    const imgHeight = img.clientHeight;
-    img.setAttribute('width', imgWidth);
-    img.setAttribute('height', imgHeight);
-  });
-}
-/**
- * Adds a <meta> element to the <head> of the document with the given name and content.
- * If a meta element with the given name already exists, it is not added.
- * @param {string} name The name of the meta element.
- * @param {string} content The content of the meta element.
- */
-function createTitle() {
-  const metaTitle = document.querySelector('meta[name="title"]');
-  if (!metaTitle) {
-    const titleElement = findTitleElement();
-    if (titleElement) {
-      const defaultTitle = titleElement.textContent.trim();
-      const title = document.createElement('meta');
-      title.name = 'title';
-      title.content = defaultTitle;
-      document.head.appendChild(title);
-    }
-  }
-}
 // perform very fast changes. before the page is shown
 export function swiftChangesToDOM() {
   addByLine();
@@ -159,8 +96,6 @@ export function swiftChangesToDOM() {
 
 // tidyDOM is the slow fixes to the Dom that do not change styes or view
 export async function tidyDOM() {
-  makeLinksRelative();
-  createTitle();
   removeCommentBlocks();
   removeMeta();
   if (document.querySelector('coming-soon')) {

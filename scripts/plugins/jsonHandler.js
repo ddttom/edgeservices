@@ -98,7 +98,7 @@ export function createJSON() {
   if (getConfigTruth('$meta:wantdublincore$')) {
     if (dcString.length > 2) {
       const script = document.createElement('script');
-      script.type = 'application/dc+json';
+      script.type = 'application/ld+json';
       script.setAttribute('data-role', 'dublin core');
       script.textContent = replaceTokens(window.siteConfig, dcString);
       document.head.appendChild(script);
@@ -144,7 +144,7 @@ export function createJSON() {
     coString = replaceTokens(window.siteConfig, coString);
     if (coString.length > 2) {
       const script = document.createElement('script');
-      script.type = 'application/co+json';
+      script.type = 'application/ld+json';
       script.setAttribute('data-role', 'content ops');
       script.textContent = replaceTokens(window.siteConfig, coString);
       document.head.appendChild(script);
