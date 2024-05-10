@@ -11,6 +11,7 @@
  */
 
 /* eslint-env browser */
+/* eslint-disable comma-dangle */
 
 /**
  * log RUM if part of the sample.
