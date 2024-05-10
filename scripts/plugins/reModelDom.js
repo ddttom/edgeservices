@@ -146,10 +146,15 @@ function createTitle() {
     }
   }
 }
-// perform very fast changes.n before the page is shown
+// perform very fast changes. before the page is shown
 export function swiftChangesToDOM() {
   addByLine();
   DynamicSVGWidthHeight();
+  const lang = window.siteConfig['$system:language$'];
+  document.querySelector('html').setAttribute('lang', lang);
+  if (lang === 'ar') {
+    document.querySelector('html').setAttribute('dir', 'rtl');
+  }
 }
 
 // tidyDOM is the slow fixes to the Dom that do not change styes or view
@@ -201,10 +206,4 @@ export async function tidyDOM() {
       link.classList.add('current');
     }
   });
-}
-
-export function allowAnimations() {
-}
-export function create3SecondDelayFunction() {
-  window.cmsplus.callbackAfter3SecondsChain.push(allowAnimations);
 }

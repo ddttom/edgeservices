@@ -33,7 +33,7 @@ export default async function enableTracking() {
         window.adobeDataLayer.push(window.cmsplus.track.content);
       }
     }
-    console.log('Added AdobeDataLayer');
+    //  console.log('Added AdobeDataLayer');
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log('failed to add cmsplus data to adobeDataLayer', e);

@@ -51,9 +51,12 @@ export function createJSON() {
       window.siteConfig[`$${prefix}${key}$`] = value;
     }
   });
+
+  // fix up missing configs
   window.siteConfig['$meta:author$'] ??= window.siteConfig['$company:name$'];
   window.siteConfig['$meta:contentauthor$'] ??= window.siteConfig['$meta:author$'];
   window.siteConfig['$meta:pagename$'] ??= window.siteConfig['$page:name$'];
+  window.siteConfig['$meta:longdescription$'] ??= window.siteConfig['$meta:description$'];
   if (window.siteConfig['$meta:pagename$'] === '/') {
     window.siteConfig['$meta:pagename$'] = 'home';
     window.siteConfig['$meta:category$'] ??= 'home';
@@ -71,28 +74,14 @@ export function createJSON() {
   const lang = metaProperties.reduce((acc, prop) => acc || window.siteConfig[prop], '') || window.navigator.language || defaultLang;
 
   window.siteConfig['$system:language$'] = lang;
-  document.querySelector('html').setAttribute('lang', lang);
-  if (lang === 'ar') {
-    document.querySelector('html').setAttribute('dir', 'rtl');
-  }
-
   co['co:language'] = lang;
   co['co:author'] = window.siteConfig['$meta:author$'];
-
-  // make the required globals
-  let buildscript = '';
-  const helpapikey = window.siteConfig['$system:.helpapikey$'] === undefined ? '' : window.siteConfig['$system:.helpapikey$'];
-  buildscript += `window.cmsplus.helpapi = "${helpapikey}";\n`;
-  buildscript += `window.cmsplus.environment = "${window.cmsplus.environment}";\n`;
-  let script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.textContent = buildscript;
-  document.head.appendChild(script);
+  window.cmsplus.helpapikey = window.siteConfig?.['$system:.helpapikey$'] ?? '';
 
   const dcString = JSON.stringify(dc, null, '\t');
   if (getConfigTruth('$meta:wantdublincore$')) {
     if (dcString.length > 2) {
-      script = document.createElement('script');
+      const script = document.createElement('script');
       script.type = 'application/dc+json';
       script.setAttribute('data-role', 'dublin core');
       script.textContent = replaceTokens(window.siteConfig, dcString);
@@ -138,7 +127,7 @@ export function createJSON() {
     let coString = JSON.stringify(co, null, '\t');
     coString = replaceTokens(window.siteConfig, coString);
     if (coString.length > 2) {
-      script = document.createElement('script');
+      const script = document.createElement('script');
       script.type = 'application/co+json';
       script.setAttribute('data-role', 'content ops');
       script.textContent = replaceTokens(window.siteConfig, coString);
