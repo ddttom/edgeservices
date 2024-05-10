@@ -74,6 +74,22 @@ export function createJSON() {
   const lang = metaProperties.reduce((acc, prop) => acc || window.siteConfig[prop], '') || window.navigator.language || defaultLang;
 
   window.siteConfig['$system:language$'] = lang;
+
+  if (window.siteConfig['$meta:command$'] !== undefined) {
+    const commands = (window.siteConfig['$meta:command$'].split(';'));
+    // eslint-disable-next-line no-restricted-syntax
+    for (const command of commands) {
+      const phrase = command.split('=');
+      if (phrase.length === 2) {
+        // eslint-disable-next-line prefer-destructuring, semi
+        window.siteConfig[`$${phrase[0]}$`] = phrase[1].trim();
+      }
+    }
+  }
+
+  if (window.siteConfig?.['$meta:category$'] === 'home') {
+    window.siteConfig['$meta:category$'] = 'none';
+  }
   co['co:language'] = lang;
   co['co:author'] = window.siteConfig['$meta:author$'];
   window.cmsplus.helpapikey = window.siteConfig?.['$system:.helpapikey$'] ?? '';
