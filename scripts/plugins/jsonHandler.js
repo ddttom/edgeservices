@@ -82,7 +82,7 @@ export function createJSON() {
       const phrase = command.split('=');
       if (phrase.length === 2) {
         // eslint-disable-next-line prefer-destructuring, semi
-        window.siteConfig[`$${phrase[0]}$`] = phrase[1].trim();
+        window.siteConfig[`$${phrase[0].trim().toLowerCase()}$`] = phrase[1].trim();
       }
     }
   }
