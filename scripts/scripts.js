@@ -17,8 +17,10 @@ import {
   loadCSS
 } from './aem.js';
 
-await import('./plugins/siteConfig.js');
-await import('./plugins/externalImage.js');
+import { initializeSiteConfig } from './plugins/siteConfig.js';
+
+initializeSiteConfig();
+
 const LCP_BLOCKS = []; // add your LCP blocks to the lis
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
