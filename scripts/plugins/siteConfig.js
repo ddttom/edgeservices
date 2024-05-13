@@ -35,9 +35,7 @@ import {
   createJSON
 } from './jsonHandler.js';
 
-import { initializeExternalImage } from './externalImage.js';
-
-initializeExternalImage();
+import { } from './externalImage.js';
 
 await import('../../config/config.js');
 
