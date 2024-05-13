@@ -96,8 +96,8 @@ export function swiftChangesToDOM() {
   }
 }
 function inject() {
-  if (window.siteConfig?.['$meta:inject']) {
-    const jsName = window.siteConfig['$meta:inject'];
+  if (window.siteConfig?.['$meta:inject$']) {
+    const jsName = window.siteConfig['$meta:inject$'];
     loadScript(jsName);
   }
 }
