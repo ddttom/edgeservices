@@ -17,9 +17,7 @@ import {
   loadCSS
 } from './aem.js';
 
-import { initializeSiteConfig } from './plugins/siteConfig.js';
-
-initializeSiteConfig();
+import { } from './plugins/siteConfig.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the lis
 const AUDIENCES = {
