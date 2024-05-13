@@ -95,7 +95,7 @@ export function swiftChangesToDOM() {
     document.querySelector('html').setAttribute('dir', 'rtl');
   }
 }
-export function inject() {
+function inject() {
   if (window.siteConfig?.['$meta:inject']) {
     const jsName = window.siteConfig['$meta:inject'];
     loadScript(jsName);
@@ -106,6 +106,7 @@ export function inject() {
 export async function tidyDOM() {
   removeCommentBlocks();
   removeMeta();
+  inject();
   if (document.querySelector('coming-soon')) {
     DocumentFragment.body.classList.add('hide');
   }
