@@ -95,7 +95,7 @@ export function swiftChangesToDOM() {
 }
 
 const loadScript = (url, type) => {
-  const head = document.querySelector('head');
+  const head = document.querySelector('body');
   const script = document.createElement('script');
   script.src = url;
   if (type) {
