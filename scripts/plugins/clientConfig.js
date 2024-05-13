@@ -14,15 +14,17 @@ function enableDanteChat() {
 }
 
 export default async function enableTracking() {
-  const attrs = {
-    id: 'Cookiebot',
-    'data-cbid': `${window.siteConfig['$system:cookiebotid$']}`,
-    'data-blockingmode': 'auto',
-  };
-  await loadScript('https://consent.cookiebot.com/uc.js', attrs);
-  await loadScript(`${window.siteConfig['$system:trackingscript$']}`, {});
-  loadScript(`${window.siteConfig['$system:abtastyscript$']}`, {});
-
+  if (window.siteConfig?.['$system:cookiebotid$']) {
+  // eslint-disable-next-line no-console
+    const attrs = {
+      id: 'Cookiebot',
+      'data-cbid': `${window.siteConfig['$system:cookiebotid$']}`,
+      'data-blockingmode': 'auto',
+    };
+    await loadScript('https://consent.cookiebot.com/uc.js', attrs);
+    await loadScript(`${window.siteConfig['$system:trackingscript$']}`, {});
+    loadScript(`${window.siteConfig['$system:abtastyscript$']}`, {});
+  }
   window.adobeDataLayer = window.adobeDataLayer || [];
   try {
     if (window.cmsplus?.track) {
