@@ -1,2 +1,2 @@
 // eslint-disable-next-line no-alert
-alert('hello world');
+// alert('hello world');

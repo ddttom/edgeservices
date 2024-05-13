@@ -3,6 +3,8 @@
 /* eslint-disable no-restricted-syntax */
 import { getConfigTruth } from './variables.js';
 
+import { loadScript } from '../aem.js';
+
 export function addByLine() {
   if (getConfigTruth('$system:addbyline$')) {
     if (!window.siteConfig['$meta:suppressbyline$']) {
@@ -93,17 +95,6 @@ export function swiftChangesToDOM() {
     document.querySelector('html').setAttribute('dir', 'rtl');
   }
 }
-
-const loadScript = (url, type) => {
-  const head = document.querySelector('main');
-  const script = document.createElement('script');
-  script.src = url;
-  if (type) {
-    script.setAttribute('type', type);
-  }
-  head.append(script);
-  return script;
-};
 
 function inject() {
   if (window.siteConfig?.['$meta:inject$']) {
