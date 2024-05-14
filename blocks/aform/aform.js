@@ -9,7 +9,6 @@ form.id = '_form_11_';
 form.classList.add('_form', '_form_11', '_inline-form', '_dark');
 form.setAttribute('novalidate', '');
 form.dataset.stylesVersion = '5';
-const formSupportsPost = true;
 
 const hiddenInputs = [
   { name: 'u', value: '11', 'data-name': 'u' },
@@ -272,7 +271,6 @@ const thankYouMessage = document.createElement('div');
 thankYouMessage.classList.add('_form-thank-you');
 thankYouMessage.style.display = 'none';
 form.appendChild(thankYouMessage);
-
 // Append the form to the document body or a specific container element
 document.querySelector('.aform-container').appendChild(form);
 
@@ -299,40 +297,31 @@ function showError(message) {
   errorElement.textContent = message;
   form.insertBefore(errorElement, form.firstChild);
 }
-
-// Function to load script
-function loadScript(url, callback, isSubmit) {
-  const script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = url;
-  script.onload = callback;
-  // eslint-disable-next-line func-names
-  script.onerror = function() {
-    if (isSubmit) {
-      const asubmitButton = form.querySelector('#_form_11_submit');
-      asubmitButton.disabled = false;
-      asubmitButton.classList.remove('processing');
-      showError('An error occurred. Please try again.');
-    }
-  };
-  document.body.appendChild(script);
-}
-
 // Function to submit form data
 async function submitForm(serialized) {
-  const formData = new FormData();
-  const searchParams = new URLSearchParams(serialized);
-  searchParams.forEach((value, key) => {
-    formData.append(key, value);
-  });
-  const response = await fetch('https://reply57035.activehosted.com/proc.php?jsonp=true', {
-    headers: {
-      Accept: 'application/json',
-    },
-    body: formData,
-    method: 'POST',
-  });
-  return response.json();
+  try {
+    const response = await fetch('https://reply57035.activehosted.com/proc.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: serialized,
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    // eslint-disable-next-line no-eval
+    eval(data.js);
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    const asubmitButton = form.querySelector('#_form_11_submit');
+    asubmitButton.disabled = false;
+    asubmitButton.classList.remove('processing');
+    showError('An error occurred. Please try again.');
+  }
 }
 
 // Serialization function
@@ -367,14 +356,7 @@ form.addEventListener('submit', function(e) {
     // eslint-disable-next-line no-unused-expressions
     err ? err.parentNode.removeChild(err) : false;
 
-    if (formSupportsPost) {
-      submitForm(serialized).then((data) => {
-        // eslint-disable-next-line no-eval
-        eval(data.js);
-      });
-    } else {
-      loadScript('https://reply57035.activehosted.com/proc.php?' + serialized + '&jsonp=true', null, true);
-    }
+    submitForm(serialized);
   }
   return false;
 });
