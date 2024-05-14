@@ -63,18 +63,6 @@ export function createJSON() {
   }
   window.siteConfig['$meta:category'] ??= 'none';
 
-  // decode the language
-  const defaultLang = 'en';
-  const metaProperties = [
-    '$meta:lang$',
-    '$meta:language$',
-    '$meta:dc-language$',
-  ];
-
-  const lang = metaProperties.reduce((acc, prop) => acc || window.siteConfig[prop], '') || window.navigator.language || defaultLang;
-
-  window.siteConfig['$system:language$'] = lang;
-
   if (window.siteConfig['$meta:command$'] !== undefined) {
     const commands = (window.siteConfig['$meta:command$'].split(';'));
     // eslint-disable-next-line no-restricted-syntax

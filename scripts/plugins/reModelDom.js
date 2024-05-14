@@ -87,7 +87,17 @@ export async function possibleMobileFix(container) {
 export function swiftChangesToDOM() {
   addByLine();
   DynamicSVGWidthHeight();
-  const lang = window.siteConfig['$system:language$'];
+
+  // decode the language
+  const defaultLang = 'en';
+  const metaProperties = [
+    '$meta:lang$',
+    '$meta:language$',
+    '$meta:dc-language$',
+  ];
+
+  const lang = metaProperties.reduce((acc, prop) => acc || window.siteConfig[prop], '') || window.navigator.language || defaultLang;
+  window.siteConfig['$system:language$'] = lang;
   document.querySelector('html').setAttribute('lang', lang);
   if (lang === 'ar') {
     document.querySelector('html').setAttribute('dir', 'rtl');
