@@ -269,7 +269,7 @@ thankYouMessage.style.display = 'none';
 form.appendChild(thankYouMessage);
 
 // Append the form to the document body or a specific container element
-document.body.appendChild(form);
+document.querySelector('.main').appendChild(form);
 
 // Add event listeners and form submission handling logic
 // ...
