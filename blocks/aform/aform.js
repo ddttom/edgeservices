@@ -1,3 +1,7 @@
+/* eslint-disable func-names */
+/* eslint-disable prefer-arrow-callback */
+/* eslint-disable prefer-template */
+/* eslint-disable no-continue */
 const form = document.createElement('form');
 form.method = 'POST';
 form.action = 'https://reply57035.activehosted.com/proc.php';
@@ -5,6 +9,7 @@ form.id = '_form_11_';
 form.classList.add('_form', '_form_11', '_inline-form', '_dark');
 form.setAttribute('novalidate', '');
 form.dataset.stylesVersion = '5';
+const formSupportsPost = true;
 
 const hiddenInputs = [
   { name: 'u', value: '11', 'data-name': 'u' },
@@ -271,8 +276,105 @@ form.appendChild(thankYouMessage);
 // Append the form to the document body or a specific container element
 document.querySelector('.aform-container').appendChild(form);
 
-// Add event listeners and form submission handling logic
-// ...
+// Form validation
+function validateForm() {
+  let valid = true;
+  const inputs = form.querySelectorAll('input, select, textarea');
+  for (let i = 0; i < inputs.length; i++) {
+    const input = inputs[i];
+    if (input.required && !input.value) {
+      input.classList.add('_has_error');
+      valid = false;
+    } else {
+      input.classList.remove('_has_error');
+    }
+  }
+  return valid;
+}
 
-// Include additional JavaScript code for form validation, error handling, etc.
-// ...
+// Error handling
+function showError(message) {
+  const errorElement = document.createElement('div');
+  errorElement.classList.add('_form_error');
+  errorElement.textContent = message;
+  form.insertBefore(errorElement, form.firstChild);
+}
+
+// Function to load script
+function loadScript(url, callback, isSubmit) {
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = url;
+  script.onload = callback;
+  // eslint-disable-next-line func-names
+  script.onerror = function() {
+    if (isSubmit) {
+      const asubmitButton = form.querySelector('#_form_11_submit');
+      asubmitButton.disabled = false;
+      asubmitButton.classList.remove('processing');
+      showError('An error occurred. Please try again.');
+    }
+  };
+  document.body.appendChild(script);
+}
+
+// Function to submit form data
+async function submitForm(serialized) {
+  const formData = new FormData();
+  const searchParams = new URLSearchParams(serialized);
+  searchParams.forEach((value, key) => {
+    formData.append(key, value);
+  });
+  const response = await fetch('https://reply57035.activehosted.com/proc.php?jsonp=true', {
+    headers: {
+      Accept: 'application/json',
+    },
+    body: formData,
+    method: 'POST',
+  });
+  return response.json();
+}
+
+// Serialization function
+function serialize(aform) {
+  const serialized = [];
+  for (let i = 0; i < aform.elements.length; i++) {
+    const field = aform.elements[i];
+    if (!field.name || field.disabled || ['file', 'reset', 'submit', 'button'].indexOf(field.type) > -1) continue;
+    if (field.type === 'select-multiple') {
+      for (let j = 0; j < field.options.length; j++) {
+        if (!field.options[j].selected) continue;
+        serialized.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.options[j].value));
+      }
+    } else if ((['checkbox', 'radio'].indexOf(field.type) > -1 && !field.checked) || ['checkbox', 'radio'].indexOf(field.type) === -1) {
+      serialized.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
+    }
+  }
+  return serialized.join('&');
+}
+
+// Form submission handling
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (validateForm()) {
+    // Use this trick to get the submit button & disable it using plain javascript
+    const asubmitButton = e.target.querySelector('#_form_11_submit');
+    asubmitButton.disabled = true;
+    asubmitButton.classList.add('processing');
+
+    const serialized = serialize(form).replace(/%0A/g, '\\n');
+    const err = form.querySelector('._form_error');
+    // eslint-disable-next-line no-unused-expressions
+    err ? err.parentNode.removeChild(err) : false;
+
+    if (formSupportsPost) {
+      submitForm(serialized).then((data) => {
+        // eslint-disable-next-line no-eval
+        eval(data.js);
+      });
+    } else {
+      loadScript('https://reply57035.activehosted.com/proc.php?' + serialized + '&jsonp=true', null, true);
+    }
+  }
+  return false;
+});
