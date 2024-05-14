@@ -251,29 +251,6 @@ recaptchaElement.appendChild(recaptchaLabel);
 recaptchaElement.appendChild(recaptchaDiv);
 formContent.appendChild(recaptchaElement);
 
-const buttonWrapper = document.createElement('div');
-buttonWrapper.classList.add('_button-wrapper', '_full_width');
-const submitButton = document.createElement('button');
-submitButton.id = '_form_11_submit';
-submitButton.classList.add('_submit');
-submitButton.type = 'submit';
-submitButton.textContent = 'Submit';
-buttonWrapper.appendChild(submitButton);
-formContent.appendChild(buttonWrapper);
-
-const clearElement = document.createElement('div');
-clearElement.classList.add('_clear-element');
-formContent.appendChild(clearElement);
-
-form.appendChild(formContent);
-
-const thankYouMessage = document.createElement('div');
-thankYouMessage.classList.add('_form-thank-you');
-thankYouMessage.style.display = 'none';
-form.appendChild(thankYouMessage);
-// Append the form to the document body or a specific container element
-document.querySelector('.aform-container').appendChild(form);
-
 // Form validation
 function validateForm() {
   let valid = true;
@@ -342,14 +319,21 @@ function serialize(aform) {
   return serialized.join('&');
 }
 
-// Form submission handling
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
+const buttonWrapper = document.createElement('div');
+buttonWrapper.classList.add('_button-wrapper', '_full_width');
+
+const submitButton = document.createElement('button');
+submitButton.id = '_form_11_submit';
+submitButton.classList.add('_submit');
+submitButton.type = 'button'; // Change the type to 'button'
+submitButton.textContent = 'Submit';
+
+// Add click event listener to the submit button
+submitButton.addEventListener('click', function() {
   if (validateForm()) {
-    // Use this trick to get the submit button & disable it using plain javascript
-    const asubmitButton = e.target.querySelector('#_form_11_submit');
-    asubmitButton.disabled = true;
-    asubmitButton.classList.add('processing');
+    // Disable the submit button
+    submitButton.disabled = true;
+    submitButton.classList.add('processing');
 
     const serialized = serialize(form).replace(/%0A/g, '\\n');
     const err = form.querySelector('._form_error');
@@ -358,5 +342,20 @@ form.addEventListener('submit', function(e) {
 
     submitForm(serialized);
   }
-  return false;
 });
+
+buttonWrapper.appendChild(submitButton);
+formContent.appendChild(buttonWrapper);
+
+const clearElement = document.createElement('div');
+clearElement.classList.add('_clear-element');
+formContent.appendChild(clearElement);
+
+form.appendChild(formContent);
+
+const thankYouMessage = document.createElement('div');
+thankYouMessage.classList.add('_form-thank-you');
+thankYouMessage.style.display = 'none';
+form.appendChild(thankYouMessage);
+// Append the form to the document body or a specific container element
+document.querySelector('.aform-container').appendChild(form);
