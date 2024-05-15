@@ -1,0 +1,12 @@
+{
+    "total": 1,
+    "offset": 0,
+    "limit": 1,
+    "data": [
+      {
+        "Item": "$system:trackingscript$",
+        "Value": "https://assets.adobedtm.com/d4e187856f02/84a8f19b48f1/launch-445ea36a9b64-development.min.js"
+      }
+    ],
+    ":type": "fallback"
+  }
