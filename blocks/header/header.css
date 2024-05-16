@@ -400,7 +400,7 @@ header nav .nav-tools div {
 
 @media (width >= 900px) {
   header {
-    background-color: white;
+    background-color: var(--color-nocturnal-blue);
   }
 
   header .header {
