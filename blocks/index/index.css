@@ -1,0 +1,13 @@
+ .index ul {
+     list-style-type: none;
+     padding: 0;
+ }
+
+ .index ul li {
+     margin: 5px 0;
+ }
+
+ .index ul li a {
+     text-decoration: none;
+     color: blue;
+ }
