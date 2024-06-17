@@ -1,1 +1,1 @@
-window.finalHost = 'https://sample.com/';
+window.finalHost = 'https://comwrap.uk/';

@@ -8,7 +8,7 @@
         "Value": "live"
       },{
         "Item":"$system:allowtracking$",
-        "Value": "n - but make it y to start tracking"
+        "Value": "y"
       }
     ],
     ":type": "fallback"
