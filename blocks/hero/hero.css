@@ -33,10 +33,10 @@ main .hero-container {
   height: 100%;
 }
 
-.hero.tiny img {
+.hero.tiny {
 
-  width: 100%;
-  height: 100%;
+  width: 50%;
+  height: 50%;
 
 }
 
